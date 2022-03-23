@@ -16,13 +16,14 @@ fig, axs = plt.subplots(4,4,sharex=True,sharey=True)
 
 best_score = 1
 population = list()
-
+mean = [0,0]
+cov = [[1, 0], [0, 1]]
 for k in range(16):
     population = list()
     plt.plot(start[0], start[1], marker = "o", color = 'r')
 
     for i in range(5):
-        candidate = start + np.random.randn(len(bounds)) * 0.05
+        candidate = start + np.random.multivariate_normal(mean, cov) * 0.05
         population.append(candidate)
     # print(population)
     for i in population:
