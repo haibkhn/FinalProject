@@ -21,7 +21,7 @@ public class Main {
 		// long time = System.currentTimeMillis();
 		// String FILE_URL = "../mopso_test3.txt";
 		// File file = new File(FILE_URL);
-		String numberTeString = "8";
+		String numberTeString = "4";
 		// Tao moi truong
 		GUIRobotics gui = new GUIRobotics(1000, 100, 10);
 		gui.generateEnvironment("obstacle_" + numberTeString + ".txt");
