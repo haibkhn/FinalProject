@@ -1,5 +1,6 @@
 package algorithm;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
@@ -18,8 +19,8 @@ public class ES {
     public double R; // radius
     public double maxPointy = 10;
     public double minPointy = -10;
-    public double maxVariance = 1;
-    public double minVariance = -1;
+    public double maxVariance = 5;
+    public double minVariance = -5;
     public double mean[];
     public static Point startPoint;
     public static Point endPoint;
@@ -61,10 +62,6 @@ public class ES {
         for (int i = 0; i < numR; i++) {
             identityMatrix[i][i] = 1;
         }
-        // for (int i = 0; i < numR; i++) {
-        // System.out.print(mean[i] + " ");
-        // }
-
     }
 
     public boolean pathCollision(Path path) {
@@ -112,15 +109,27 @@ public class ES {
         initialize(numR);
 
         MultivariateNormalDistribution mnd = new MultivariateNormalDistribution(mean, identityMatrix);
-
-        // for (int i = 0; i < 100; i++) {
         startPopulation = initialCandidate.pointy;
-        // do {
-        candidate = add(startPopulation, multiple(variance, mnd.sample()));
-        // } while (pathCollision(initialCandidate) == true);
-        // particles[i] =
 
-        // }
+        // Generate 20 children in 1 generation, only generate child that doesnt collide
+        ArrayList<Path> particless = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            do {
+                double pointy[] = new double[numR];
+                Point points[] = new Point[numR];
+                pointy = add(startPopulation, multiple(variance, mnd.sample()));
+                for (int j = 0; j < numR; j++) {
+                    points[j] = Path.convertPointToPoint(pointy[j], (j + 1) * R, startPoint, endPoint);
+                }
+                particles[i] = new Path(numR, R, pointy, points);
+                particles[i].distance();
+            } while (pathCollision(particles[i]) == true);
+            particless.add(particles[i]);
+        }
+
+        for (int i = 0; i < 20; i++) {
+            System.out.println(particless.get(i).distance);
+        }
         result.add(startPoint);
 
         for (int i = 0; i < numR; i++) {
