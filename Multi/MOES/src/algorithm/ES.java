@@ -2,25 +2,31 @@ package algorithm;
 
 import java.util.LinkedList;
 import java.util.Random;
-
+import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
 import util.Graph;
 import util.Path;
 import util.Point;
 
 public class ES {
+
     public final int NP = 100; // population size
     public Path particles[] = new Path[NP];
     public double startPopulation[];
     public double candidate[];
-    public Path test;
+    public Path initialCandidate;
     public Graph graph;
     public double R; // radius
     public double maxPointy = 10;
     public double minPointy = -10;
+    public double maxVariance = 1;
+    public double minVariance = -1;
+    public double mean[];
     public static Point startPoint;
     public static Point endPoint;
     public int numR; // number of R in map
     Random random = new Random();
+    public double identityMatrix[][];
+    public double[] variance;
 
     public double AB;
     public LinkedList<Point> result = new LinkedList<Point>();
@@ -35,23 +41,30 @@ public class ES {
     }
 
     public void initialize(int numR) {
-        // for (int i = 0; i < NP; i++) {
+        variance = new double[numR];
+        mean = new double[numR];
+
         do {
             double pointy[] = new double[numR];
             Point points[] = new Point[numR];
             for (int j = 0; j < numR; j++) {
+                variance[j] = random.nextDouble() * (maxVariance - minVariance) + minVariance;
                 do {
                     pointy[j] = random.nextDouble() * (maxPointy - minPointy) + minPointy;
                     points[j] = Path.convertPointToPoint(pointy[j], (j + 1) * R, startPoint, endPoint);
                 } while (!points[j].inCoordinate());
             }
-            test = new Path(numR, R, pointy, points);
-            // particles[0] = new Path(numR, R, pointy, points);
-            // particles[0].distance();
-        } while (pathCollision(test) == true);
+            initialCandidate = new Path(numR, R, pointy, points);
 
-        // System.out.println(particles[i].distance);
+        } while (pathCollision(initialCandidate) == true);
+        identityMatrix = new double[numR][numR];
+        for (int i = 0; i < numR; i++) {
+            identityMatrix[i][i] = 1;
+        }
+        // for (int i = 0; i < numR; i++) {
+        // System.out.print(mean[i] + " ");
         // }
+
     }
 
     public boolean pathCollision(Path path) {
@@ -86,32 +99,32 @@ public class ES {
         return result;
     }
 
+    public static double[] multiple(double[] first, double[] second) {
+        int length = first.length < second.length ? first.length : second.length;
+        double[] result = new double[length];
+        for (int i = 0; i < length; i++) {
+            result[i] = first[i] * second[i];
+        }
+        return result;
+    }
+
     public void run() {
         initialize(numR);
-        for (int i = 0; i < 100; i++) {
-            startPopulation = test.pointy;
-            do {
-                // candidate = startPopulation +
-            } while (pathCollision(test) == true);
-            // particles[i] =
 
-        }
-        for (int i = 0; i < test.pointy.length; i++) {
-            System.out.print(test.pointy[i] + " ");
-        }
-        for (int i = 0; i < test.points.length; i++) {
-            // System.out.print(test.pointy[i] + " ");
-            test.points[i].printPoint();
-        }
+        MultivariateNormalDistribution mnd = new MultivariateNormalDistribution(mean, identityMatrix);
+
+        // for (int i = 0; i < 100; i++) {
+        startPopulation = initialCandidate.pointy;
+        // do {
+        candidate = add(startPopulation, multiple(variance, mnd.sample()));
+        // } while (pathCollision(initialCandidate) == true);
+        // particles[i] =
+
+        // }
         result.add(startPoint);
-        // for (int i = 0; i < particles.length; i++) {
-        // if (pathCollision(particles[i]) == false) {
-        // k = i;
-        // break;
-        // }
-        // }
+
         for (int i = 0; i < numR; i++) {
-            result.add(test.points[i]);
+            result.add(initialCandidate.points[i]);
 
         }
         result.add(endPoint);
