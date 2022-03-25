@@ -47,7 +47,7 @@ public class PSO {
 		this.numR = numR;
 		this.graph = graph;
 		this.AB = Math.hypot(end.x - start.x, end.y - start.y);
-		this.R = AB / numR;
+		this.R = AB / (numR + 1);
 	}
 
 	public void initialize(int numR) {
@@ -566,10 +566,10 @@ public class PSO {
 			for (int j = 0; j < Nmax; j++) {
 				System.out.print("\nNa #" + j + ": ");
 				if (NaParticles[j].points[0] != null) {
-//					for (int k = 0; k < numR; k++) {
-//						System.out.print("(" + df.format(NaParticles[j].points[k].x) + ", "
-//								+ df.format(NaParticles[j].points[k].y) + ")");
-//					}
+					// for (int k = 0; k < numR; k++) {
+					// System.out.print("(" + df.format(NaParticles[j].points[k].x) + ", "
+					// + df.format(NaParticles[j].points[k].y) + ")");
+					// }
 					System.out.print(NaParticles[j].distance + " " + NaParticles[j].pathSafety(graph) + " "
 							+ NaParticles[j].pathSmooth());
 				}
@@ -592,16 +592,16 @@ public class PSO {
 		for (int j = 0; j < Nmax; j++) {
 			System.out.print("\nNa #" + j + ": ");
 			if (NaParticles[j].points[0] != null) {
-//				for (int k = 0; k < numR; k++) {
-//					System.out.print("(" + df.format(NaParticles[j].points[k].x) + ", "
-//							+ df.format(NaParticles[j].points[k].y) + ")");
-//				}
-				System.out.println( NaParticles[j].points[0] + "\n");
+				// for (int k = 0; k < numR; k++) {
+				// System.out.print("(" + df.format(NaParticles[j].points[k].x) + ", "
+				// + df.format(NaParticles[j].points[k].y) + ")");
+				// }
+				System.out.println(NaParticles[j].points[0] + "\n");
 				System.out.print(NaParticles[j].distance + " " + NaParticles[j].pathSafety(graph) + " "
 						+ NaParticles[j].pathSmooth());
 			}
 		}
-		
+
 		result.add(startPoint);
 		for (int i = 0; i < numR; i++) {
 			result.add(gBest.points[i]);

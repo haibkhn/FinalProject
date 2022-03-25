@@ -31,12 +31,11 @@ public class ES {
         this.numR = numR;
         this.graph = graph;
         this.AB = Math.hypot(end.x - start.x, end.y - start.y);
-        this.R = AB / numR;
+        this.R = AB / (numR + 1);
     }
 
     public void initialize(int numR) {
         // for (int i = 0; i < NP; i++) {
-
         do {
             double pointy[] = new double[numR];
             Point points[] = new Point[numR];
@@ -92,7 +91,7 @@ public class ES {
         for (int i = 0; i < 100; i++) {
             startPopulation = test.pointy;
             do {
-                candidate = startPopulation + 
+                // candidate = startPopulation +
             } while (pathCollision(test) == true);
             // particles[i] =
 

@@ -30,7 +30,7 @@ public class Main {
 		LinkedList<Point> pointsToVisit = readPointData("input_" + numberTeString + ".txt");
 
 		ArrayList<Point> result = new ArrayList<Point>();
-		PSO pso = new PSO(15, pointsToVisit.get(0), pointsToVisit.get(1), graph);
+		PSO pso = new PSO(8, pointsToVisit.get(0), pointsToVisit.get(1), graph);
 		try {
 
 			pso.run();
