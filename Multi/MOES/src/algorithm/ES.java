@@ -11,6 +11,7 @@ import util.Point;
 public class ES {
 
     public final int NP = 100; // population size
+    public final int elite = 5;
     public Path particles[] = new Path[NP];
     public double startPopulation[];
     public double candidate[];
@@ -105,36 +106,74 @@ public class ES {
         return result;
     }
 
+    public void bubbleSort(Path arr[]) {
+        int n = 20;
+        for (int i = 0; i < n - 1; i++)
+            for (int j = 0; j < n - i - 1; j++)
+                if (arr[j].distance > arr[j + 1].distance) {
+                    // swap arr[j+1] and arr[j]
+                    Path temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+    }
+
+    public void updateMean() {
+
+    }
+
     public void run() {
         initialize(numR);
 
         MultivariateNormalDistribution mnd = new MultivariateNormalDistribution(mean, identityMatrix);
         startPopulation = initialCandidate.pointy;
 
-        // Generate 20 children in 1 generation, only generate child that doesnt collide
-        ArrayList<Path> particless = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            do {
-                double pointy[] = new double[numR];
-                Point points[] = new Point[numR];
-                pointy = add(startPopulation, multiple(variance, mnd.sample()));
-                for (int j = 0; j < numR; j++) {
-                    points[j] = Path.convertPointToPoint(pointy[j], (j + 1) * R, startPoint, endPoint);
-                }
-                particles[i] = new Path(numR, R, pointy, points);
-                particles[i].distance();
-            } while (pathCollision(particles[i]) == true);
-            particless.add(particles[i]);
+        // Run NP generation
+        for (int iter = 0; iter < NP; iter++) {
+            // Generate 20 children in 1 generation, only generate child that doesnt collide
+            // ArrayList<Path> particlesArrayList = new ArrayList<>();
+            for (int i = 0; i < 20; i++) {
+                do {
+                    double pointy[] = new double[numR];
+                    Point points[] = new Point[numR];
+                    pointy = add(startPopulation, multiple(variance, mnd.sample()));
+                    for (int j = 0; j < numR; j++) {
+                        points[j] = Path.convertPointToPoint(pointy[j], (j + 1) * R, startPoint, endPoint);
+                    }
+                    particles[i] = new Path(numR, R, pointy, points);
+                    particles[i].distance();
+                } while (pathCollision(particles[i]) == true);
+                // particlesArrayList.add(particles[i]);
+            }
+            bubbleSort(particles);
+
+            // Calculate new mean
+            startPopulation = new double[numR];
+            for (int i = 0; i < elite; i++) {
+                startPopulation = add(startPopulation, particles[i].pointy);
+            }
+            for (int i = 0; i < numR; i++) {
+                startPopulation[i] = startPopulation[i] / elite;
+            }
+
+            // Calculate new standard deviation
+            for (int i = 0; i < elite; i++) {
+
+            }
         }
 
+        // System.out.println(particles.length);
+        // for (int i = 0; i < 20; i++) {
+        // System.out.println(particlesArrayList.get(i).distance);
+        // }
+
         for (int i = 0; i < 20; i++) {
-            System.out.println(particless.get(i).distance);
+            System.out.println(particles[i].distance);
         }
+
         result.add(startPoint);
-
         for (int i = 0; i < numR; i++) {
             result.add(initialCandidate.points[i]);
-
         }
         result.add(endPoint);
         result.removeLast();
