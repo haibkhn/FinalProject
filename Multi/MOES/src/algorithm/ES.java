@@ -28,7 +28,7 @@ public class ES {
     public int numR; // number of R in map
     Random random = new Random();
     public double identityMatrix[][];
-    public double[] variance;
+    public double[] standardDevi;
 
     public double AB;
     public LinkedList<Point> result = new LinkedList<Point>();
@@ -43,14 +43,14 @@ public class ES {
     }
 
     public void initialize(int numR) {
-        variance = new double[numR];
+        standardDevi = new double[numR];
         mean = new double[numR];
 
         do {
             double pointy[] = new double[numR];
             Point points[] = new Point[numR];
             for (int j = 0; j < numR; j++) {
-                variance[j] = random.nextDouble() * (maxVariance - minVariance) + minVariance;
+                standardDevi[j] = random.nextDouble() * (maxVariance - minVariance) + minVariance;
                 do {
                     pointy[j] = random.nextDouble() * (maxPointy - minPointy) + minPointy;
                     points[j] = Path.convertPointToPoint(pointy[j], (j + 1) * R, startPoint, endPoint);
@@ -97,6 +97,15 @@ public class ES {
         return result;
     }
 
+    public static double[] minusSquare(double[] first, double[] second) {
+        int length = first.length < second.length ? first.length : second.length;
+        double[] result = new double[length];
+        for (int i = 0; i < length; i++) {
+            result[i] = (first[i] - second[i]) * (first[i] - second[i]);
+        }
+        return result;
+    }
+
     public static double[] multiple(double[] first, double[] second) {
         int length = first.length < second.length ? first.length : second.length;
         double[] result = new double[length];
@@ -136,7 +145,7 @@ public class ES {
                 do {
                     double pointy[] = new double[numR];
                     Point points[] = new Point[numR];
-                    pointy = add(startPopulation, multiple(variance, mnd.sample()));
+                    pointy = add(startPopulation, multiple(standardDevi, mnd.sample()));
                     for (int j = 0; j < numR; j++) {
                         points[j] = Path.convertPointToPoint(pointy[j], (j + 1) * R, startPoint, endPoint);
                     }
@@ -147,6 +156,16 @@ public class ES {
             }
             bubbleSort(particles);
 
+            // Calculate new standard deviation
+            standardDevi = new double[numR];
+            for (int i = 0; i < elite; i++) {
+                standardDevi = add(standardDevi, minusSquare(particles[i].pointy, startPopulation));
+            }
+            for (int i = 0; i < numR; i++) {
+                standardDevi[i] = standardDevi[i] / elite;
+                standardDevi[i] = Math.sqrt(standardDevi[i]);
+            }
+
             // Calculate new mean
             startPopulation = new double[numR];
             for (int i = 0; i < elite; i++) {
@@ -154,11 +173,6 @@ public class ES {
             }
             for (int i = 0; i < numR; i++) {
                 startPopulation[i] = startPopulation[i] / elite;
-            }
-
-            // Calculate new standard deviation
-            for (int i = 0; i < elite; i++) {
-
             }
         }
 
@@ -173,7 +187,7 @@ public class ES {
 
         result.add(startPoint);
         for (int i = 0; i < numR; i++) {
-            result.add(initialCandidate.points[i]);
+            result.add(particles[0].points[i]);
         }
         result.add(endPoint);
         result.removeLast();
