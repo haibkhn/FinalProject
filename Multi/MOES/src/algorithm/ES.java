@@ -10,9 +10,10 @@ import util.Point;
 
 public class ES {
 
-    public final int NP = 100; // population size
+    public final int NP = 300; // population size
     public final int elite = 5;
     public Path particles[] = new Path[NP];
+    public Path gBest;
     public double startPopulation[];
     public double candidate[];
     public Path initialCandidate;
@@ -20,8 +21,8 @@ public class ES {
     public double R; // radius
     public double maxPointy = 10;
     public double minPointy = -10;
-    public double maxVariance = 5;
-    public double minVariance = -5;
+    public double maxVariance = 6;
+    public double minVariance = -6;
     public double mean[];
     public static Point startPoint;
     public static Point endPoint;
@@ -63,6 +64,7 @@ public class ES {
         for (int i = 0; i < numR; i++) {
             identityMatrix[i][i] = 1;
         }
+        gBest = initialCandidate;
     }
 
     public boolean pathCollision(Path path) {
@@ -174,6 +176,10 @@ public class ES {
             for (int i = 0; i < numR; i++) {
                 startPopulation[i] = startPopulation[i] / elite;
             }
+            if (particles[0].distance < gBest.distance) {
+                System.out.println("Iter: " + iter + " Best distance: " + particles[0].distance);
+                gBest = particles[0];
+            }
         }
 
         // System.out.println(particles.length);
@@ -181,9 +187,9 @@ public class ES {
         // System.out.println(particlesArrayList.get(i).distance);
         // }
 
-        for (int i = 0; i < 20; i++) {
-            System.out.println(particles[i].distance);
-        }
+        // for (int i = 0; i < 20; i++) {
+        // System.out.println(particles[i].distance);
+        // }
 
         result.add(startPoint);
         for (int i = 0; i < numR; i++) {
