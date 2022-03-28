@@ -193,7 +193,7 @@ public class ES {
 
         result.add(startPoint);
         for (int i = 0; i < numR; i++) {
-            result.add(particles[0].points[i]);
+            result.add(gBest.points[i]);
         }
         result.add(endPoint);
         result.removeLast();
