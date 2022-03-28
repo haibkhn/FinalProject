@@ -10,8 +10,9 @@ import util.Point;
 
 public class ES {
 
-    public final int NP = 300; // population size
-    public final int elite = 5;
+    public final int NP = 500; // population size
+    public final int elite = 20;
+    public final int children = 100;
     public Path particles[] = new Path[NP];
     public Path gBest;
     public double startPopulation[];
@@ -118,7 +119,7 @@ public class ES {
     }
 
     public void bubbleSort(Path arr[]) {
-        int n = 20;
+        int n = children;
         for (int i = 0; i < n - 1; i++)
             for (int j = 0; j < n - i - 1; j++)
                 if (arr[j].distance > arr[j + 1].distance) {
@@ -129,9 +130,9 @@ public class ES {
                 }
     }
 
-    public void updateMean() {
+    // public void updateMean() {
 
-    }
+    // }
 
     public void run() {
         initialize(numR);
@@ -141,9 +142,9 @@ public class ES {
 
         // Run NP generation
         for (int iter = 0; iter < NP; iter++) {
-            // Generate 20 children in 1 generation, only generate child that doesnt collide
+            // Generate n children in 1 generation, only generate child that doesnt collide
             // ArrayList<Path> particlesArrayList = new ArrayList<>();
-            for (int i = 0; i < 20; i++) {
+            for (int i = 0; i < children; i++) {
                 do {
                     double pointy[] = new double[numR];
                     Point points[] = new Point[numR];
