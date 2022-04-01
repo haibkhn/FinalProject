@@ -10,9 +10,11 @@ import util.Point;
 
 public class ES {
 
-    public final int NP = 100; // population size
-    public final int elite = 5;
+    public final int NP = 500; // population size
+    public final int elite = 20;
+    public final int children = 100;
     public Path particles[] = new Path[NP];
+    public Path gBest;
     public double startPopulation[];
     public double candidate[];
     public Path initialCandidate;
@@ -20,15 +22,15 @@ public class ES {
     public double R; // radius
     public double maxPointy = 10;
     public double minPointy = -10;
-    public double maxVariance = 5;
-    public double minVariance = -5;
+    public double maxVariance = 6;
+    public double minVariance = -6;
     public double mean[];
     public static Point startPoint;
     public static Point endPoint;
     public int numR; // number of R in map
     Random random = new Random();
     public double identityMatrix[][];
-    public double[] variance;
+    public double[] standardDevi;
 
     public double AB;
     public LinkedList<Point> result = new LinkedList<Point>();
@@ -43,14 +45,14 @@ public class ES {
     }
 
     public void initialize(int numR) {
-        variance = new double[numR];
+        standardDevi = new double[numR];
         mean = new double[numR];
 
         do {
             double pointy[] = new double[numR];
             Point points[] = new Point[numR];
             for (int j = 0; j < numR; j++) {
-                variance[j] = random.nextDouble() * (maxVariance - minVariance) + minVariance;
+                standardDevi[j] = random.nextDouble() * (maxVariance - minVariance) + minVariance;
                 do {
                     pointy[j] = random.nextDouble() * (maxPointy - minPointy) + minPointy;
                     points[j] = Path.convertPointToPoint(pointy[j], (j + 1) * R, startPoint, endPoint);
@@ -63,6 +65,7 @@ public class ES {
         for (int i = 0; i < numR; i++) {
             identityMatrix[i][i] = 1;
         }
+        gBest = initialCandidate;
     }
 
     public boolean pathCollision(Path path) {
@@ -97,6 +100,15 @@ public class ES {
         return result;
     }
 
+    public static double[] minusSquare(double[] first, double[] second) {
+        int length = first.length < second.length ? first.length : second.length;
+        double[] result = new double[length];
+        for (int i = 0; i < length; i++) {
+            result[i] = (first[i] - second[i]) * (first[i] - second[i]);
+        }
+        return result;
+    }
+
     public static double[] multiple(double[] first, double[] second) {
         int length = first.length < second.length ? first.length : second.length;
         double[] result = new double[length];
@@ -107,7 +119,7 @@ public class ES {
     }
 
     public void bubbleSort(Path arr[]) {
-        int n = 20;
+        int n = children;
         for (int i = 0; i < n - 1; i++)
             for (int j = 0; j < n - i - 1; j++)
                 if (arr[j].distance > arr[j + 1].distance) {
@@ -118,9 +130,9 @@ public class ES {
                 }
     }
 
-    public void updateMean() {
+    // public void updateMean() {
 
-    }
+    // }
 
     public void run() {
         initialize(numR);
@@ -130,13 +142,13 @@ public class ES {
 
         // Run NP generation
         for (int iter = 0; iter < NP; iter++) {
-            // Generate 20 children in 1 generation, only generate child that doesnt collide
+            // Generate n children in 1 generation, only generate child that doesnt collide
             // ArrayList<Path> particlesArrayList = new ArrayList<>();
-            for (int i = 0; i < 20; i++) {
+            for (int i = 0; i < children; i++) {
                 do {
                     double pointy[] = new double[numR];
                     Point points[] = new Point[numR];
-                    pointy = add(startPopulation, multiple(variance, mnd.sample()));
+                    pointy = add(startPopulation, multiple(standardDevi, mnd.sample()));
                     for (int j = 0; j < numR; j++) {
                         points[j] = Path.convertPointToPoint(pointy[j], (j + 1) * R, startPoint, endPoint);
                     }
@@ -147,6 +159,16 @@ public class ES {
             }
             bubbleSort(particles);
 
+            // Calculate new standard deviation
+            standardDevi = new double[numR];
+            for (int i = 0; i < elite; i++) {
+                standardDevi = add(standardDevi, minusSquare(particles[i].pointy, startPopulation));
+            }
+            for (int i = 0; i < numR; i++) {
+                standardDevi[i] = standardDevi[i] / elite;
+                standardDevi[i] = Math.sqrt(standardDevi[i]);
+            }
+
             // Calculate new mean
             startPopulation = new double[numR];
             for (int i = 0; i < elite; i++) {
@@ -155,10 +177,9 @@ public class ES {
             for (int i = 0; i < numR; i++) {
                 startPopulation[i] = startPopulation[i] / elite;
             }
-
-            // Calculate new standard deviation
-            for (int i = 0; i < elite; i++) {
-
+            if (particles[0].distance < gBest.distance) {
+                System.out.println("Iter: " + iter + " Best distance: " + particles[0].distance);
+                gBest = particles[0];
             }
         }
 
@@ -167,13 +188,13 @@ public class ES {
         // System.out.println(particlesArrayList.get(i).distance);
         // }
 
-        for (int i = 0; i < 20; i++) {
-            System.out.println(particles[i].distance);
-        }
+        // for (int i = 0; i < 20; i++) {
+        // System.out.println(particles[i].distance);
+        // }
 
         result.add(startPoint);
         for (int i = 0; i < numR; i++) {
-            result.add(initialCandidate.points[i]);
+            result.add(gBest.points[i]);
         }
         result.add(endPoint);
         result.removeLast();
