@@ -13,7 +13,7 @@ public class ES {
     public final int NP = 500; // population size
     public final int elite = 20;
     public final int children = 100;
-    public Path particles[] = new Path[NP];
+    public Path particles[] = new Path[children];
     public Path gBest;
     public double startPopulation[];
     public double candidate[];
@@ -130,9 +130,16 @@ public class ES {
                 }
     }
 
-    // public void updateMean() {
-
-    // }
+    public boolean checkDominate(Path particle1, Path particle2) {
+        if ((particle1.distance <= particle2.distance
+                && particle1.pathSafety(graph) <= particle2.pathSafety(graph)
+                && particle1.pathSmooth() <= particle2.pathSmooth())
+                && (particle1.distance < particle2.distance || particle1.pathSafety(graph) < particle2.pathSafety(graph)
+                        || particle1.pathSmooth() < particle2.pathSmooth())) {
+            return true;
+        } else
+            return false;
+    }
 
     public void run() {
         initialize(numR);
@@ -141,7 +148,7 @@ public class ES {
         startPopulation = initialCandidate.pointy;
 
         // Run NP generation
-        for (int iter = 0; iter < NP; iter++) {
+        for (int iter = 0; iter < 100; iter++) {
             // Generate n children in 1 generation, only generate child that doesnt collide
             // ArrayList<Path> particlesArrayList = new ArrayList<>();
             for (int i = 0; i < children; i++) {
@@ -157,6 +164,24 @@ public class ES {
                 } while (pathCollision(particles[i]) == true);
                 // particlesArrayList.add(particles[i]);
             }
+
+            ArrayList<Path> chosenArrayList = new ArrayList<Path>();
+            for (int i = 0; i < particles.length; i++) {
+                for (int j = 0; j < particles.length; j++) {
+                    if (checkDominate(particles[j], particles[i]) == true) {
+                        continue;
+                    }
+                    if (j == particles.length - 1) {
+                        chosenArrayList.add(particles[i]);
+                    }
+                }
+            }
+            System.out.println("num of chosen array: " + chosenArrayList.size());
+            System.out.println(chosenArrayList.get(0).distance + " " + chosenArrayList.get(0).pathSafety(graph) + " "
+                    + chosenArrayList.get(0).pathSmooth());
+            System.out.println(chosenArrayList.get(1).distance + " " + chosenArrayList.get(1).pathSafety(graph) + " "
+                    + chosenArrayList.get(1).pathSmooth());
+
             bubbleSort(particles);
 
             // Calculate new standard deviation
@@ -182,15 +207,6 @@ public class ES {
                 gBest = particles[0];
             }
         }
-
-        // System.out.println(particles.length);
-        // for (int i = 0; i < 20; i++) {
-        // System.out.println(particlesArrayList.get(i).distance);
-        // }
-
-        // for (int i = 0; i < 20; i++) {
-        // System.out.println(particles[i].distance);
-        // }
 
         result.add(startPoint);
         for (int i = 0; i < numR; i++) {
