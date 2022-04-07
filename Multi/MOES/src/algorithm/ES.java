@@ -11,7 +11,7 @@ import util.Point;
 public class ES {
 
     public final int NP = 500; // population size
-    public final int elite = 20;
+    public int elite = 20;
     public final int children = 100;
     public Path particles[] = new Path[children];
     public Path gBest;
@@ -119,8 +119,8 @@ public class ES {
         return result;
     }
 
-    public void bubbleSort(Path arr[]) {
-        int n = children;
+    public void bubbleSort(Path arr[], int n) {
+        // int n = children;
         for (int i = 0; i < n - 1; i++)
             for (int j = 0; j < n - i - 1; j++)
                 if (arr[j].distance > arr[j + 1].distance) {
@@ -158,7 +158,7 @@ public class ES {
         startPopulation = initialCandidate.pointy;
 
         // Run NP generation
-        for (int iter = 0; iter < 100; iter++) {
+        for (int iter = 0; iter < NP; iter++) {
             // Generate n children in 1 generation, only generate child that doesnt collide
             // ArrayList<Path> particlesArrayList = new ArrayList<>();
             for (int i = 0; i < children; i++) {
@@ -175,38 +175,50 @@ public class ES {
                 // particlesArrayList.add(particles[i]);
             }
 
+            // Begin multi-objective
             ArrayList<Integer> chosenParticleIndex = new ArrayList<Integer>();
             rank = 0;
 
             while (checkRank(particles) == false) {
                 ArrayList<Path> chosenArrayList = new ArrayList<Path>();
                 int i1 = 0;
-
+                //
                 while (i1 < particles.length) {
                     if (chosenParticleIndex.contains(i1)) {
                         i1++;
+                        // System.out.println("contain");
                     } else {
+                        // System.out.println("not contain");
                         int i2 = 0;
                         boolean cont = true;
                         while (i2 < particles.length && cont == true) {
-                            if (checkDominate(particles[i2], particles[i1]) == true) {
-                                cont = false;
-                            }
-                            if (i2 == (particles.length - 1)) {
-                                chosenArrayList.add(particles[i1]);
+                            if (i2 == (particles.length) - 1) {
+                                // chosenArrayList.add(particles[i1]);
                                 chosenParticleIndex.add(i1);
                                 particles[i1].rank = rank;
                             }
-                            i2++;
+                            if (chosenParticleIndex.contains(i2)) {
+                                i2++;
+                            } else {
+                                if (checkDominate(particles[i2], particles[i1])) {
+                                    cont = false;
+                                }
+                                i2++;
+                            }
                         }
                         i1++;
                     }
-
                 }
                 rank++;
-                System.out.println("rank" + rank);
-                System.out.println("num" + chosenParticleIndex.size());
+
+                System.out.println("rank " + rank);
+                System.out.println("num " + chosenParticleIndex.size());
+                for (int i = 0; i < chosenParticleIndex.size(); i++) {
+                    System.out.print(chosenParticleIndex.get(i) + " ");
+                }
+                System.out.println();
             }
+            // End multiobjective
 
             // System.out.println("num of chosen path: " + chosenArrayList.size());
             // for (int i = 0; i < 3; i++) {
@@ -216,12 +228,49 @@ public class ES {
             // + chosenArrayList.get(i).pathSmooth());
             // }
 
-            bubbleSort(particles);
+            // Thu sua multiobjective
+            // elite = chosenParticleIndex.size();
+
+            // Path particlesTMP[] = new Path[elite];
+            // for (int i = 0; i < elite; i++) {
+            // particlesTMP[i] = particles[chosenParticleIndex.get(i)];
+            // }
+            // bubbleSort(particlesTMP, elite);
+
+            // // Calculate new standard deviation
+            // standardDevi = new double[numR];
+            // for (int i = 0; i < elite; i++) {
+            // standardDevi = add(standardDevi, minusSquare(particles[i].pointy,
+            // startPopulation));
+            // }
+            // for (int i = 0; i < numR; i++) {
+            // standardDevi[i] = standardDevi[i] / elite;
+            // standardDevi[i] = Math.sqrt(standardDevi[i]);
+            // }
+
+            // // Calculate new mean
+            // startPopulation = new double[numR];
+            // for (int i = 0; i < elite; i++) {
+            // startPopulation = add(startPopulation, particles[i].pointy);
+            // }
+            // for (int i = 0; i < numR; i++) {
+            // startPopulation[i] = startPopulation[i] / elite;
+            // }
+            // if (particles[0].distance < gBest.distance) {
+            // System.out.println("Iter: " + iter + " Best distance: " +
+            // particles[0].distance);
+            // gBest = particles[0];
+            // }
+
+            // // Ket thuc
+
+            bubbleSort(particles, children);
 
             // Calculate new standard deviation
             standardDevi = new double[numR];
             for (int i = 0; i < elite; i++) {
-                standardDevi = add(standardDevi, minusSquare(particles[i].pointy, startPopulation));
+                standardDevi = add(standardDevi, minusSquare(particles[i].pointy,
+                        startPopulation));
             }
             for (int i = 0; i < numR; i++) {
                 standardDevi[i] = standardDevi[i] / elite;
@@ -237,7 +286,8 @@ public class ES {
                 startPopulation[i] = startPopulation[i] / elite;
             }
             if (particles[0].distance < gBest.distance) {
-                System.out.println("Iter: " + iter + " Best distance: " + particles[0].distance);
+                System.out.println("Iter: " + iter + " Best distance: " +
+                        particles[0].distance);
                 gBest = particles[0];
             }
         }
