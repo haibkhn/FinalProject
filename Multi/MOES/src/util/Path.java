@@ -7,6 +7,7 @@ public class Path {
 	public double pointy[];
 	public Point points[];
 	public double distance;
+	public int rank;
 	double R;
 
 	public Path(int number) {
@@ -21,6 +22,7 @@ public class Path {
 		this.points = points;
 		this.R = R;
 
+		this.rank = -1;
 		this.distance = 0;
 		this.distance += Math.hypot(ES.startPoint.x - points[0].x, ES.startPoint.y - points[0].y);
 		for (int i = 0; i < points.length - 1; i++) {

@@ -17,6 +17,7 @@ public class ES {
     public Path gBest;
     public double startPopulation[];
     public double candidate[];
+    public int rank;
     public Path initialCandidate;
     public Graph graph;
     public double R; // radius
@@ -134,11 +135,20 @@ public class ES {
         if ((particle1.distance <= particle2.distance
                 && particle1.pathSafety(graph) <= particle2.pathSafety(graph)
                 && particle1.pathSmooth() <= particle2.pathSmooth())
-                && (particle1.distance < particle2.distance || particle1.pathSafety(graph) < particle2.pathSafety(graph)
-                        || particle1.pathSmooth() < particle2.pathSmooth())) {
+                && (particle1.distance < particle2.distance
+                        && particle1.pathSafety(graph) < particle2.pathSafety(graph)
+                        && particle1.pathSmooth() < particle2.pathSmooth())) {
             return true;
         } else
             return false;
+    }
+
+    public boolean checkRank(Path[] particle) {
+        for (int i = 0; i < particle.length; i++) {
+            if (particle[i].rank == -1)
+                return false;
+        }
+        return true;
     }
 
     public void run() {
@@ -165,22 +175,46 @@ public class ES {
                 // particlesArrayList.add(particles[i]);
             }
 
-            ArrayList<Path> chosenArrayList = new ArrayList<Path>();
-            for (int i = 0; i < particles.length; i++) {
-                for (int j = 0; j < particles.length; j++) {
-                    if (checkDominate(particles[j], particles[i]) == true) {
-                        continue;
+            ArrayList<Integer> chosenParticleIndex = new ArrayList<Integer>();
+            rank = 0;
+
+            while (checkRank(particles) == false) {
+                ArrayList<Path> chosenArrayList = new ArrayList<Path>();
+                int i1 = 0;
+
+                while (i1 < particles.length) {
+                    if (chosenParticleIndex.contains(i1)) {
+                        i1++;
+                    } else {
+                        int i2 = 0;
+                        boolean cont = true;
+                        while (i2 < particles.length && cont == true) {
+                            if (checkDominate(particles[i2], particles[i1]) == true) {
+                                cont = false;
+                            }
+                            if (i2 == (particles.length - 1)) {
+                                chosenArrayList.add(particles[i1]);
+                                chosenParticleIndex.add(i1);
+                                particles[i1].rank = rank;
+                            }
+                            i2++;
+                        }
+                        i1++;
                     }
-                    if (j == particles.length - 1) {
-                        chosenArrayList.add(particles[i]);
-                    }
+
                 }
+                rank++;
+                System.out.println("rank" + rank);
+                System.out.println("num" + chosenParticleIndex.size());
             }
-            System.out.println("num of chosen array: " + chosenArrayList.size());
-            System.out.println(chosenArrayList.get(0).distance + " " + chosenArrayList.get(0).pathSafety(graph) + " "
-                    + chosenArrayList.get(0).pathSmooth());
-            System.out.println(chosenArrayList.get(1).distance + " " + chosenArrayList.get(1).pathSafety(graph) + " "
-                    + chosenArrayList.get(1).pathSmooth());
+
+            // System.out.println("num of chosen path: " + chosenArrayList.size());
+            // for (int i = 0; i < 3; i++) {
+            // System.out
+            // .println(chosenArrayList.get(i).distance + " " +
+            // chosenArrayList.get(i).pathSafety(graph) + " "
+            // + chosenArrayList.get(i).pathSmooth());
+            // }
 
             bubbleSort(particles);
 
