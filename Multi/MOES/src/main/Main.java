@@ -21,7 +21,7 @@ public class Main {
 		// long time = System.currentTimeMillis();
 		// String FILE_URL = "../mopso_test3.txt";
 		// File file = new File(FILE_URL);
-		String numberTeString = "5";
+		String numberTeString = "3";
 		// Tao moi truong
 		GUIRobotics gui = new GUIRobotics(600, 100, 10);
 		gui.generateEnvironment("obstacle_" + numberTeString + ".txt");
@@ -30,17 +30,33 @@ public class Main {
 		Graph graph = new Graph("obstacle_" + numberTeString + ".txt");
 		LinkedList<Point> pointsToVisit = readPointData("input_" + numberTeString + ".txt");
 
-		ArrayList<Point> result = new ArrayList<Point>();
+		ArrayList<Point> resultDistance = new ArrayList<Point>();
+		ArrayList<Point> resultSafety = new ArrayList<Point>();
+		ArrayList<Point> resultSmooth = new ArrayList<Point>();
 
 		ES es = new ES(8, pointsToVisit.get(0), pointsToVisit.get(1), graph);
 		try {
 			es.run();
-			result.add(pointsToVisit.get(0));
-			for (int j = 0; j < es.result.size(); j++) {
-				result.add(es.result.get(j));
+			resultDistance.add(pointsToVisit.get(0));
+			for (int j = 0; j < es.resultDistance.size(); j++) {
+				resultDistance.add(es.resultDistance.get(j));
 			}
-			result.add(pointsToVisit.get(1));
-			gui.canvas.drawLines(result, pointsToVisit);
+			resultDistance.add(pointsToVisit.get(1));
+			gui.canvas.drawLines(resultDistance, pointsToVisit);
+
+			resultSafety.add(pointsToVisit.get(0));
+			for (int j = 0; j < es.resultSafety.size(); j++) {
+				resultSafety.add(es.resultSafety.get(j));
+			}
+			resultSafety.add(pointsToVisit.get(1));
+			gui.canvas.drawLines(resultSafety, pointsToVisit);
+
+			resultSmooth.add(pointsToVisit.get(0));
+			for (int j = 0; j < es.resultSmooth.size(); j++) {
+				resultSmooth.add(es.resultSmooth.get(j));
+			}
+			resultSmooth.add(pointsToVisit.get(1));
+			gui.canvas.drawLines(resultSmooth, pointsToVisit);
 		}
 
 		catch (Exception e) {
