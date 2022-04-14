@@ -13,7 +13,7 @@ public class ES {
     public final int elite = 30;
     public final int children = 100;
     public Path particles[] = new Path[children];
-    public Path gBest;
+    public Path gBest, gBestDistance, gBestSmooth, gBestSafety;
     public double startPopulation[];
     public double candidate[];
     public int rank;
@@ -67,6 +67,9 @@ public class ES {
             identityMatrix[i][i] = 1;
         }
         gBest = initialCandidate;
+        gBestDistance = initialCandidate;
+        gBestSafety = initialCandidate;
+        gBestSmooth = initialCandidate;
     }
 
     public boolean pathCollision(Path path) {
