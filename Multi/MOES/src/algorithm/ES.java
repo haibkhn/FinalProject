@@ -437,7 +437,7 @@ public class ES {
             double[] selectedPareto = crowdingDistance(crowdingDistanceSort);
 
             int[] rankPareto = new int[paretoFront.length];
-            int[] rerankPareto = new int[paretoFront.length];
+            // int[] rerankPareto = new int[paretoFront.length];
             int[] rerankParetoDistance = new int[paretoFront.length];
             int[] rerankParetoSafety = new int[paretoFront.length];
             int[] rerankParetoSmooth = new int[paretoFront.length];
@@ -449,10 +449,10 @@ public class ES {
             rankPareto = particleRank(paretoFront, 1);
             // rerankPareto = indexRank(rankPareto);
             rerankParetoDistance = indexRank(rankPareto);
-            rankPareto = particleRank(paretoFront, 3);
-            rerankParetoSmooth = indexRank(rankPareto);
             rankPareto = particleRank(paretoFront, 2);
             rerankParetoSafety = indexRank(rankPareto);
+            rankPareto = particleRank(paretoFront, 3);
+            rerankParetoSmooth = indexRank(rankPareto);
 
             // for (int i = 0; i < crowdingDistanceSort.length; i++) {
             // System.out

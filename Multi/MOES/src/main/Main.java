@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.Color;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,9 +22,9 @@ public class Main {
 		// long time = System.currentTimeMillis();
 		// String FILE_URL = "../mopso_test3.txt";
 		// File file = new File(FILE_URL);
-		String numberTeString = "3";
+		String numberTeString = "5";
 		// Tao moi truong
-		GUIRobotics gui = new GUIRobotics(600, 100, 10);
+		GUIRobotics gui = new GUIRobotics(1000, 100, 10);
 		gui.generateEnvironment("obstacle_" + numberTeString + ".txt");
 
 		// Doc du lieu dau vao
@@ -42,21 +43,21 @@ public class Main {
 				resultDistance.add(es.resultDistance.get(j));
 			}
 			resultDistance.add(pointsToVisit.get(1));
-			gui.canvas.drawLines(resultDistance, pointsToVisit);
+			gui.canvas.drawLines(resultDistance, pointsToVisit, Color.GREEN);
 
 			resultSafety.add(pointsToVisit.get(0));
 			for (int j = 0; j < es.resultSafety.size(); j++) {
 				resultSafety.add(es.resultSafety.get(j));
 			}
 			resultSafety.add(pointsToVisit.get(1));
-			gui.canvas.drawLines(resultSafety, pointsToVisit);
+			gui.canvas.drawLines(resultSafety, pointsToVisit, Color.RED);
 
 			resultSmooth.add(pointsToVisit.get(0));
 			for (int j = 0; j < es.resultSmooth.size(); j++) {
 				resultSmooth.add(es.resultSmooth.get(j));
 			}
 			resultSmooth.add(pointsToVisit.get(1));
-			gui.canvas.drawLines(resultSmooth, pointsToVisit);
+			gui.canvas.drawLines(resultSmooth, pointsToVisit, Color.BLACK);
 		}
 
 		catch (Exception e) {

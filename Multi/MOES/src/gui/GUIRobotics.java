@@ -69,13 +69,13 @@ public class GUIRobotics {
 			g2.setColor(Color.darkGray);
 			g2.fill(polygon);
 			for (int i = 0; i < obstacle.points.size() - 1; i++) {
-				canvas.drawLine(obstacle.points.get(i), obstacle.points.get(i + 1),Color.darkGray);
+				canvas.drawLine(obstacle.points.get(i), obstacle.points.get(i + 1), Color.darkGray);
 			}
 			canvas.drawLine(obstacle.points.get(0), obstacle.points.get(obstacle.points.size() - 1), Color.darkGray);
 		}
 
 		// draw Oxy
-		
+
 		g2.drawLine(MyCanvas.OX, MyCanvas.OY, MyCanvas.OY, MyCanvas.OY);
 		g2.drawLine(MyCanvas.OX, MyCanvas.OY, MyCanvas.OX, MyCanvas.OX);
 		g2.drawString("O", MyCanvas.OX - 10, MyCanvas.OY + 10);
@@ -142,10 +142,10 @@ public class GUIRobotics {
 			g2.draw(new Line2D.Double(OX + p1.x * alpha, OY - p1.y * alpha, OX + p2.x * alpha, OY - p2.y * alpha));
 		}
 
-		public void drawLines(ArrayList<Point> points, LinkedList<Point> pointsToVisit) {
+		public void drawLines(ArrayList<Point> points, LinkedList<Point> pointsToVisit, Color color) {
 			Graphics2D g2 = (Graphics2D) getGraphics();
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			g2.setColor(Color.green);
+			g2.setColor(color);
 			g2.setStroke(new BasicStroke(2.0f));
 			for (int i = 0; i < points.size() - 1; i++) {
 				g2.draw(new Line2D.Double(OX + points.get(i).x * alpha, OY - points.get(i).y * alpha,
@@ -157,7 +157,8 @@ public class GUIRobotics {
 				Point pt = new Point(points.get(i).x, points.get(i).y);
 				if (pt.indexInSet(pointsToVisit) == -1) {
 					g2.setColor(Color.black);
-					g2.fill(new Rectangle2D.Double(OX + points.get(i).x * alpha - 3, OY - points.get(i).y * alpha - 3, 6,
+					g2.fill(new Rectangle2D.Double(OX + points.get(i).x * alpha - 3, OY - points.get(i).y * alpha - 3,
+							6,
 							6));
 					g2.setColor(Color.RED);
 				} else
