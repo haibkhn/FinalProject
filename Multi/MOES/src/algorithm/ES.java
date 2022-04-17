@@ -9,7 +9,7 @@ import util.Path;
 import util.Point;
 
 public class ES {
-    public final int NP = 100; // number of generation
+    public final int numGeneration = 100; // number of generation
     public final int elite = 20; // number of parent
     public final int children = 100;
     public final int childrenPerParent = children / elite;
@@ -33,6 +33,7 @@ public class ES {
     Random random = new Random();
     public double identityMatrix[][];
     public double[] standardDevi;
+    public MultivariateNormalDistribution mnd;
 
     public double AB;
     public LinkedList<Point> resultDistance = new LinkedList<Point>();
@@ -75,7 +76,7 @@ public class ES {
         gBestSmooth = initialCandidate;
 
         // Generate 1st generation
-        MultivariateNormalDistribution mnd = new MultivariateNormalDistribution(mean, identityMatrix);
+        mnd = new MultivariateNormalDistribution(mean, identityMatrix);
         startPopulation = initialCandidate.pointy;
         // Generate n children in 1 generation, only generate child that doesnt collide
         // ArrayList<Path> particlesArrayList = new ArrayList<>();
@@ -359,8 +360,8 @@ public class ES {
     public void run() {
         initialize(numR);
 
-        // Run NP generation
-        for (int iter = 0; iter < NP; iter++) {
+        // Run numGeneration generation
+        for (int iter = 0; iter < numGeneration; iter++) {
             // System.out.println();
             System.out.println("Iteration: " + iter);
 
@@ -533,14 +534,6 @@ public class ES {
                 startPopulation[i] = startPopulation[i] / elite;
             }
 
-            // Each parents will have childrenPerParent children
-            for (int i = 0; i < elite; i++) {
-                for (int j = 0; j < childrenPerParent; j++) {
-                    // particles[i*children+j]=
-                }
-
-            }
-
             // if (checkDominate(particles[rerankPareto[0]], gBest)) {
             // gBest = particles[rerankPareto[0]];
             // System.out.println("Iter update: " + iter);
@@ -559,6 +552,24 @@ public class ES {
             if (particles[rerankParetoSmooth[0]].pathSmooth() < gBestSmooth.pathSmooth()) {
                 gBestSmooth = particles[rerankParetoSmooth[0]];
                 System.out.println("Iter: " + iter + " Best smooth");
+            }
+
+            // Each parents will have childrenPerParent children
+            mnd = new MultivariateNormalDistribution(mean, identityMatrix);
+            for (int i = 0; i < elite; i++) {
+                for (int k = 0; k < childrenPerParent; k++) {
+                    do {
+                        double pointy[] = new double[numR];
+                        Point points[] = new Point[numR];
+                        pointy = add(elitePaths[i].pointy, multiple(standardDevi, mnd.sample()));
+                        for (int j = 0; j < numR; j++) {
+                            points[j] = Path.convertPointToPoint(pointy[j], (j + 1) * R, startPoint, endPoint);
+                        }
+                        particles[i * childrenPerParent + k] = new Path(numR, R, pointy, points);
+                        particles[i * childrenPerParent + k].distance();
+                    } while (pathCollision(particles[i * childrenPerParent + k]) == true);
+                    // particles[i*children+j]=
+                }
             }
 
             // if (elitePaths[0].distance < gBest.distance) {
