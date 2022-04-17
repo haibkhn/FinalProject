@@ -93,6 +93,12 @@ public class ES {
             } while (pathCollision(particles[i]) == true);
             // particlesArrayList.add(particles[i]);
         }
+        for (int i = 0; i < children; i++) {
+            for (int j = 0; j < particles[i].pointy.length; j++) {
+                System.out.print(particles[i].pointy[j] + " ");
+            }
+            System.out.println();
+        }
     }
 
     public boolean pathCollision(Path path) {
