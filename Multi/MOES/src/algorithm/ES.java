@@ -10,8 +10,9 @@ import util.Point;
 
 public class ES {
     public final int NP = 100; // number of generation
-    public final int elite = 30;
+    public final int elite = 20; // number of parent
     public final int children = 100;
+    public final int childrenPerParent = children / elite;
     public Path particles[] = new Path[children];
     public Path gBest, gBestDistance, gBestSmooth, gBestSafety;
     public double startPopulation[];
@@ -72,6 +73,25 @@ public class ES {
         gBestDistance = initialCandidate;
         gBestSafety = initialCandidate;
         gBestSmooth = initialCandidate;
+
+        // Generate 1st generation
+        MultivariateNormalDistribution mnd = new MultivariateNormalDistribution(mean, identityMatrix);
+        startPopulation = initialCandidate.pointy;
+        // Generate n children in 1 generation, only generate child that doesnt collide
+        // ArrayList<Path> particlesArrayList = new ArrayList<>();
+        for (int i = 0; i < children; i++) {
+            do {
+                double pointy[] = new double[numR];
+                Point points[] = new Point[numR];
+                pointy = add(startPopulation, multiple(standardDevi, mnd.sample()));
+                for (int j = 0; j < numR; j++) {
+                    points[j] = Path.convertPointToPoint(pointy[j], (j + 1) * R, startPoint, endPoint);
+                }
+                particles[i] = new Path(numR, R, pointy, points);
+                particles[i].distance();
+            } while (pathCollision(particles[i]) == true);
+            // particlesArrayList.add(particles[i]);
+        }
     }
 
     public boolean pathCollision(Path path) {
@@ -339,28 +359,10 @@ public class ES {
     public void run() {
         initialize(numR);
 
-        MultivariateNormalDistribution mnd = new MultivariateNormalDistribution(mean, identityMatrix);
-        startPopulation = initialCandidate.pointy;
-
         // Run NP generation
         for (int iter = 0; iter < NP; iter++) {
             // System.out.println();
             System.out.println("Iteration: " + iter);
-            // Generate n children in 1 generation, only generate child that doesnt collide
-            // ArrayList<Path> particlesArrayList = new ArrayList<>();
-            for (int i = 0; i < children; i++) {
-                do {
-                    double pointy[] = new double[numR];
-                    Point points[] = new Point[numR];
-                    pointy = add(startPopulation, multiple(standardDevi, mnd.sample()));
-                    for (int j = 0; j < numR; j++) {
-                        points[j] = Path.convertPointToPoint(pointy[j], (j + 1) * R, startPoint, endPoint);
-                    }
-                    particles[i] = new Path(numR, R, pointy, points);
-                    particles[i].distance();
-                } while (pathCollision(particles[i]) == true);
-                // particlesArrayList.add(particles[i]);
-            }
 
             // Begin multi-objective
             // Cho index cua tat ca cac phan tu khong troi lan nhau vao trong
@@ -489,11 +491,13 @@ public class ES {
             // }
             // System.out.println();
 
+            // Chon ra elite Path tot nhat trong 1 the he
             // int remaining = elite - indexOfLastRank;
             Path[] elitePaths = new Path[elite];
             for (int i = 0; i < indexOfLastRank; i++) {
                 elitePaths[i] = particles[chosenParticleIndex.get(i)];
             }
+            // Tai rank pareto cuoi cung, chon theo crowding distance
             for (int i = indexOfLastRank; i < elite; i++) {
                 elitePaths[i] = particles[rerankCD[i - indexOfLastRank]];
             }
@@ -527,6 +531,14 @@ public class ES {
             }
             for (int i = 0; i < numR; i++) {
                 startPopulation[i] = startPopulation[i] / elite;
+            }
+
+            // Each parents will have childrenPerParent children
+            for (int i = 0; i < elite; i++) {
+                for (int j = 0; j < childrenPerParent; j++) {
+                    // particles[i*children+j]=
+                }
+
             }
 
             // if (checkDominate(particles[rerankPareto[0]], gBest)) {
