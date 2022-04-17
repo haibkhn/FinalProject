@@ -520,6 +520,13 @@ public class ES {
                 standardDevi[i] = Math.sqrt(standardDevi[i]);
             }
 
+            // for (int i = 0; i < numR; i++) {
+            // Random ran = new Random();
+            // double nxt = ran.nextGaussian();
+            // standardDevi[i] = standardDevi[i] * Math.exp(1 / 2 * Math.sqrt(children) *
+            // nxt);
+            // }
+
             // Calculate new mean
             startPopulation = new double[numR];
             for (int i = 0; i < elite; i++) {
