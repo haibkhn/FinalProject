@@ -68,6 +68,21 @@ public class ES {
         for (int i = 0; i < numR; i++) {
             identityMatrix[i][i] = 1;
         }
+        MultivariateNormalDistribution mnd = new MultivariateNormalDistribution(mean, identityMatrix);
+        startPopulation = initialCandidate.pointy;
+        for (int i = 0; i < children; i++) {
+            do {
+                double pointy[] = new double[numR];
+                Point points[] = new Point[numR];
+                pointy = add(startPopulation, multiple(standardDevi, mnd.sample()));
+                for (int j = 0; j < numR; j++) {
+                    points[j] = Path.convertPointToPoint(pointy[j], (j + 1) * R, startPoint, endPoint);
+                }
+                particles[i] = new Path(numR, R, pointy, points);
+                particles[i].distance();
+            } while (pathCollision(particles[i]) == true);
+            // particlesArrayList.add(particles[i]);
+        }
         gBest = initialCandidate;
         gBestDistance = initialCandidate;
         gBestSafety = initialCandidate;
@@ -340,7 +355,6 @@ public class ES {
         initialize(numR);
 
         MultivariateNormalDistribution mnd = new MultivariateNormalDistribution(mean, identityMatrix);
-        startPopulation = initialCandidate.pointy;
 
         // Run NP generation
         for (int iter = 0; iter < NP; iter++) {
@@ -348,19 +362,6 @@ public class ES {
             System.out.println("Iteration: " + iter);
             // Generate n children in 1 generation, only generate child that doesnt collide
             // ArrayList<Path> particlesArrayList = new ArrayList<>();
-            for (int i = 0; i < children; i++) {
-                do {
-                    double pointy[] = new double[numR];
-                    Point points[] = new Point[numR];
-                    pointy = add(startPopulation, multiple(standardDevi, mnd.sample()));
-                    for (int j = 0; j < numR; j++) {
-                        points[j] = Path.convertPointToPoint(pointy[j], (j + 1) * R, startPoint, endPoint);
-                    }
-                    particles[i] = new Path(numR, R, pointy, points);
-                    particles[i].distance();
-                } while (pathCollision(particles[i]) == true);
-                // particlesArrayList.add(particles[i]);
-            }
 
             // Begin multi-objective
             // Cho index cua tat ca cac phan tu khong troi lan nhau vao trong
@@ -434,7 +435,7 @@ public class ES {
             for (int i = 0; i < rank0Count; i++) {
                 paretoFront[i] = particles[chosenParticleIndex.get(i)];
             }
-            double[] selectedPareto = crowdingDistance(crowdingDistanceSort);
+            // double[] selectedPareto = crowdingDistance(crowdingDistanceSort);
 
             int[] rankPareto = new int[paretoFront.length];
             // int[] rerankPareto = new int[paretoFront.length];
@@ -547,6 +548,23 @@ public class ES {
             if (particles[rerankParetoSmooth[0]].pathSmooth() < gBestSmooth.pathSmooth()) {
                 gBestSmooth = particles[rerankParetoSmooth[0]];
                 System.out.println("Iter: " + iter + " Best smooth");
+            }
+
+            for (int i = 0; i < elite; i++) {
+                particles[i] = elitePaths[i];
+            }
+            for (int i = elite; i < children; i++) {
+                do {
+                    double pointy[] = new double[numR];
+                    Point points[] = new Point[numR];
+                    pointy = add(startPopulation, multiple(standardDevi, mnd.sample()));
+                    for (int j = 0; j < numR; j++) {
+                        points[j] = Path.convertPointToPoint(pointy[j], (j + 1) * R, startPoint, endPoint);
+                    }
+                    particles[i] = new Path(numR, R, pointy, points);
+                    particles[i].distance();
+                } while (pathCollision(particles[i]) == true);
+                // particlesArrayList.add(particles[i]);
             }
 
             // if (elitePaths[0].distance < gBest.distance) {
