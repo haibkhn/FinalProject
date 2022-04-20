@@ -10,7 +10,7 @@ import util.Point;
 
 public class ES {
     public final int numGeneration = 100; // number of generation
-    public final int elite = 20; // number of parent
+    public final int elite = 50; // number of parent
     public final int children = 100;
     public final int childrenPerParent = children / elite;
     public Path particles[] = new Path[children];
@@ -521,24 +521,31 @@ public class ES {
             // Thu sua multiobjective
 
             // Calculate new standard deviation
-            standardDevi = new double[numR];
-            for (int i = 0; i < elite; i++) {
-                standardDevi = add(standardDevi, minusSquare(elitePaths[i].pointy,
-                        startPopulation));
-            }
+            // standardDevi = new double[numR];
+            // for (int i = 0; i < elite; i++) {
+            // standardDevi = add(standardDevi, minusSquare(elitePaths[i].pointy,
+            // startPopulation));
+            // }
+            // for (int i = 0; i < numR; i++) {
+            // standardDevi[i] = standardDevi[i] / elite;
+            // standardDevi[i] = Math.sqrt(standardDevi[i]);
+            // }
+            Random ran = new Random();
+            double nxt = ran.nextGaussian();
             for (int i = 0; i < numR; i++) {
-                standardDevi[i] = standardDevi[i] / elite;
-                standardDevi[i] = Math.sqrt(standardDevi[i]);
+
+                standardDevi[i] = standardDevi[i] * Math.exp(1 / Math.sqrt(5 * children) *
+                        nxt);
             }
 
             // Calculate new mean
-            startPopulation = new double[numR];
-            for (int i = 0; i < elite; i++) {
-                startPopulation = add(startPopulation, elitePaths[i].pointy);
-            }
-            for (int i = 0; i < numR; i++) {
-                startPopulation[i] = startPopulation[i] / elite;
-            }
+            // startPopulation = new double[numR];
+            // for (int i = 0; i < elite; i++) {
+            // startPopulation = add(startPopulation, elitePaths[i].pointy);
+            // }
+            // for (int i = 0; i < numR; i++) {
+            // startPopulation[i] = startPopulation[i] / elite;
+            // }
 
             // if (checkDominate(particles[rerankPareto[0]], gBest)) {
             // gBest = particles[rerankPareto[0]];
