@@ -531,10 +531,10 @@ public class ES {
             // standardDevi[i] = Math.sqrt(standardDevi[i]);
             // }
             Random ran = new Random();
-            double nxt = ran.nextGaussian();
             for (int i = 0; i < numR; i++) {
+                double nxt = ran.nextGaussian();
 
-                standardDevi[i] = standardDevi[i] * Math.exp(1 / Math.sqrt(5 * children) *
+                standardDevi[i] = standardDevi[i] * Math.exp(1 / Math.sqrt(2 * children) *
                         nxt);
             }
 
