@@ -72,6 +72,6 @@ if __name__ == "__main__":
             if shapelyPoint(p).within(polygon):
                 vor_vertice_inside += [p]
     print(len(vor_vertice_inside))  # Remove the 1st dummy element
-    print(len(vor_points))
+    print(len(vor_vertice))
     fig = voronoi_plot_2d(vor)
     plt.show()
