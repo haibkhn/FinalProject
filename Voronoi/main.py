@@ -23,6 +23,9 @@ def distance(p1, p2):
     return np.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
 
 
+000000000000000000000000000000000000000
+
+
 def shapelyPoint(p):
     return Point(p[0], p[1])
 
@@ -37,16 +40,6 @@ def is_in_list(list_np_arrays, array_to_check):
     return np.any(np.all(array_to_check == list_np_arrays, axis=1))
 
 
-def getPointInside(polygon, vor_vertice, vor_vertice_inside):
-    for p in vor_vertice:
-        # print(p)
-        if shapelyPoint(p).within(polygon):
-            vor_vertice_inside = np.append(vor_vertice_inside, [p], axis=0)
-        # if (shapelyPoint(p).within(polygon)):
-        #     vor_vertice_outside.append(p)
-    return vor_vertice_inside
-
-
 if __name__ == "__main__":
     obstacle_list = []  # Read points from input.txt, return list of obs
     input(obstacle_list)
@@ -54,8 +47,6 @@ if __name__ == "__main__":
     vor_points = []
     coords = []  # Store coord in a polygon
     poly_list = []  # Store all polygons
-    vor_vertice_inside = np.array([[-1, -1]])
-    # vor_vertice_inside = []
 
     for obstacle in obstacle_list:
         for point in obstacle:
@@ -74,18 +65,14 @@ if __name__ == "__main__":
     vor = Voronoi(vor_points)
     poly_list.pop()  # Pop last index, because we don't want to treat it like a polygon
     vor_vertice = vor.vertices
-    # print(poly_list)
-    # for polygon in poly_list:
-    #     if Point(2, 2).within(polygon):
-    #         print(polygon)
+
+    vor_vertice_inside = np.array([[-1, -1]])
+    for polygon in poly_list:
+        for p in vor_vertice:
+            if shapelyPoint(p).within(polygon):
+                vor_vertice_inside = np.append(vor_vertice_inside, [p], axis=0)
+    vor_vertice_inside = np.delete(vor_vertice_inside, 0, axis=0)
+    print(type(vor_vertice_inside))  # Remove the 1st dummy element
+    print(type(vor_points))
     fig = voronoi_plot_2d(vor)
     plt.show()
-    for polygon in poly_list:
-        # vor_vertice_inside += getPointOutside(
-        #     polygon, vor_vertice, vor_vertice_inside)
-        vor_vertice_inside = np.append(vor_vertice_inside, getPointInside(
-            polygon, vor_vertice, vor_vertice_inside), axis=0)
-    print(len(vor_vertice))
-    print(len(vor_vertice_inside))
-    # # print(vor_vertice_outside)
-    # print(not Point(10, 2).within(poly_list[0]))

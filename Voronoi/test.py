@@ -19,4 +19,4 @@ third = [5, 2]
 first = np.append(first, second, axis=0)
 # first += second
 # first += third
-print(len(first))
+print((first))
