@@ -66,13 +66,12 @@ if __name__ == "__main__":
     poly_list.pop()  # Pop last index, because we don't want to treat it like a polygon
     vor_vertice = vor.vertices
 
-    vor_vertice_inside = np.array([[-1, -1]])
+    vor_vertice_inside = []
     for polygon in poly_list:
         for p in vor_vertice:
             if shapelyPoint(p).within(polygon):
-                vor_vertice_inside = np.append(vor_vertice_inside, [p], axis=0)
-    vor_vertice_inside = np.delete(vor_vertice_inside, 0, axis=0)
-    print(type(vor_vertice_inside))  # Remove the 1st dummy element
-    print(type(vor_points))
+                vor_vertice_inside += [p]
+    print(len(vor_vertice_inside))  # Remove the 1st dummy element
+    print(len(vor_points))
     fig = voronoi_plot_2d(vor)
     plt.show()
