@@ -1,11 +1,15 @@
-from shapely.geometry import Point, Polygon
+from cmath import inf
+from tkinter.tix import MAX
+from shapely.geometry import Point, Polygon, MultiPoint
+from shapely.ops import voronoi_diagram
+
 from scipy.spatial import Voronoi, voronoi_plot_2d
 import matplotlib.pyplot as plt
 import numpy as np
 from sqlalchemy import false
 
 
-def input(obstacle_list):
+def inputObs(obstacle_list):
     f = open("input.txt", "r")
     obstacle = []
     for line in f:
@@ -19,11 +23,17 @@ def input(obstacle_list):
     return obstacle_list
 
 
+def inputTarget(target_list):
+    f = open("target.txt", "r")
+    for line in f:
+        point = line.split()
+        # print(type(float(point[0])))
+        target_list.append(Point(float(point[0]), float(point[1])))
+    return target_list
+
+
 def distance(p1, p2):
     return np.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
-
-
-000000000000000000000000000000000000000
 
 
 def shapelyPoint(p):
@@ -42,7 +52,12 @@ def is_in_list(list_np_arrays, array_to_check):
 
 if __name__ == "__main__":
     obstacle_list = []  # Read points from input.txt, return list of obs
-    input(obstacle_list)
+    inputObs(obstacle_list)
+    target_list = []
+    inputTarget(target_list)
+
+    xs = [point.x for point in target_list]
+    ys = [point.y for point in target_list]
 
     vor_points = []
     coords = []  # Store coord in a polygon
@@ -67,24 +82,29 @@ if __name__ == "__main__":
 
     vor_vertice = vor.vertices
     vor_check = np.hstack((vor_vertice, np.zeros(
-        (vor_vertice.shape[0], 1), dtype=vor_vertice.dtype)))
+        (vor_vertice.shape[0], 1), dtype=vor_vertice.dtype)))  # Make new col from vor_vertice, if inside -> make value of new col = 1
     for polygon in poly_list:
-        for p in vor_vertice:
-            if shapelyPoint(p).within(polygon):
-                vor_check[2] = 1
+        for p in vor_check:
+            if shapelyPoint([p[0], p[1]]).within(polygon):
+                p[2] = 1
 
-    # for point in vor_vertice:
-    #     if
+    target_list_closest_index = [0] * len(target_list)
 
-    vor_vertice_inside = np.array([[-1, -1]])
-    for polygon in poly_list:
-        for p in vor_vertice:
-            if shapelyPoint(p).within(polygon):
-                vor_vertice_inside = np.append(vor_vertice_inside, [p], axis=0)
-    # Remove the 1st dummy element
-    vor_vertice_inside = np.delete(vor_vertice_inside, 0, axis=0)
+    i = 0
+    for target in target_list:
+        min_distance = inf
+        j = 0
+        for pts in vor_vertice:
+            if vor_check[j][2] != 1 and target.distance(Point(pts)) < min_distance:
+                # If element min, store the index
+                target_list_closest_index[i] = vor_vertice[j]
+                min_distance = target.distance(Point(pts))
+            j += 1
+        i += 1
 
-    print(type(vor_vertice_inside))
-    print(type(vor_vertice))
     fig = voronoi_plot_2d(vor)
+    plt.scatter(xs, ys, c="r")
+    for i in range(len(target_list)):
+        plt.plot([target_list[i].x, target_list_closest_index[i][0]], [
+            target_list[i].y, target_list_closest_index[i][1]], color="red", linewidth=3)
     plt.show()
