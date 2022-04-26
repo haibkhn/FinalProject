@@ -1,16 +1,14 @@
 from cmath import inf
-from tkinter.tix import MAX
 from shapely.geometry import Point, Polygon, MultiPoint
 from shapely.ops import voronoi_diagram
 
 from scipy.spatial import Voronoi, voronoi_plot_2d
 import matplotlib.pyplot as plt
 import numpy as np
-from sqlalchemy import false
 
 
 def inputObs(obstacle_list):
-    f = open("input.txt", "r")
+    f = open("input2.txt", "r")
     obstacle = []
     for line in f:
         if line == '-1' or line == "-1\n":
@@ -103,8 +101,9 @@ if __name__ == "__main__":
         i += 1
 
     fig = voronoi_plot_2d(vor)
-    plt.scatter(xs, ys, c="r")
-    for i in range(len(target_list)):
-        plt.plot([target_list[i].x, target_list_closest_index[i][0]], [
-            target_list[i].y, target_list_closest_index[i][1]], color="red", linewidth=3)
+    # plt.scatter(xs, ys, c="r")
+    # for i in range(len(target_list)):
+    #     plt.plot([target_list[i].x, target_list_closest_index[i][0]], [
+    #         target_list[i].y, target_list_closest_index[i][1]], color="red", linewidth=3)
+    plt.axis([0, 10, 0, 10])
     plt.show()
