@@ -8,7 +8,8 @@ import numpy as np
 
 
 def inputObs(obstacle_list):
-    f = open("input2.txt", "r")
+    # f = open("obs/input.txt", "r")
+    f = open("obs/obstacles.txt", "r")
     obstacle = []
     for line in f:
         if line == '-1' or line == "-1\n":
@@ -16,13 +17,13 @@ def inputObs(obstacle_list):
             obstacle = []
         else:
             point = line.split()
-            # print(type(float(point[0])))
-            obstacle.append(Point(float(point[0]), float(point[1])))
+            obstacle.append(Point(float(point[0])/10, float(point[1])/10))
+            # obstacle.append(Point(float(point[0]), float(point[1])))
     return obstacle_list
 
 
 def inputTarget(target_list):
-    f = open("target.txt", "r")
+    f = open("target/target.txt", "r")
     for line in f:
         point = line.split()
         # print(type(float(point[0])))
@@ -39,9 +40,12 @@ def shapelyPoint(p):
 
 
 def getEquidistantPoints(p1, p2):
-    parts = int(distance(p1, p2)) * 10
-    return zip(np.linspace(p1[0], p2[0], parts),
-               np.linspace(p1[1], p2[1], parts))
+    parts = int(distance(p1, p2)*10)
+    x = np.linspace(p1[0], p2[0], parts, endpoint=False)
+    x = x[1:]
+    y = np.linspace(p1[1], p2[1], parts, endpoint=False)
+    y = y[1:]
+    return zip(x, y)
 
 
 def is_in_list(list_np_arrays, array_to_check):
@@ -66,18 +70,17 @@ if __name__ == "__main__":
             vor_points.append((point.x, point.y))
             coords.append((point.x, point.y))
 
-        poly_list.append(Polygon(coords))
+        poly_list.append(Polygon(coords))  # Turn list of coords into polygon
         coords = []
         n = len(obstacle)
-        for i in range(n - 1):
+        for i in range(n-1):
             vor_points += getEquidistantPoints(
                 ((obstacle[i].x, obstacle[i].y)), ((obstacle[i+1].x, obstacle[i+1].y)))
         vor_points += getEquidistantPoints(
             ((obstacle[0].x, obstacle[0].y)), ((obstacle[n-1].x, obstacle[n-1].y)))
-
-    vor = Voronoi(vor_points)
     poly_list.pop()  # Pop last index, because we don't want to treat it like a polygon
 
+    vor = Voronoi(vor_points)
     vor_vertice = vor.vertices
     vor_check = np.hstack((vor_vertice, np.zeros(
         (vor_vertice.shape[0], 1), dtype=vor_vertice.dtype)))  # Make new col from vor_vertice, if inside -> make value of new col = 1
@@ -87,7 +90,6 @@ if __name__ == "__main__":
                 p[2] = 1
 
     target_list_closest_index = [0] * len(target_list)
-
     i = 0
     for target in target_list:
         min_distance = inf
@@ -105,5 +107,5 @@ if __name__ == "__main__":
     # for i in range(len(target_list)):
     #     plt.plot([target_list[i].x, target_list_closest_index[i][0]], [
     #         target_list[i].y, target_list_closest_index[i][1]], color="red", linewidth=3)
-    plt.axis([0, 10, 0, 10])
+    plt.axis([0, 12, 0, 12])
     plt.show()

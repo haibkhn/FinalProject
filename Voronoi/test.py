@@ -13,10 +13,14 @@ import numpy as np
 # print(is_in_list)
 # print(is_in_list == False)
 
-first = np.array([[1, 2]])
-second = [[5, 5], [4, 3]]
-third = [5, 2]
-first = np.append(first, second, axis=0)
+# first = np.array([[1, 2]])
+# second = [[5, 5], [4, 3]]
+# third = [5, 2]
+# first = np.append(first, second, axis=0)
 # first += second
 # first += third
-print((first))
+# print((first))
+
+x = np.linspace(1, 10, 10, endpoint=False)
+x = x[1:]
+print(x)
