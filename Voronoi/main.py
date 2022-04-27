@@ -8,8 +8,8 @@ import numpy as np
 
 
 def inputObs(obstacle_list):
-    # f = open("obs/input.txt", "r")
-    f = open("obs/obstacles.txt", "r")
+    f = open("obs/input2.txt", "r")
+    # f = open("obs/obstacles.txt", "r")
     obstacle = []
     for line in f:
         if line == '-1' or line == "-1\n":
@@ -17,8 +17,8 @@ def inputObs(obstacle_list):
             obstacle = []
         else:
             point = line.split()
-            obstacle.append(Point(float(point[0])/10, float(point[1])/10))
-            # obstacle.append(Point(float(point[0]), float(point[1])))
+            # obstacle.append(Point(float(point[0])/10, float(point[1])/10))
+            obstacle.append(Point(float(point[0]), float(point[1])))
     return obstacle_list
 
 
@@ -26,7 +26,6 @@ def inputTarget(target_list):
     f = open("target/target.txt", "r")
     for line in f:
         point = line.split()
-        # print(type(float(point[0])))
         target_list.append(Point(float(point[0]), float(point[1])))
     return target_list
 
@@ -103,9 +102,9 @@ if __name__ == "__main__":
         i += 1
 
     fig = voronoi_plot_2d(vor)
-    # plt.scatter(xs, ys, c="r")
-    # for i in range(len(target_list)):
-    #     plt.plot([target_list[i].x, target_list_closest_index[i][0]], [
-    #         target_list[i].y, target_list_closest_index[i][1]], color="red", linewidth=3)
+    plt.scatter(xs, ys, c="r")
+    for i in range(len(target_list)):
+        plt.plot([target_list[i].x, target_list_closest_index[i][0]], [
+            target_list[i].y, target_list_closest_index[i][1]], color="red", linewidth=3)
     plt.axis([0, 12, 0, 12])
     plt.show()
