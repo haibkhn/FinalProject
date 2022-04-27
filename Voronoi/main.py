@@ -6,9 +6,11 @@ from scipy.spatial import Voronoi, voronoi_plot_2d
 import matplotlib.pyplot as plt
 import numpy as np
 
+INPUT = 2
+
 
 def inputObs(obstacle_list):
-    f = open("obs/input2.txt", "r")
+    f = open("obs/input" + str(INPUT) + ".txt", "r")
     # f = open("obs/obstacles.txt", "r")
     obstacle = []
     for line in f:
@@ -23,10 +25,10 @@ def inputObs(obstacle_list):
 
 
 def inputTarget(target_list):
-    f = open("target/target.txt", "r")
-    for line in f:
-        point = line.split()
-        target_list.append(Point(float(point[0]), float(point[1])))
+    # f = open("target/target" + str(INPUT) + ".txt", "r")
+    # for line in f:
+    #     point = line.split()
+    #     target_list.append(Point(float(point[0]), float(point[1])))
     return target_list
 
 
