@@ -13,7 +13,7 @@ public class ES {
     public final int elite = 30;
     public final int children = 100;
     public Path particles[] = new Path[children];
-    public Path gBest, gBestDistance, gBestSmooth, gBestSafety;
+    public Path gBest, gBestDistance, gBestSmooth, gBestSafety, gBestCombination;
     public double startPopulation[];
     public double candidate[];
     public int rank;
@@ -37,6 +37,7 @@ public class ES {
     public LinkedList<Point> resultDistance = new LinkedList<Point>();
     public LinkedList<Point> resultSafety = new LinkedList<Point>();
     public LinkedList<Point> resultSmooth = new LinkedList<Point>();
+    public LinkedList<Point> resultCombination = new LinkedList<Point>();
 
     public ES(int numR, Point start, Point end, Graph graph) {
         startPoint = start;
@@ -72,6 +73,7 @@ public class ES {
         gBestDistance = initialCandidate;
         gBestSafety = initialCandidate;
         gBestSmooth = initialCandidate;
+        gBestCombination = initialCandidate;
     }
 
     public boolean pathCollision(Path path) {
@@ -534,17 +536,20 @@ public class ES {
             // System.out.println("Iter update: " + iter);
             // }
 
-            if (particles[rerankParetoDistance[0]].distance < gBestDistance.distance) {
+            if ((particles[rerankParetoDistance[0]].distance < gBestDistance.distance)
+                    && !(checkDominate(gBestDistance, particles[rerankParetoDistance[0]]))) {
                 gBestDistance = particles[rerankParetoDistance[0]];
                 System.out.println("Iter: " + iter + " Best distance");
             }
 
-            if (particles[rerankParetoSafety[0]].pathSafety(graph) < gBestSafety.pathSafety(graph)) {
+            if ((particles[rerankParetoSafety[0]].pathSafety(graph) < gBestSafety.pathSafety(graph))
+                    && !(checkDominate(gBestSafety, particles[rerankParetoSafety[0]]))) {
                 gBestSafety = particles[rerankParetoSafety[0]];
                 System.out.println("Iter: " + iter + " Best safety");
             }
 
-            if (particles[rerankParetoSmooth[0]].pathSmooth() < gBestSmooth.pathSmooth()) {
+            if ((particles[rerankParetoSmooth[0]].pathSmooth() < gBestSmooth.pathSmooth())
+                    && !(checkDominate(gBestSmooth, particles[rerankParetoSmooth[0]]))) {
                 gBestSmooth = particles[rerankParetoSmooth[0]];
                 System.out.println("Iter: " + iter + " Best smooth");
             }
@@ -584,6 +589,12 @@ public class ES {
             // gBest = particles[0];
             // }
         }
+        for (int i = 0; i < numR; i++) {
+            gBestCombination.points[i].x = (gBestDistance.points[i].x + gBestSafety.points[i].x
+                    + gBestSmooth.points[i].x) / 3;
+            gBestCombination.points[i].y = (gBestDistance.points[i].y + gBestSafety.points[i].y
+                    + gBestSmooth.points[i].y) / 3;
+        }
 
         resultDistance.add(startPoint);
         for (int i = 0; i < numR; i++) {
@@ -608,5 +619,13 @@ public class ES {
         resultSmooth.add(endPoint);
         resultSmooth.removeLast();
         resultSmooth.removeFirst();
+
+        resultCombination.add(startPoint);
+        for (int i = 0; i < numR; i++) {
+            resultCombination.add(gBestCombination.points[i]);
+        }
+        resultCombination.add(endPoint);
+        resultCombination.removeLast();
+        resultCombination.removeFirst();
     }
 }
