@@ -22,7 +22,7 @@ public class Main {
 		// long time = System.currentTimeMillis();
 		// String FILE_URL = "../mopso_test3.txt";
 		// File file = new File(FILE_URL);
-		String numberTeString = "1";
+		String numberTeString = "3";
 		// Tao moi truong
 		GUIRobotics gui = new GUIRobotics(800, 100, 10);
 		gui.generateEnvironment("obstacle_" + numberTeString + ".txt");
@@ -35,30 +35,31 @@ public class Main {
 		ArrayList<Point> resultSafety = new ArrayList<Point>();
 		ArrayList<Point> resultSmooth = new ArrayList<Point>();
 		ArrayList<Point> resultCombination = new ArrayList<Point>();
+		// ArrayList<Point> resultPareto = new ArrayList<Point>();
 
 		ES es = new ES(8, pointsToVisit.get(0), pointsToVisit.get(1), graph);
 		try {
 			es.run();
-			// resultDistance.add(pointsToVisit.get(0));
-			// for (int j = 0; j < es.resultDistance.size(); j++) {
-			// resultDistance.add(es.resultDistance.get(j));
-			// }
-			// resultDistance.add(pointsToVisit.get(1));
-			// gui.canvas.drawLines(resultDistance, pointsToVisit, Color.GREEN);
+			resultDistance.add(pointsToVisit.get(0));
+			for (int j = 0; j < es.resultDistance.size(); j++) {
+				resultDistance.add(es.resultDistance.get(j));
+			}
+			resultDistance.add(pointsToVisit.get(1));
+			gui.canvas.drawLines(resultDistance, pointsToVisit, Color.GREEN);
 
-			// resultSafety.add(pointsToVisit.get(0));
-			// for (int j = 0; j < es.resultSafety.size(); j++) {
-			// resultSafety.add(es.resultSafety.get(j));
-			// }
-			// resultSafety.add(pointsToVisit.get(1));
-			// gui.canvas.drawLines(resultSafety, pointsToVisit, Color.RED);
+			resultSafety.add(pointsToVisit.get(0));
+			for (int j = 0; j < es.resultSafety.size(); j++) {
+				resultSafety.add(es.resultSafety.get(j));
+			}
+			resultSafety.add(pointsToVisit.get(1));
+			gui.canvas.drawLines(resultSafety, pointsToVisit, Color.RED);
 
-			// resultSmooth.add(pointsToVisit.get(0));
-			// for (int j = 0; j < es.resultSmooth.size(); j++) {
-			// resultSmooth.add(es.resultSmooth.get(j));
-			// }
-			// resultSmooth.add(pointsToVisit.get(1));
-			// gui.canvas.drawLines(resultSmooth, pointsToVisit, Color.BLACK);
+			resultSmooth.add(pointsToVisit.get(0));
+			for (int j = 0; j < es.resultSmooth.size(); j++) {
+				resultSmooth.add(es.resultSmooth.get(j));
+			}
+			resultSmooth.add(pointsToVisit.get(1));
+			gui.canvas.drawLines(resultSmooth, pointsToVisit, Color.BLACK);
 
 			resultCombination.add(pointsToVisit.get(0));
 			for (int j = 0; j < es.resultCombination.size(); j++) {
@@ -66,6 +67,18 @@ public class Main {
 			}
 			resultCombination.add(pointsToVisit.get(1));
 			gui.canvas.drawLines(resultCombination, pointsToVisit, Color.PINK);
+
+			for (int i = 0; i < es.resultPareto.size(); i++) {
+				ArrayList<Point> resultPareto = new ArrayList<Point>();
+
+				resultPareto.add(pointsToVisit.get(0));
+				for (int j = 0; j < es.resultPareto.get(i).size(); j++) {
+					resultPareto.add(es.resultPareto.get(i).get(j));
+				}
+				resultPareto.add(pointsToVisit.get(1));
+				gui.canvas.drawLines(resultPareto, pointsToVisit, Color.ORANGE);
+			}
+
 		}
 
 		catch (Exception e) {

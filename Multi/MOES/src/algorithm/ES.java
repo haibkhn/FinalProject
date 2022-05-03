@@ -38,6 +38,7 @@ public class ES {
     public LinkedList<Point> resultSafety = new LinkedList<Point>();
     public LinkedList<Point> resultSmooth = new LinkedList<Point>();
     public LinkedList<Point> resultCombination = new LinkedList<Point>();
+    public ArrayList<LinkedList<Point>> resultPareto = new ArrayList<LinkedList<Point>>();
 
     public ES(int numR, Point start, Point end, Graph graph) {
         startPoint = start;
@@ -588,6 +589,19 @@ public class ES {
             // particles[0].distance);
             // gBest = particles[0];
             // }
+            if (iter == NP - 1) {
+                for (int i = 0; i < rank0Count; i++) {
+                    LinkedList<Point> tmp = new LinkedList<Point>();
+                    tmp.add(startPoint);
+                    for (int j = 0; j < numR; j++) {
+                        tmp.add(paretoFront[i].points[j]);
+                    }
+                    tmp.add(endPoint);
+                    tmp.removeLast();
+                    tmp.removeFirst();
+                    resultPareto.add(tmp);
+                }
+            }
         }
         for (int i = 0; i < numR; i++) {
             gBestCombination.points[i].x = (gBestDistance.points[i].x + gBestSafety.points[i].x
@@ -627,5 +641,8 @@ public class ES {
         resultCombination.add(endPoint);
         resultCombination.removeLast();
         resultCombination.removeFirst();
+
+        System.out.println(rank0Count);
+
     }
 }
