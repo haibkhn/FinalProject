@@ -374,38 +374,34 @@ public class ES {
             // while (checkRank(particles) == false) {
             // Select only elite child, if chosenParticleIndex has more element than elite,
             // use crowding distance to sort best child
-            while (chosenParticleIndex.size() < elite) {
-                ArrayList<Path> chosenArrayList = new ArrayList<Path>();
-                int i1 = 0;
-                //
-                indexOfLastRank = chosenParticleIndex.size();
-                while (i1 < particles.length) {
-                    if (chosenParticleIndex.contains(i1)) {
-                        i1++;
-                        // System.out.println("contain");
-                    } else {
-                        // System.out.println("not contain");
-                        int i2 = 0;
-                        boolean cont = true;
-                        while (i2 < particles.length && cont == true) {
-                            if (i2 == (particles.length) - 1) {
-                                chosenArrayList.add(particles[i1]);
-                                chosenParticleIndex.add(i1);
-                                particles[i1].rank = rank;
-                            }
-                            if (chosenParticleIndex.contains(i2)) {
-                                i2++;
-                            } else {
-                                if (checkDominate(particles[i2], particles[i1])) {
-                                    cont = false;
-                                }
-                                i2++;
-                            }
-                        }
-                        i1++;
-                    }
-                }
 
+            Path particlestmp[] = particles.clone();
+            while (chosenParticleIndex.size() < elite) {
+                int i1 = 0;
+                indexOfLastRank = chosenParticleIndex.size();
+                while (i1 < particlestmp.length) {
+                    int i2 = 0;
+                    boolean cont = true;
+                    while (i2 < particlestmp.length && cont == true) {
+                        if ((i2 == (particlestmp.length) - 1) && (!checkDominate(particles[i2], particles[i1]))) {
+                            chosenParticleIndex.add(i1);
+                        }
+                        if (checkDominate(particles[i2], particles[i1])) {
+                            cont = false;
+                        }
+                        i2++;
+                    }
+                    i1++;
+                }
+                // System.out.println(particlestmp.length);
+                particlestmp = new Path[children - chosenParticleIndex.size()];
+                int j = 0;
+                for (int i = 0; i < particlestmp.length; i++) {
+                    if (chosenParticleIndex.contains(j))
+                        j++;
+                    particlestmp[i] = particles[j];
+                    j++;
+                }
                 // System.out.println("rank " + rank);
                 // System.out.println("num " + chosenParticleIndex.size());
                 // for (int i = 0; i < chosenParticleIndex.size(); i++) {
