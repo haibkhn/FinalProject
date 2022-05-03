@@ -127,17 +127,17 @@ public class ES {
         return result;
     }
 
-    public void bubbleSort(Path arr[], int n) {
-        // int n = children;
-        for (int i = 0; i < n - 1; i++)
-            for (int j = 0; j < n - i - 1; j++)
-                if (arr[j].distance > arr[j + 1].distance) {
-                    // swap arr[j+1] and arr[j]
-                    Path temp = arr[j];
-                    arr[j] = arr[j + 1];
-                    arr[j + 1] = temp;
-                }
-    }
+    // public void bubbleSort(Path arr[], int n) {
+    // // int n = children;
+    // for (int i = 0; i < n - 1; i++)
+    // for (int j = 0; j < n - i - 1; j++)
+    // if (arr[j].distance > arr[j + 1].distance) {
+    // // swap arr[j+1] and arr[j]
+    // Path temp = arr[j];
+    // arr[j] = arr[j + 1];
+    // arr[j + 1] = temp;
+    // }
+    // }
 
     public boolean checkDominate(Path particle1, Path particle2) {
         if ((particle1.distance <= particle2.distance
@@ -374,6 +374,71 @@ public class ES {
             // while (checkRank(particles) == false) {
             // Select only elite child, if chosenParticleIndex has more element than elite,
             // use crowding distance to sort best child
+
+            // NSGA-II
+            ArrayList<Integer> frontF = new ArrayList<>();
+            for (int i = 0; i < particles.length; i++) {
+                particles[i].dominateSet = new ArrayList<>();
+                particles[i].dominationCount = 0;
+                for (int j = 0; j < particles.length; j++) {
+                    // if (i == j)
+                    // continue;
+                    if (checkDominate(particles[i], particles[j])) {
+                        particles[i].dominateSet.add(j);
+                    }
+                    if (checkDominate(particles[j], particles[i])) {
+                        particles[i].dominationCount++;
+                    }
+                }
+                if (particles[i].dominationCount == 0) {
+                    particles[i].rank = 0;
+                    frontF.add(i);
+                }
+            }
+            rank0Count = frontF.size();
+            // for (int i = 0; i < frontF.size(); i++) {
+            // System.out.print(frontF.get(i) + " ");
+            // }
+            // System.out.println();
+            int iRank = 0;
+            while (frontF.size() != 0) {
+                ArrayList<Integer> frontQ = new ArrayList<>();
+                for (int p = 0; p < frontF.size(); p++) {
+                    Path pathP = particles[frontF.get(p)];
+                    for (int q = 0; q < pathP.dominateSet.size(); q++) {
+                        Path qPath = particles[pathP.dominateSet.get(q)];
+                        qPath.dominationCount--;
+                        if (qPath.dominationCount == 0) {
+                            qPath.rank = iRank + 1;
+                            frontQ.add(pathP.dominateSet.get(q));
+                        }
+                    }
+                }
+                iRank++;
+                if (chosenParticleIndex.size() < elite) {
+                    indexOfLastRank = chosenParticleIndex.size();
+                    for (int i = 0; i < frontF.size(); i++) {
+                        chosenParticleIndex.add(frontF.get(i));
+                    }
+                } else {
+                    break;
+                }
+                frontF = new ArrayList<>(frontQ);
+            }
+            // End NSGA-II
+            for (int i = 0; i < particles.length; i++) {
+                if (particles[i].rank == 0) {
+                    System.out.print(i + " ");
+                }
+            }
+            System.out.println();
+            // for (int i = 0; i < particles.length; i++) {
+            // if (particles[i].rank == 1) {
+            // System.out.print(i + " ");
+            // }
+            // }
+            // System.out.println();
+
             while (chosenParticleIndex.size() < elite) {
                 ArrayList<Path> chosenArrayList = new ArrayList<Path>();
                 int i1 = 0;
@@ -425,6 +490,16 @@ public class ES {
                 // }
                 rank++;
             }
+
+            for (int i = 0; i < rank0Count; i++) {
+                System.out.print(chosenParticleIndex.get(i) + " ");
+                System.out
+                        .println(particles[chosenParticleIndex.get(i)].distance + " " +
+                                particles[chosenParticleIndex.get(i)].pathSafety(graph) + " "
+                                + particles[chosenParticleIndex.get(i)].pathSmooth());
+            }
+            System.out.println();
+
             // Lay ra tat ca phan tu thuoc rank n de crowding distance sort
             // System.out.println("index: " + indexOfLastRank);
             Path[] crowdingDistanceSort = new Path[chosenParticleIndex.size() - indexOfLastRank];
@@ -540,19 +615,19 @@ public class ES {
             if ((particles[rerankParetoDistance[0]].distance < gBestDistance.distance)
                     && !(checkDominate(gBestDistance, particles[rerankParetoDistance[0]]))) {
                 gBestDistance = particles[rerankParetoDistance[0]];
-                System.out.println("Iter: " + iter + " Best distance");
+                // System.out.println("Iter: " + iter + " Best distance");
             }
 
             if ((particles[rerankParetoSafety[0]].pathSafety(graph) < gBestSafety.pathSafety(graph))
                     && !(checkDominate(gBestSafety, particles[rerankParetoSafety[0]]))) {
                 gBestSafety = particles[rerankParetoSafety[0]];
-                System.out.println("Iter: " + iter + " Best safety");
+                // System.out.println("Iter: " + iter + " Best safety");
             }
 
             if ((particles[rerankParetoSmooth[0]].pathSmooth() < gBestSmooth.pathSmooth())
                     && !(checkDominate(gBestSmooth, particles[rerankParetoSmooth[0]]))) {
                 gBestSmooth = particles[rerankParetoSmooth[0]];
-                System.out.println("Iter: " + iter + " Best smooth");
+                // System.out.println("Iter: " + iter + " Best smooth");
             }
 
             // if (elitePaths[0].distance < gBest.distance) {
@@ -603,7 +678,9 @@ public class ES {
                 }
             }
         }
-        for (int i = 0; i < numR; i++) {
+        for (
+
+                int i = 0; i < numR; i++) {
             gBestCombination.points[i].x = (gBestDistance.points[i].x + gBestSafety.points[i].x
                     + gBestSmooth.points[i].x) / 3;
             gBestCombination.points[i].y = (gBestDistance.points[i].y + gBestSafety.points[i].y
@@ -642,7 +719,7 @@ public class ES {
         resultCombination.removeLast();
         resultCombination.removeFirst();
 
-        System.out.println(rank0Count);
+        // System.out.println(rank0Count);
 
     }
 }

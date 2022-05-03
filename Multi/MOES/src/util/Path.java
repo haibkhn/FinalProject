@@ -1,5 +1,7 @@
 package util;
 
+import java.util.ArrayList;
+
 import algorithm.ES;
 
 public class Path {
@@ -8,6 +10,8 @@ public class Path {
 	public Point points[];
 	public double distance;
 	public int rank;
+	public int dominationCount;
+	public ArrayList<Integer> dominateSet;
 	double R;
 
 	public Path(int number) {
@@ -23,6 +27,9 @@ public class Path {
 		this.R = R;
 
 		this.rank = -1;
+		this.dominationCount = 0;
+		dominateSet = new ArrayList<Integer>();
+
 		this.distance = 0;
 		this.distance += Math.hypot(ES.startPoint.x - points[0].x, ES.startPoint.y - points[0].y);
 		for (int i = 0; i < points.length - 1; i++) {
