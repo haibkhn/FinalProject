@@ -22,7 +22,7 @@ public class Main {
 		// long time = System.currentTimeMillis();
 		// String FILE_URL = "../mopso_test3.txt";
 		// File file = new File(FILE_URL);
-		String numberTeString = "14";
+		String numberTeString = "13";
 		// Tao moi truong
 		GUIRobotics gui = new GUIRobotics(800, 100, 10);
 		gui.generateEnvironment("obstacle_" + numberTeString + ".txt");
@@ -37,7 +37,7 @@ public class Main {
 		ArrayList<Point> resultCombination = new ArrayList<Point>();
 		// ArrayList<Point> resultPareto = new ArrayList<Point>();
 
-		ES es = new ES(8, pointsToVisit.get(0), pointsToVisit.get(1), graph);
+		ES es = new ES(10, pointsToVisit.get(0), pointsToVisit.get(1), graph);
 		try {
 			es.run();
 			resultDistance.add(pointsToVisit.get(0));
