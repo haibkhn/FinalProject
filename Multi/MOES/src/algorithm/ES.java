@@ -376,62 +376,67 @@ public class ES {
             // use crowding distance to sort best child
 
             // NSGA-II
-            ArrayList<Integer> frontF = new ArrayList<>();
-            for (int i = 0; i < particles.length; i++) {
-                particles[i].dominateSet = new ArrayList<>();
-                particles[i].dominationCount = 0;
-                for (int j = 0; j < particles.length; j++) {
-                    // if (i == j)
-                    // continue;
-                    if (checkDominate(particles[i], particles[j])) {
-                        particles[i].dominateSet.add(j);
-                    }
-                    if (checkDominate(particles[j], particles[i])) {
-                        particles[i].dominationCount++;
-                    }
-                }
-                if (particles[i].dominationCount == 0) {
-                    particles[i].rank = 0;
-                    frontF.add(i);
-                }
-            }
-            rank0Count = frontF.size();
+            // ArrayList<Integer> frontF = new ArrayList<>();
+            // for (int i = 0; i < particles.length; i++) {
+            // particles[i].dominateSet = new ArrayList<>();
+            // particles[i].dominationCount = 0;
+            // for (int j = 0; j < particles.length; j++) {
+            // // if (i == j)
+            // // continue;
+            // if (checkDominate(particles[i], particles[j])) {
+            // particles[i].dominateSet.add(j);
+            // }
+            // if (checkDominate(particles[j], particles[i])) {
+            // particles[i].dominationCount++;
+            // }
+            // }
+            // if (particles[i].dominationCount == 0) {
+            // particles[i].rank = 0;
+            // frontF.add(i);
+            // }
+            // }
+            // rank0Count = frontF.size();
             // for (int i = 0; i < frontF.size(); i++) {
             // System.out.print(frontF.get(i) + " ");
             // }
             // System.out.println();
-            int iRank = 0;
-            while (frontF.size() != 0) {
-                ArrayList<Integer> frontQ = new ArrayList<>();
-                for (int p = 0; p < frontF.size(); p++) {
-                    Path pathP = particles[frontF.get(p)];
-                    for (int q = 0; q < pathP.dominateSet.size(); q++) {
-                        Path qPath = particles[pathP.dominateSet.get(q)];
-                        qPath.dominationCount--;
-                        if (qPath.dominationCount == 0) {
-                            qPath.rank = iRank + 1;
-                            frontQ.add(pathP.dominateSet.get(q));
-                        }
-                    }
-                }
-                iRank++;
-                if (chosenParticleIndex.size() < elite) {
-                    indexOfLastRank = chosenParticleIndex.size();
-                    for (int i = 0; i < frontF.size(); i++) {
-                        chosenParticleIndex.add(frontF.get(i));
-                    }
-                } else {
-                    break;
-                }
-                frontF = new ArrayList<>(frontQ);
-            }
+            // int iRank = 0;
+            // while (frontF.size() != 0) {
+            // ArrayList<Integer> frontQ = new ArrayList<>();
+            // for (int p = 0; p < frontF.size(); p++) {
+            // Path pathP = particles[frontF.get(p)];
+            // for (int q = 0; q < pathP.dominateSet.size(); q++) {
+            // Path qPath = particles[pathP.dominateSet.get(q)];
+            // qPath.dominationCount--;
+            // if (qPath.dominationCount == 0) {
+            // qPath.rank = iRank + 1;
+            // frontQ.add(pathP.dominateSet.get(q));
+            // }
+            // }
+            // }
+            // iRank++;
+            // if (chosenParticleIndex.size() < elite) {
+            // // indexOfLastRank = chosenParticleIndex.size();
+            // for (int i = 0; i < frontF.size(); i++) {
+            // chosenParticleIndex.add(frontF.get(i));
+            // }
+            // } else {
+            // break;
+            // }
+            // frontF = new ArrayList<>(frontQ);
+            // }
             // End NSGA-II
-            for (int i = 0; i < particles.length; i++) {
-                if (particles[i].rank == 0) {
-                    System.out.print(i + " ");
-                }
-            }
-            System.out.println();
+            // for (int i = 0; i < particles.length; i++) {
+            // if (particles[i].rank == 0) {
+            // System.out.print(i + " ");
+            // }
+            // }
+            // System.out.println();
+
+            // for (int i = 0; i < frontF.size(); i++) {
+            // System.out.print(frontF.get(i) + " ");
+            // }
+            // System.out.println();
             // for (int i = 0; i < particles.length; i++) {
             // if (particles[i].rank == 1) {
             // System.out.print(i + " ");
@@ -439,38 +444,87 @@ public class ES {
             // }
             // System.out.println();
 
-            while (chosenParticleIndex.size() < elite) {
-                ArrayList<Path> chosenArrayList = new ArrayList<Path>();
-                int i1 = 0;
-                //
-                indexOfLastRank = chosenParticleIndex.size();
-                while (i1 < particles.length) {
-                    if (chosenParticleIndex.contains(i1)) {
-                        i1++;
-                        // System.out.println("contain");
-                    } else {
-                        // System.out.println("not contain");
-                        int i2 = 0;
-                        boolean cont = true;
-                        while (i2 < particles.length && cont == true) {
-                            if (i2 == (particles.length) - 1) {
-                                chosenArrayList.add(particles[i1]);
-                                chosenParticleIndex.add(i1);
-                                particles[i1].rank = rank;
-                            }
-                            if (chosenParticleIndex.contains(i2)) {
-                                i2++;
-                            } else {
-                                if (checkDominate(particles[i2], particles[i1])) {
-                                    cont = false;
-                                }
-                                i2++;
-                            }
-                        }
-                        i1++;
-                    }
-                }
+            // while (chosenParticleIndex.size() < elite) {
+            // // ArrayList<Path> chosenArrayList = new ArrayList<Path>();
+            // int i1 = 0;
+            // //
+            // indexOfLastRank = chosenParticleIndex.size();
+            // while (i1 < particles.length) {
+            // if (chosenParticleIndex.contains(i1)) {
+            // i1++;
+            // // System.out.println("contain");
+            // } else {
+            // // System.out.println("not contain");
+            // int i2 = 0;
+            // boolean cont = true;
+            // while (i2 < particles.length && cont == true) {
+            // if ((i2 == (particles.length) - 1) && (!checkDominate(particles[i2],
+            // particles[i1]))) {
+            // // chosenArrayList.add(particles[i1]);
+            // chosenParticleIndex.add(i1);
+            // particles[i1].rank = rank;
+            // }
+            // if (chosenParticleIndex.contains(i2) && (particles[i2].rank != rank)) {
+            // i2++;
+            // } else {
+            // if (checkDominate(particles[i2], particles[i1])) {
+            // cont = false;
+            // }
+            // i2++;
+            // }
+            // }
+            // i1++;
+            // }
+            // }
 
+            // System.out.println("rank " + rank);
+            // System.out.println("num " + chosenParticleIndex.size());
+            // for (int i = 0; i < chosenParticleIndex.size(); i++) {
+            // System.out.print(chosenParticleIndex.get(i) + " ");
+            // }
+            // System.out.println();
+            // if (rank == 0) {
+            // rank0Count = chosenParticleIndex.size();
+            // }
+            // // if (rank == 0) {
+            // // for (int i = 0; i < chosenParticleIndex.size(); i++) {
+            // // System.out
+            // // .println(chosenArrayList.get(i).distance + " " +
+            // // chosenArrayList.get(i).pathSafety(graph) + " "
+            // // + chosenArrayList.get(i).pathSmooth());
+            // // }
+            // // }
+            // rank++;
+            // }
+
+            Path particlestmp[] = particles.clone();
+
+            while (chosenParticleIndex.size() < elite) {
+                int i1 = 0;
+                indexOfLastRank = chosenParticleIndex.size();
+                while (i1 < particlestmp.length) {
+                    int i2 = 0;
+                    boolean cont = true;
+                    while (i2 < particlestmp.length && cont == true) {
+                        if ((i2 == (particlestmp.length) - 1) && (!checkDominate(particles[i2], particles[i1]))) {
+                            chosenParticleIndex.add(i1);
+                        }
+                        if (checkDominate(particles[i2], particles[i1])) {
+                            cont = false;
+                        }
+                        i2++;
+                    }
+                    i1++;
+                }
+                // System.out.println(particlestmp.length);
+                particlestmp = new Path[children - chosenParticleIndex.size()];
+                int j = 0;
+                for (int i = 0; i < particlestmp.length; i++) {
+                    if (chosenParticleIndex.contains(j))
+                        j++;
+                    particlestmp[i] = particles[j];
+                    j++;
+                }
                 // System.out.println("rank " + rank);
                 // System.out.println("num " + chosenParticleIndex.size());
                 // for (int i = 0; i < chosenParticleIndex.size(); i++) {
@@ -491,14 +545,14 @@ public class ES {
                 rank++;
             }
 
-            for (int i = 0; i < rank0Count; i++) {
-                System.out.print(chosenParticleIndex.get(i) + " ");
-                System.out
-                        .println(particles[chosenParticleIndex.get(i)].distance + " " +
-                                particles[chosenParticleIndex.get(i)].pathSafety(graph) + " "
-                                + particles[chosenParticleIndex.get(i)].pathSmooth());
-            }
-            System.out.println();
+            // for (int i = 0; i < rank0Count; i++) {
+            // System.out.print(chosenParticleIndex.get(i) + " ");
+            // System.out
+            // .println(particles[chosenParticleIndex.get(i)].distance + " " +
+            // particles[chosenParticleIndex.get(i)].pathSafety(graph) + " "
+            // + particles[chosenParticleIndex.get(i)].pathSmooth());
+            // }
+            // System.out.println();
 
             // Lay ra tat ca phan tu thuoc rank n de crowding distance sort
             // System.out.println("index: " + indexOfLastRank);
@@ -512,7 +566,7 @@ public class ES {
             for (int i = 0; i < rank0Count; i++) {
                 paretoFront[i] = particles[chosenParticleIndex.get(i)];
             }
-            double[] selectedPareto = crowdingDistance(crowdingDistanceSort);
+            // double[] selectedPareto = crowdingDistance(crowdingDistanceSort);
 
             int[] rankPareto = new int[paretoFront.length];
             // int[] rerankPareto = new int[paretoFront.length];
