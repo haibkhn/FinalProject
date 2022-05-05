@@ -9,7 +9,7 @@ import util.Path;
 import util.Point;
 
 public class ES {
-    public final int NP = 100; // number of generation
+    public final int numOfGeneration = 100; // number of generation
     public final int elite = 30;
     public final int children = 100;
     public Path particles[] = new Path[children];
@@ -63,8 +63,8 @@ public class ES {
                 } while (!points[j].inCoordinate());
             }
             initialCandidate = new Path(numR, R, pointy, points);
-
         } while (pathCollision(initialCandidate) == true);
+
         identityMatrix = new double[numR][numR];
         for (int i = 0; i < numR; i++) {
             identityMatrix[i][i] = 1;
@@ -197,7 +197,6 @@ public class ES {
                 if (j != i && obj[j] >= obj[i]) {
                     count++; // Dem so luong particle te hon obj[i]
                 }
-
             }
             rank[i] = len - count - 1;
             for (int k = 0; k != i; k++) {
@@ -309,8 +308,8 @@ public class ES {
         MultivariateNormalDistribution mnd = new MultivariateNormalDistribution(mean, identityMatrix);
         startPopulation = initialCandidate.pointy;
 
-        // Run NP generation
-        for (int iter = 0; iter < NP; iter++) {
+        // Run numOfGeneration generation
+        for (int iter = 0; iter < numOfGeneration; iter++) {
             // System.out.println();
             System.out.println("Iteration: " + iter);
             // Generate n children in 1 generation, only generate child that doesnt collide
@@ -335,7 +334,6 @@ public class ES {
             ArrayList<Integer> chosenParticleIndex = new ArrayList<Integer>();
             rank = 0;
             int indexOfLastRank = 0;
-            // while (checkRank(particles) == false) {
             // Select only elite child, if chosenParticleIndex has more element than elite,
             // use crowding distance to sort best child
 
@@ -414,7 +412,6 @@ public class ES {
             // System.out.println("Rerank CD");
             // for (int i = 0; i < selectedCD.length; i++) {
             // System.out.print(rerankCD[i] + " ");
-
             // }
             // System.out.println();
 
@@ -458,7 +455,7 @@ public class ES {
 
             // Ket thuc
 
-            if (iter == NP - 1) {
+            if (iter == numOfGeneration - 1) {
                 paretoFront = new Path[rank0Count];
                 for (int i = 0; i < rank0Count; i++) {
                     paretoFront[i] = particles[chosenParticleIndex.get(i)];
