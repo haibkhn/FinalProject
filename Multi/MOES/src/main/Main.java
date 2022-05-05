@@ -19,17 +19,17 @@ import util.Point;
 
 public class Main {
 	public static void main(String[] args) throws IOException {
-		// long time = System.currentTimeMillis();
-		// String FILE_URL = "../mopso_test3.txt";
-		// File file = new File(FILE_URL);
-		String numberTeString = "13";
+		long time = System.currentTimeMillis();
+		String FILE_URL = "../moes_test5.txt";
+		File file = new File(FILE_URL);
+		String numberTeString = "5";
 		// Tao moi truong
 		GUIRobotics gui = new GUIRobotics(800, 100, 10);
-		gui.generateEnvironment("obstacle_" + numberTeString + ".txt");
+		gui.generateEnvironment("../input/obstacle_" + numberTeString + ".txt");
 
 		// Doc du lieu dau vao
-		Graph graph = new Graph("obstacle_" + numberTeString + ".txt");
-		LinkedList<Point> pointsToVisit = readPointData("input_" + numberTeString + ".txt");
+		Graph graph = new Graph("../input/obstacle_" + numberTeString + ".txt");
+		LinkedList<Point> pointsToVisit = readPointData("../input/input_" + numberTeString + ".txt");
 
 		ArrayList<Point> resultDistance = new ArrayList<Point>();
 		ArrayList<Point> resultSafety = new ArrayList<Point>();
@@ -47,37 +47,30 @@ public class Main {
 			resultDistance.add(pointsToVisit.get(1));
 			gui.canvas.drawLines(resultDistance, pointsToVisit, Color.GREEN);
 
-			resultSafety.add(pointsToVisit.get(0));
-			for (int j = 0; j < es.resultSafety.size(); j++) {
-				resultSafety.add(es.resultSafety.get(j));
-			}
-			resultSafety.add(pointsToVisit.get(1));
-			gui.canvas.drawLines(resultSafety, pointsToVisit, Color.RED);
+			// resultSafety.add(pointsToVisit.get(0));
+			// for (int j = 0; j < es.resultSafety.size(); j++) {
+			// resultSafety.add(es.resultSafety.get(j));
+			// }
+			// resultSafety.add(pointsToVisit.get(1));
+			// gui.canvas.drawLines(resultSafety, pointsToVisit, Color.RED);
 
-			resultSmooth.add(pointsToVisit.get(0));
-			for (int j = 0; j < es.resultSmooth.size(); j++) {
-				resultSmooth.add(es.resultSmooth.get(j));
-			}
-			resultSmooth.add(pointsToVisit.get(1));
-			gui.canvas.drawLines(resultSmooth, pointsToVisit, Color.BLACK);
+			// resultSmooth.add(pointsToVisit.get(0));
+			// for (int j = 0; j < es.resultSmooth.size(); j++) {
+			// resultSmooth.add(es.resultSmooth.get(j));
+			// }
+			// resultSmooth.add(pointsToVisit.get(1));
+			// gui.canvas.drawLines(resultSmooth, pointsToVisit, Color.BLACK);
 
-			resultCombination.add(pointsToVisit.get(0));
-			for (int j = 0; j < es.resultCombination.size(); j++) {
-				resultCombination.add(es.resultCombination.get(j));
-			}
-			resultCombination.add(pointsToVisit.get(1));
-			gui.canvas.drawLines(resultCombination, pointsToVisit, Color.PINK);
+			// for (int i = 0; i < es.resultPareto.size(); i++) {
+			// ArrayList<Point> resultPareto = new ArrayList<Point>();
 
-			for (int i = 0; i < es.resultPareto.size(); i++) {
-				ArrayList<Point> resultPareto = new ArrayList<Point>();
-
-				resultPareto.add(pointsToVisit.get(0));
-				for (int j = 0; j < es.resultPareto.get(i).size(); j++) {
-					resultPareto.add(es.resultPareto.get(i).get(j));
-				}
-				resultPareto.add(pointsToVisit.get(1));
-				gui.canvas.drawLines(resultPareto, pointsToVisit, Color.ORANGE);
-			}
+			// resultPareto.add(pointsToVisit.get(0));
+			// for (int j = 0; j < es.resultPareto.get(i).size(); j++) {
+			// resultPareto.add(es.resultPareto.get(i).get(j));
+			// }
+			// resultPareto.add(pointsToVisit.get(1));
+			// gui.canvas.drawLines(resultPareto, pointsToVisit, Color.ORANGE);
+			// }
 
 		}
 
@@ -101,31 +94,31 @@ public class Main {
 		// e.printStackTrace();
 		// }
 
-		// time = System.currentTimeMillis() - time;
-		// try {
-		// if (!file.exists()) {
-		// file.createNewFile();
-		// }
-		// FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
-		// BufferedWriter bw = new BufferedWriter(fw);
-		// for (Path path : pso.NaParticles) {
-		// if (path.points[0] != null) {
-		// bw.write("Path :" + " " + (double) Math.round(path.distance * 10000) / 10000
-		// + " "
-		// + (double) Math.round(path.pathSafety(graph) * 10000) / 10000 + " "
-		// + (double) Math.round(path.pathSmooth() * 10000) / 10000 + "\n");
-		// }
-		// }
-		// bw.write("Total execution time: " + (time) + "\n");
-		// bw.write("----------------------\n");
-		// bw.close();
-		// } catch (Exception e) {
-		// System.out.println("Something went wrong!");
-		// e.printStackTrace();
-		// }
-		// System.out.println("Time:\t" + time + " ms");
+		time = System.currentTimeMillis() - time;
+		try {
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
+			BufferedWriter bw = new BufferedWriter(fw);
+			for (Path path : es.paretoFront) {
+				if (path.points[0] != null) {
+					bw.write("Path :" + " " + (double) Math.round(path.distance * 10000) / 10000
+							+ " "
+							+ (double) Math.round(path.pathSafety(graph) * 10000) / 10000 + " "
+							+ (double) Math.round(path.pathSmooth() * 10000) / 10000 + "\n");
+				}
+			}
+			bw.write("Total execution time: " + (time) + "\n");
+			bw.write("----------------------\n");
+			bw.close();
+		} catch (Exception e) {
+			System.out.println("Something went wrong!");
+			e.printStackTrace();
+		}
+		System.out.println("Time:\t" + time + " ms");
 		// System.out.println("result" + result);
-		// System.out.println("Done!");
+		System.out.println("Done!");
 	}
 
 	public static LinkedList<Point> readPointData(String filename) throws FileNotFoundException {
