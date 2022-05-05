@@ -47,7 +47,7 @@ public class PSO {
 		this.numR = numR;
 		this.graph = graph;
 		this.AB = Math.hypot(end.x - start.x, end.y - start.y);
-		this.R = AB / numR;
+		this.R = AB / (numR + 1);
 	}
 
 	public void initialize(int numR) {

@@ -12,6 +12,7 @@ import java.util.Scanner;
 
 import algorithm.ES;
 import algorithm.PSO;
+import algorithm.PSOES;
 import gui.GUIRobotics;
 import util.Graph;
 import util.Path;
@@ -19,17 +20,18 @@ import util.Point;
 
 public class Main {
 	public static void main(String[] args) throws IOException {
-		long time = System.currentTimeMillis();
-		String FILE_URL = "../moes_test5.txt";
-		File file = new File(FILE_URL);
-		String numberTeString = "5";
+		// long time = System.currentTimeMillis();
+		// String FILE_URL = "../moes_test5.txt";
+		// File file = new File(FILE_URL);
+		String numberTeString = "14";
+		int numR = 10;
 		// Tao moi truong
 		GUIRobotics gui = new GUIRobotics(800, 100, 10);
-		gui.generateEnvironment("../input/obstacle_" + numberTeString + ".txt");
+		gui.generateEnvironment("input/obstacle_" + numberTeString + ".txt");
 
 		// Doc du lieu dau vao
-		Graph graph = new Graph("../input/obstacle_" + numberTeString + ".txt");
-		LinkedList<Point> pointsToVisit = readPointData("../input/input_" + numberTeString + ".txt");
+		Graph graph = new Graph("input/obstacle_" + numberTeString + ".txt");
+		LinkedList<Point> pointsToVisit = readPointData("input/input_" + numberTeString + ".txt");
 
 		ArrayList<Point> resultDistance = new ArrayList<Point>();
 		ArrayList<Point> resultSafety = new ArrayList<Point>();
@@ -37,7 +39,7 @@ public class Main {
 		ArrayList<Point> resultCombination = new ArrayList<Point>();
 		// ArrayList<Point> resultPareto = new ArrayList<Point>();
 
-		ES es = new ES(10, pointsToVisit.get(0), pointsToVisit.get(1), graph);
+		ES es = new ES(numR, pointsToVisit.get(0), pointsToVisit.get(1), graph);
 		try {
 			es.run();
 			resultDistance.add(pointsToVisit.get(0));
@@ -78,6 +80,41 @@ public class Main {
 			System.out.println("Something went wrong!");
 			e.printStackTrace();
 		}
+
+		// ArrayList<Point> result = new ArrayList<Point>();
+		// PSO pso = new PSO(numR, pointsToVisit.get(0), pointsToVisit.get(1), graph);
+		// try {
+
+		// pso.run();
+		// result.add(pointsToVisit.get(0));
+		// for (int j = 0; j < pso.result.size(); j++) {
+		// result.add(pso.result.get(j));
+		// }
+		// result.add(pointsToVisit.get(1));
+
+		// gui.canvas.drawLines(result, pointsToVisit, Color.BLACK);
+		// } catch (Exception e) {
+		// System.out.println("Something went wrong!");
+		// e.printStackTrace();
+		// }
+
+		// result = new ArrayList<Point>();
+		// PSOES psoes = new PSOES(numR, pointsToVisit.get(0), pointsToVisit.get(1),
+		// graph);
+		// try {
+
+		// psoes.run();
+		// result.add(pointsToVisit.get(0));
+		// for (int j = 0; j < psoes.result.size(); j++) {
+		// result.add(psoes.result.get(j));
+		// }
+		// result.add(pointsToVisit.get(1));
+
+		// gui.canvas.drawLines(result, pointsToVisit, Color.ORANGE);
+		// } catch (Exception e) {
+		// System.out.println("Something went wrong!");
+		// e.printStackTrace();
+		// }
 		// PSO pso = new PSO(10, pointsToVisit.get(0), pointsToVisit.get(1), graph);
 		// try {
 
@@ -94,31 +131,31 @@ public class Main {
 		// e.printStackTrace();
 		// }
 
-		time = System.currentTimeMillis() - time;
-		try {
-			if (!file.exists()) {
-				file.createNewFile();
-			}
-			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
-			BufferedWriter bw = new BufferedWriter(fw);
-			for (Path path : es.paretoFront) {
-				if (path.points[0] != null) {
-					bw.write("Path :" + " " + (double) Math.round(path.distance * 10000) / 10000
-							+ " "
-							+ (double) Math.round(path.pathSafety(graph) * 10000) / 10000 + " "
-							+ (double) Math.round(path.pathSmooth() * 10000) / 10000 + "\n");
-				}
-			}
-			bw.write("Total execution time: " + (time) + "\n");
-			bw.write("----------------------\n");
-			bw.close();
-		} catch (Exception e) {
-			System.out.println("Something went wrong!");
-			e.printStackTrace();
-		}
-		System.out.println("Time:\t" + time + " ms");
-		// System.out.println("result" + result);
-		System.out.println("Done!");
+		// time = System.currentTimeMillis() - time;
+		// try {
+		// if (!file.exists()) {
+		// file.createNewFile();
+		// }
+		// FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
+		// BufferedWriter bw = new BufferedWriter(fw);
+		// for (Path path : es.paretoFront) {
+		// if (path.points[0] != null) {
+		// bw.write("Path :" + " " + (double) Math.round(path.distance * 10000) / 10000
+		// + " "
+		// + (double) Math.round(path.pathSafety(graph) * 10000) / 10000 + " "
+		// + (double) Math.round(path.pathSmooth() * 10000) / 10000 + "\n");
+		// }
+		// }
+		// bw.write("Total execution time: " + (time) + "\n");
+		// bw.write("----------------------\n");
+		// bw.close();
+		// } catch (Exception e) {
+		// System.out.println("Something went wrong!");
+		// e.printStackTrace();
+		// }
+		// System.out.println("Time:\t" + time + " ms");
+		// // System.out.println("result" + result);
+		// System.out.println("Done!");
 	}
 
 	public static LinkedList<Point> readPointData(String filename) throws FileNotFoundException {
