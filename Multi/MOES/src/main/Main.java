@@ -23,15 +23,15 @@ public class Main {
 		// long time = System.currentTimeMillis();
 		// String FILE_URL = "../moes_test5.txt";
 		// File file = new File(FILE_URL);
-		String numberTeString = "14";
+		String numberTeString = "3";
 		int numR = 10;
 		// Tao moi truong
-		GUIRobotics gui = new GUIRobotics(800, 100, 10);
-		gui.generateEnvironment("input/obstacle_" + numberTeString + ".txt");
+		GUIRobotics gui = new GUIRobotics(600, 100, 10);
+		gui.generateEnvironment("../input/obstacle_" + numberTeString + ".txt");
 
 		// Doc du lieu dau vao
-		Graph graph = new Graph("input/obstacle_" + numberTeString + ".txt");
-		LinkedList<Point> pointsToVisit = readPointData("input/input_" + numberTeString + ".txt");
+		Graph graph = new Graph("../input/obstacle_" + numberTeString + ".txt");
+		LinkedList<Point> pointsToVisit = readPointData("../input/input_" + numberTeString + ".txt");
 
 		ArrayList<Point> resultDistance = new ArrayList<Point>();
 		ArrayList<Point> resultSafety = new ArrayList<Point>();

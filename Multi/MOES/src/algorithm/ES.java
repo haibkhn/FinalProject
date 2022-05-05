@@ -21,8 +21,8 @@ public class ES {
     public Path initialCandidate;
     public Graph graph;
     public double R; // radius
-    public double maxPointy = 20;
-    public double minPointy = -20;
+    public double maxPointy = 10;
+    public double minPointy = -10;
     public double maxVariance = 5;
     public double minVariance = -5;
     public double mean[];
@@ -37,7 +37,6 @@ public class ES {
     public LinkedList<Point> resultDistance = new LinkedList<Point>();
     public LinkedList<Point> resultSafety = new LinkedList<Point>();
     public LinkedList<Point> resultSmooth = new LinkedList<Point>();
-    public LinkedList<Point> resultCombination = new LinkedList<Point>();
     public ArrayList<LinkedList<Point>> resultPareto = new ArrayList<LinkedList<Point>>();
 
     public ES(int numR, Point start, Point end, Graph graph) {
@@ -260,40 +259,6 @@ public class ES {
         rerankSafety = indexRank(rankSafety);
         rerankSmooth = indexRank(rankSmooth);
 
-        // System.out.println("Distance");
-        // for (int i = 0; i < particles.length; i++) {
-        // System.out.print(rankDistance[i] + " ");
-        // }
-        // System.out.println();
-        // for (int i = 0; i < particles.length; i++) {
-        // System.out.print(rerankDistance[i] + " ");
-        // }
-        // System.out.println();
-
-        // System.out.println("Safety");
-        // for (int i = 0; i < particles.length; i++) {
-        // System.out.print(rankSafety[i] + " ");
-        // }
-        // System.out.println();
-        // for (int i = 0; i < particles.length; i++) {
-        // System.out.print(particles[i].pathSafety(graph) + " ");
-        // }
-        // System.out.println();
-        // for (int i = 0; i < particles.length; i++) {
-        // System.out.print(rerankSafety[i] + " ");
-        // }
-        // System.out.println();
-
-        // System.out.println("Smooth");
-        // for (int i = 0; i < particles.length; i++) {
-        // System.out.print(rankSmooth[i] + " ");
-        // }
-        // System.out.println();
-        // for (int i = 0; i < particles.length; i++) {
-        // System.out.print(rerankSmooth[i] + " ");
-        // }
-        // System.out.println();
-
         for (int i = 0; i != len; i++) {
             CD[i] = 0;
             if (particles[i].points[0] != null) {
@@ -392,7 +357,8 @@ public class ES {
                     }
                     i1++;
                 }
-                // System.out.println(particlestmp.length);
+
+                // Chon array gom nhung phan tu ma chua bi phan vao rank nao
                 particlestmp = new Path[children - chosenParticleIndex.size()];
                 int j = 0;
                 for (int i = 0; i < particlestmp.length; i++) {
@@ -427,41 +393,6 @@ public class ES {
                 crowdingDistanceSort[i] = particles[chosenParticleIndex.get(i + indexOfLastRank)];
             }
 
-            // Lấy ra tất cả particle thuộc rank 0, tính crowding distance để chọn gBest
-            // Path[] paretoFront = new Path[rank0Count];
-            // for (int i = 0; i < rank0Count; i++) {
-            // paretoFront[i] = particles[chosenParticleIndex.get(i)];
-            // }
-            // // double[] selectedPareto = crowdingDistance(crowdingDistanceSort);
-
-            // int[] rankPareto = new int[paretoFront.length];
-            // // int[] rerankPareto = new int[paretoFront.length];
-            // int[] rerankParetoDistance = new int[paretoFront.length];
-            // int[] rerankParetoSafety = new int[paretoFront.length];
-            // int[] rerankParetoSmooth = new int[paretoFront.length];
-
-            // // rankPareto = particleRankCD(selectedPareto);
-            // // rerankPareto = indexRank(rankPareto);
-
-            // // Chon gBest theo tieu chi distance
-            // rankPareto = particleRank(paretoFront, 1);
-            // // rerankPareto = indexRank(rankPareto);
-            // rerankParetoDistance = indexRank(rankPareto);
-            // rankPareto = particleRank(paretoFront, 2);
-            // rerankParetoSafety = indexRank(rankPareto);
-            // rankPareto = particleRank(paretoFront, 3);
-            // rerankParetoSmooth = indexRank(rankPareto);
-
-            // for (int i = 0; i < crowdingDistanceSort.length; i++) {
-            // System.out
-            // .println(crowdingDistanceSort[i].distance + " " +
-            // crowdingDistanceSort[i].pathSafety(graph) + " "
-            // + crowdingDistanceSort[i].pathSmooth());
-            // }
-            // for (int i = 0; i < chosenParticleIndex.size() - indexOfLastRank; i++) {
-            // System.out.print(chosenParticleIndex.get(i + indexOfLastRank) + " ");
-            // }
-            // System.out.println();
             double[] selectedCD = crowdingDistance(crowdingDistanceSort);
             // for (int i = 0; i < selectedCD.length; i++) {
             // System.out.print(selectedCD[i] + " ");
@@ -505,8 +436,6 @@ public class ES {
             // + chosenArrayList.get(i).pathSmooth());
             // }
 
-            // Thu sua multiobjective
-
             // Calculate new standard deviation
             standardDevi = new double[numR];
             for (int i = 0; i < elite; i++) {
@@ -527,65 +456,8 @@ public class ES {
                 startPopulation[i] = startPopulation[i] / elite;
             }
 
-            // if (checkDominate(particles[rerankPareto[0]], gBest)) {
-            // gBest = particles[rerankPareto[0]];
-            // System.out.println("Iter update: " + iter);
-            // }
+            // Ket thuc
 
-            // if ((particles[rerankParetoDistance[0]].distance < gBestDistance.distance)
-            // && !(checkDominate(gBestDistance, particles[rerankParetoDistance[0]]))) {
-            // gBestDistance = particles[rerankParetoDistance[0]];
-            // System.out.println("Iter: " + iter + " Best distance");
-            // }
-
-            // if ((particles[rerankParetoSafety[0]].pathSafety(graph) <
-            // gBestSafety.pathSafety(graph))
-            // && !(checkDominate(gBestSafety, particles[rerankParetoSafety[0]]))) {
-            // gBestSafety = particles[rerankParetoSafety[0]];
-            // System.out.println("Iter: " + iter + " Best safety");
-            // }
-
-            // if ((particles[rerankParetoSmooth[0]].pathSmooth() <
-            // gBestSmooth.pathSmooth())
-            // && !(checkDominate(gBestSmooth, particles[rerankParetoSmooth[0]]))) {
-            // gBestSmooth = particles[rerankParetoSmooth[0]];
-            // System.out.println("Iter: " + iter + " Best smooth");
-            // }
-
-            // if (elitePaths[0].distance < gBest.distance) {
-            // System.out.println("Iter: " + iter + " Best distance: " +
-            // elitePaths[0].distance);
-            // gBest = elitePaths[0];
-            // }
-
-            // // Ket thuc
-
-            // bubbleSort(particles, children);
-
-            // // Calculate new standard deviation
-            // standardDevi = new double[numR];
-            // for (int i = 0; i < elite; i++) {
-            // standardDevi = add(standardDevi, minusSquare(particles[i].pointy,
-            // startPopulation));
-            // }
-            // for (int i = 0; i < numR; i++) {
-            // standardDevi[i] = standardDevi[i] / elite;
-            // standardDevi[i] = Math.sqrt(standardDevi[i]);
-            // }
-
-            // // Calculate new mean
-            // startPopulation = new double[numR];
-            // for (int i = 0; i < elite; i++) {
-            // startPopulation = add(startPopulation, particles[i].pointy);
-            // }
-            // for (int i = 0; i < numR; i++) {
-            // startPopulation[i] = startPopulation[i] / elite;
-            // }
-            // if (particles[0].distance < gBest.distance) {
-            // System.out.println("Iter: " + iter + " Best distance: " +
-            // particles[0].distance);
-            // gBest = particles[0];
-            // }
             if (iter == NP - 1) {
                 paretoFront = new Path[rank0Count];
                 for (int i = 0; i < rank0Count; i++) {
@@ -614,26 +486,6 @@ public class ES {
                 gBestDistance = particles[rerankParetoDistance[0]];
                 gBestSafety = particles[rerankParetoSafety[0]];
                 gBestSmooth = particles[rerankParetoSmooth[0]];
-
-                // if ((particles[rerankParetoDistance[0]].distance < gBestDistance.distance)
-                // && !(checkDominate(gBestDistance, particles[rerankParetoDistance[0]]))) {
-                // gBestDistance = particles[rerankParetoDistance[0]];
-                // System.out.println("Iter: " + iter + " Best distance");
-                // }
-
-                // if ((particles[rerankParetoSafety[0]].pathSafety(graph) <
-                // gBestSafety.pathSafety(graph))
-                // && !(checkDominate(gBestSafety, particles[rerankParetoSafety[0]]))) {
-                // gBestSafety = particles[rerankParetoSafety[0]];
-                // System.out.println("Iter: " + iter + " Best safety");
-                // }
-
-                // if ((particles[rerankParetoSmooth[0]].pathSmooth() <
-                // gBestSmooth.pathSmooth())
-                // && !(checkDominate(gBestSmooth, particles[rerankParetoSmooth[0]]))) {
-                // gBestSmooth = particles[rerankParetoSmooth[0]];
-                // System.out.println("Iter: " + iter + " Best smooth");
-                // }
 
                 // for (int i = 0; i < rank0Count; i++) {
                 // LinkedList<Point> tmp = new LinkedList<Point>();
@@ -672,7 +524,5 @@ public class ES {
         resultSmooth.add(endPoint);
         resultSmooth.removeLast();
         resultSmooth.removeFirst();
-
-        // System.out.println(rank0Count);
     }
 }
