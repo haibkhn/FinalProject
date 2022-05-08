@@ -4,17 +4,19 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
+import org.apache.commons.math3.linear.EigenDecomposition;
+import org.apache.commons.math3.linear.MatrixUtils;
+import org.apache.commons.math3.linear.RealMatrix;
 import util.Graph;
 import util.Path;
 import util.Point;
 
 public class ES {
     public final int numOfGeneration = 100; // number of generation
-    public final int elite = 30;
-    public final int children = 100;
+    public final int elite = 25;
+    public final int children = 50;
     public Path particles[] = new Path[children];
     public Path gBest, gBestDistance, gBestSmooth, gBestSafety;
-    public double startPopulation[];
     public double candidate[];
     public int rank;
     public int rank0Count;
@@ -30,7 +32,7 @@ public class ES {
     public static Point endPoint;
     public int numR; // number of R in map
     Random random = new Random();
-    public double identityMatrix[][];
+    // public double identityMatrix[][];
     public double[] standardDevi;
     public Path[] paretoFront;
     public double AB;
@@ -38,6 +40,14 @@ public class ES {
     public LinkedList<Point> resultSafety = new LinkedList<Point>();
     public LinkedList<Point> resultSmooth = new LinkedList<Point>();
     public ArrayList<LinkedList<Point>> resultPareto = new ArrayList<LinkedList<Point>>();
+
+    // CMA-ES
+    public double startPopulation[]; // mean m
+    public double meanClone[];
+    public double covarianceMatrix[][];
+    public double p_sigma[];
+    public double p_c;
+    public final double c_sigma = 3 / children;
 
     public ES(int numR, Point start, Point end, Graph graph) {
         startPoint = start;
@@ -51,6 +61,7 @@ public class ES {
     public void initialize(int numR) {
         standardDevi = new double[numR];
         mean = new double[numR];
+        p_sigma = new double[numR];
 
         do {
             double pointy[] = new double[numR];
@@ -65,10 +76,13 @@ public class ES {
             initialCandidate = new Path(numR, R, pointy, points);
         } while (pathCollision(initialCandidate) == true);
 
-        identityMatrix = new double[numR][numR];
+        covarianceMatrix = new double[numR][numR];
         for (int i = 0; i < numR; i++) {
-            identityMatrix[i][i] = 1;
+            covarianceMatrix[i][i] = 1;
         }
+        p_c = 0;
+        // p_sigma = 0;
+
         gBest = initialCandidate;
         gBestDistance = initialCandidate;
         gBestSafety = initialCandidate;
@@ -123,18 +137,6 @@ public class ES {
             result[i] = first[i] * second[i];
         }
         return result;
-    }
-
-    public void bubbleSort(Path arr[], int n) {
-        // int n = children;
-        for (int i = 0; i < n - 1; i++)
-            for (int j = 0; j < n - i - 1; j++)
-                if (arr[j].distance > arr[j + 1].distance) {
-                    // swap arr[j+1] and arr[j]
-                    Path temp = arr[j];
-                    arr[j] = arr[j + 1];
-                    arr[j + 1] = temp;
-                }
     }
 
     public boolean checkDominate(Path particle1, Path particle2) {
@@ -305,7 +307,7 @@ public class ES {
     public void run() {
         initialize(numR);
 
-        MultivariateNormalDistribution mnd = new MultivariateNormalDistribution(mean, identityMatrix);
+        MultivariateNormalDistribution mnd = new MultivariateNormalDistribution(mean, covarianceMatrix);
         startPopulation = initialCandidate.pointy;
 
         // Run numOfGeneration generation
@@ -433,16 +435,8 @@ public class ES {
             // + chosenArrayList.get(i).pathSmooth());
             // }
 
-            // Calculate new standard deviation
-            standardDevi = new double[numR];
-            for (int i = 0; i < elite; i++) {
-                standardDevi = add(standardDevi, minusSquare(elitePaths[i].pointy,
-                        startPopulation));
-            }
-            for (int i = 0; i < numR; i++) {
-                standardDevi[i] = standardDevi[i] / elite;
-                standardDevi[i] = Math.sqrt(standardDevi[i]);
-            }
+            // Clone mean
+            meanClone = startPopulation.clone();
 
             // Calculate new mean
             startPopulation = new double[numR];
@@ -451,6 +445,27 @@ public class ES {
             }
             for (int i = 0; i < numR; i++) {
                 startPopulation[i] = startPopulation[i] / elite;
+            }
+
+            // Calculate p_sigma
+            RealMatrix tesMatrix = MatrixUtils.createRealMatrix(covarianceMatrix);
+            EigenDecomposition decomposition = new EigenDecomposition(tesMatrix);
+            System.out.println("eigenvector[0] = " + decomposition.getEigenvector(0));
+            System.out.println("eigenvector[1] = " + decomposition.getEigenvector(1));
+            for (int i = 0; i < numR; i++) {
+                p_sigma[i] = (1 - c_sigma) * p_sigma[i]
+                        + Math.sqrt(1 - (1 - c_sigma) * (1 - c_sigma)) * Math.sqrt(elite)
+                                * ((startPopulation[i] - meanClone[i]) / standardDevi[i]);
+            }
+            // Calculate new standard deviation
+            standardDevi = new double[numR];
+            for (int i = 0; i < elite; i++) {
+                standardDevi = add(standardDevi, minusSquare(elitePaths[i].pointy,
+                        meanClone));
+            }
+            for (int i = 0; i < numR; i++) {
+                standardDevi[i] = standardDevi[i] / elite;
+                standardDevi[i] = Math.sqrt(standardDevi[i]);
             }
 
             // Ket thuc
