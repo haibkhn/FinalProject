@@ -46,7 +46,7 @@ public class ES {
     public double meanClone[];
     public double covarianceMatrix[][];
     public double p_sigma[];
-    public double p_c;
+    public double p_c[];
     public final double c_sigma = 3 / children;
 
     public ES(int numR, Point start, Point end, Graph graph) {
@@ -62,6 +62,7 @@ public class ES {
         standardDevi = new double[numR];
         mean = new double[numR];
         p_sigma = new double[numR];
+        p_c = new double[numR];
 
         do {
             double pointy[] = new double[numR];
@@ -78,10 +79,11 @@ public class ES {
 
         covarianceMatrix = new double[numR][numR];
         for (int i = 0; i < numR; i++) {
+            p_c[i] = 0;
+            p_sigma[i] = 0;
             covarianceMatrix[i][i] = 1;
+            // B[i][i] = 1;
         }
-        p_c = 0;
-        // p_sigma = 0;
 
         gBest = initialCandidate;
         gBestDistance = initialCandidate;
