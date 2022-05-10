@@ -49,7 +49,8 @@ public class ES {
     public double covarianceMatrix[][];
     public double D[][];
     public double B[][];
-    public double C12[][];
+    public double C[][];
+    public double invsqrtC[][];
 
     public double p_sigma[];
     public double p_c[];
@@ -74,7 +75,8 @@ public class ES {
         eigenvalues = new double[numR];
         B = new double[numR][numR];
         D = new double[numR][numR];
-        C12 = new double[numR][numR];
+        C = new double[numR][numR];
+        invsqrtC = new double[numR][numR];
         covarianceMatrix = new double[numR][numR];
         for (int i = 0; i < numR; i++) {
             p_c[i] = 0;
@@ -160,6 +162,15 @@ public class ES {
         return result;
     }
 
+    public static double[] minus(double[] first, double[] second) {
+        int length = first.length < second.length ? first.length : second.length;
+        double[] result = new double[length];
+        for (int i = 0; i < length; i++) {
+            result[i] = first[i] - second[i];
+        }
+        return result;
+    }
+
     public static double[] minusSquare(double[] first, double[] second) {
         int length = first.length < second.length ? first.length : second.length;
         double[] result = new double[length];
@@ -169,7 +180,7 @@ public class ES {
         return result;
     }
 
-    public static double[] multiple(double[] first, double[] second) {
+    public static double[] multipleArr2Arr(double[] first, double[] second) {
         int length = first.length < second.length ? first.length : second.length;
         double[] result = new double[length];
         for (int i = 0; i < length; i++) {
@@ -178,7 +189,7 @@ public class ES {
         return result;
     }
 
-    public static double[] multiple(double first, double[] second) {
+    public static double[] multipleNumberAndArray(double first, double[] second) {
         int length = second.length;
         double[] result = new double[length];
         for (int i = 0; i < length; i++) {
@@ -187,7 +198,7 @@ public class ES {
         return result;
     }
 
-    public static double multipleReturnNumber(double first[], double[] second) {
+    public static double multipleArr2Number(double first[], double[] second) {
         int length = second.length;
         double result = 0;
         for (int i = 0; i < length; i++) {
@@ -196,12 +207,12 @@ public class ES {
         return result;
     }
 
-    public static double[] multiple(double[][] matrix, double[] vector) {
+    public static double[] multipleMatrixAndArray(double[][] matrix, double[] vector) {
         int length = vector.length;
         RealMatrix matrixtmp = MatrixUtils.createRealMatrix(matrix);
         double[] result = new double[length];
         for (int i = 0; i < result.length; i++) {
-            result[i] = multipleReturnNumber(matrixtmp.getRow(i), vector);
+            result[i] = multipleArr2Number(matrixtmp.getRow(i), vector);
         }
         return result;
     }
@@ -387,7 +398,7 @@ public class ES {
                 do {
                     double pointy[] = new double[numR];
                     Point points[] = new Point[numR];
-                    pointy = add(startPopulation, multiple(standardDevi, mnd.sample()));
+                    pointy = add(startPopulation, multipleNumberAndArray(standardDevi, mnd.sample()));
                     for (int j = 0; j < numR; j++) {
                         points[j] = Path.convertPointToPoint(pointy[j], (j + 1) * R, startPoint, endPoint);
                     }
@@ -518,11 +529,26 @@ public class ES {
             RealMatrix tesMatrix = MatrixUtils.createRealMatrix(covarianceMatrix);
             EigenDecomposition decomposition = new EigenDecomposition(tesMatrix);
             eigenvalues = decomposition.getRealEigenvalues();
+
             for (int i = 0; i < numR; i++) {
                 B[i] = decomposition.getEigenvector(i).toArray();
-                D[i][i] = 1 / Math.sqrt(eigenvalues[i]);
+                D[i][i] = eigenvalues[i] * eigenvalues[i];
             }
-            C12 = multiple(multiple(tranpose(B), D), B);
+            B = tranpose(B); // because row[i] is actually Eigenvector(i)
+            C = multiple(multiple(B, D), tranpose(B));
+
+            for (int i = 0; i < numR; i++) {
+                D[i][i] = 1 / Math.sqrt(D[i][i]);
+            }
+            invsqrtC = multiple(multiple(B, D), tranpose(B));
+
+            // To calculate multiplication of C and (mean_old - mean_new)
+            double[] invsqrtCWithMean = new double[numR];
+            for (int i = 0; i < invsqrtCWithMean.length; i++) {
+                invsqrtCWithMean[i] = 0;
+            }
+            invsqrtCWithMean = multipleMatrixAndArray(invsqrtC, minus(startPopulation, meanClone));
+
             for (int i = 0; i < numR; i++) {
                 p_sigma[i] = (1 - c_sigma) * p_sigma[i]
                         + Math.sqrt(1 - (1 - c_sigma) * (1 - c_sigma)) * Math.sqrt(elite / 4)
