@@ -31,7 +31,7 @@ public class ES {
     public int numR; // number of R in map
     Random random = new Random();
     public double identityMatrix[][];
-    public double[] standardDevi;
+    public double standardDevi;
     public Path[] paretoFront;
     public double AB;
     public LinkedList<Point> resultDistance = new LinkedList<Point>();
@@ -49,14 +49,13 @@ public class ES {
     }
 
     public void initialize(int numR) {
-        standardDevi = new double[numR];
+        standardDevi = random.nextDouble();
         mean = new double[numR];
 
         do {
             double pointy[] = new double[numR];
             Point points[] = new Point[numR];
             for (int j = 0; j < numR; j++) {
-                standardDevi[j] = random.nextDouble() * (maxVariance - minVariance) + minVariance;
                 do {
                     pointy[j] = random.nextDouble() * (maxPointy - minPointy) + minPointy;
                     points[j] = Path.convertPointToPoint(pointy[j], (j + 1) * R, startPoint, endPoint);
@@ -121,6 +120,15 @@ public class ES {
         double[] result = new double[length];
         for (int i = 0; i < length; i++) {
             result[i] = first[i] * second[i];
+        }
+        return result;
+    }
+
+    public static double[] multiple(double first, double[] second) {
+        int length = second.length;
+        double[] result = new double[length];
+        for (int i = 0; i < length; i++) {
+            result[i] = first * second[i];
         }
         return result;
     }
@@ -434,15 +442,15 @@ public class ES {
             // }
 
             // Calculate new standard deviation
-            standardDevi = new double[numR];
+            standardDevi = 0;
             for (int i = 0; i < elite; i++) {
-                standardDevi = add(standardDevi, minusSquare(elitePaths[i].pointy,
-                        startPopulation));
+                standardDevi += minusSquare(elitePaths[i].pointy,
+                        startPopulation)[i];
             }
-            for (int i = 0; i < numR; i++) {
-                standardDevi[i] = standardDevi[i] / elite;
-                standardDevi[i] = Math.sqrt(standardDevi[i]);
-            }
+            // for (int i = 0; i < numR; i++) {
+            standardDevi = standardDevi / elite;
+            standardDevi = Math.sqrt(standardDevi);
+            // }
 
             // Calculate new mean
             startPopulation = new double[numR];
