@@ -106,11 +106,11 @@ public class ES {
         return result;
     }
 
-    public static double[] minusSquare(double[] first, double[] second) {
+    public static double minusSquare(double[] first, double[] second) {
         int length = first.length < second.length ? first.length : second.length;
-        double[] result = new double[length];
+        double result = 0;
         for (int i = 0; i < length; i++) {
-            result[i] = (first[i] - second[i]) * (first[i] - second[i]);
+            result += (first[i] - second[i]) * (first[i] - second[i]);
         }
         return result;
     }
@@ -445,7 +445,7 @@ public class ES {
             standardDevi = 0;
             for (int i = 0; i < elite; i++) {
                 standardDevi += minusSquare(elitePaths[i].pointy,
-                        startPopulation)[i];
+                        startPopulation);
             }
             // for (int i = 0; i < numR; i++) {
             standardDevi = standardDevi / elite;
