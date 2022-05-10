@@ -3,6 +3,7 @@ package algorithm;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
+
 import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
 import org.apache.commons.math3.linear.EigenDecomposition;
 import org.apache.commons.math3.linear.MatrixUtils;
@@ -45,8 +46,13 @@ public class ES {
     public double startPopulation[]; // mean m
     public double meanClone[];
     public double covarianceMatrix[][];
+    public double D[][];
+    public double B[][];
+    public double C12[][];
+
     public double p_sigma[];
     public double p_c[];
+    public double eigenvalues[];
     public final double c_sigma = 3 / children;
 
     public ES(int numR, Point start, Point end, Graph graph) {
@@ -63,6 +69,17 @@ public class ES {
         mean = new double[numR];
         p_sigma = new double[numR];
         p_c = new double[numR];
+        eigenvalues = new double[numR];
+        B = new double[numR][numR];
+        D = new double[numR][numR];
+        C12 = new double[numR][numR];
+        covarianceMatrix = new double[numR][numR];
+        for (int i = 0; i < numR; i++) {
+            p_c[i] = 0;
+            p_sigma[i] = 0;
+            covarianceMatrix[i][i] = 1;
+            // B[i][i] = 1;
+        }
 
         do {
             double pointy[] = new double[numR];
@@ -76,14 +93,6 @@ public class ES {
             }
             initialCandidate = new Path(numR, R, pointy, points);
         } while (pathCollision(initialCandidate) == true);
-
-        covarianceMatrix = new double[numR][numR];
-        for (int i = 0; i < numR; i++) {
-            p_c[i] = 0;
-            p_sigma[i] = 0;
-            covarianceMatrix[i][i] = 1;
-            // B[i][i] = 1;
-        }
 
         gBest = initialCandidate;
         gBestDistance = initialCandidate;
@@ -112,6 +121,31 @@ public class ES {
             }
         }
         return false;
+    }
+
+    public static double[][] tranpose(double[][] matrix) {
+        int n = matrix[0].length;
+        double[][] res = new double[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                res[i][j] = matrix[j][i];
+            }
+        }
+        return res;
+    }
+
+    public static double[][] multiple(double[][] matrixA, double[][] matrixB) {
+        int n = matrixA[0].length;
+        double[][] res = new double[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                res[i][j] = 0;
+                for (int k = 0; k < n; k++) {
+                    res[i][j] += matrixA[i][k] * matrixB[k][j];
+                }
+            }
+        }
+        return res;
     }
 
     public static double[] add(double[] first, double[] second) {
@@ -452,11 +486,15 @@ public class ES {
             // Calculate p_sigma
             RealMatrix tesMatrix = MatrixUtils.createRealMatrix(covarianceMatrix);
             EigenDecomposition decomposition = new EigenDecomposition(tesMatrix);
-            System.out.println("eigenvector[0] = " + decomposition.getEigenvector(0));
-            System.out.println("eigenvector[1] = " + decomposition.getEigenvector(1));
+            eigenvalues = decomposition.getRealEigenvalues();
+            for (int i = 0; i < numR; i++) {
+                B[i] = decomposition.getEigenvector(i).toArray();
+                D[i][i] = 1 / Math.sqrt(eigenvalues[i]);
+            }
+            C12 = multiple(multiple(tranpose(B), D), B);
             for (int i = 0; i < numR; i++) {
                 p_sigma[i] = (1 - c_sigma) * p_sigma[i]
-                        + Math.sqrt(1 - (1 - c_sigma) * (1 - c_sigma)) * Math.sqrt(elite)
+                        + Math.sqrt(1 - (1 - c_sigma) * (1 - c_sigma)) * Math.sqrt(elite / 4)
                                 * ((startPopulation[i] - meanClone[i]) / standardDevi[i]);
             }
             // Calculate new standard deviation
