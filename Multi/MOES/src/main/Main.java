@@ -24,7 +24,7 @@ public class Main {
 		String FILE_URL = "moes_test3.txt";
 		File file = new File(FILE_URL);
 		String numberTeString = "3";
-		int numR = 12;
+		int numR = 8;
 		// Tao moi truong
 		GUIRobotics gui = new GUIRobotics(600, 100, 10);
 		gui.generateEnvironment("input/obstacle_" + numberTeString + ".txt");

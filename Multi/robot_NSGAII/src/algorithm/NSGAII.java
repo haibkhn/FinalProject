@@ -32,13 +32,13 @@ public class NSGAII {
 	public double distanceX;
 	final int NP = 100; // population size
 	final int crossoverPoint = 3; // crossoverPoint
-	int numY = 10;
+	int numY = 8;
 	public LinkedList<Path> POP = new LinkedList<Path>();
 	public LinkedList<Path> NDPOP = new LinkedList<Path>();
 	static final double maxPointy = 10;
 	static final double minPointy = -10;
-//	static final double maxPointy = 3;
-//	static final double minPointy = -3;
+	// static final double maxPointy = 3;
+	// static final double minPointy = -3;
 	static Random rd = new Random();
 	public LinkedList<Point> pointsToVisit = new LinkedList<Point>();
 	public LinkedList<Point> pointsToVisitAfterFixed = new LinkedList<Point>();
@@ -74,7 +74,7 @@ public class NSGAII {
 		int i;
 		for (i = 0; i < NP; i++) {
 			Path newPath = new Path(numY + 1);
-//			do {
+			// do {
 			for (int j = 0; j < newPath.n; j++) {
 				if (j == 0)
 					newPath.points[j] = startPoint;
@@ -98,37 +98,39 @@ public class NSGAII {
 				pointsToVisit.add(point);
 			}
 		}
-//		for (i = 0; i < NP; i++) {
-//			Path rightPath = InvalidSolutionOperator(POP.get(i));
-//			for (int j = 0; j < rightPath.n; j++) {
-//				Point point = new Point(rightPath.points[j].x, rightPath.points[j].y);
-//				pointsToVisitAfterFixed.add(point);
-//			}
-//		}
+		// for (i = 0; i < NP; i++) {
+		// Path rightPath = InvalidSolutionOperator(POP.get(i));
+		// for (int j = 0; j < rightPath.n; j++) {
+		// Point point = new Point(rightPath.points[j].x, rightPath.points[j].y);
+		// pointsToVisitAfterFixed.add(point);
+		// }
+		// }
 	}
 
 	public void getListPathResult(LinkedList<Path> listPath) {
-//		for (int i = 0; i < listPath.size(); i++) {
-//			int check = 0;
-//			for (int j = 0; j < listPath.get(i).points.length - 1; j++) {
-//				Line tempLine = new Line(listPath.get(i).points[j], listPath.get(i).points[j + 1]);
-//				if (tempLine.isIntersectGraphReturnObstacles(graph) != null) {
-//					check++;
-//				}
-//			}
-//			if (check == listPath.get(i).points.length - 1) {
-//				for (int j = 0; j < listPath.get(i).points.length; j++) {
-//					Point point = new Point(listPath.get(i).points[j].x, listPath.get(i).points[j].y);
-//					pointsToVisitAfterFixed.add(point);
-//				}
-//			} else System.out.println(i + "  nooooooooooooooooooooooooo");
+		// for (int i = 0; i < listPath.size(); i++) {
+		// int check = 0;
+		// for (int j = 0; j < listPath.get(i).points.length - 1; j++) {
+		// Line tempLine = new Line(listPath.get(i).points[j], listPath.get(i).points[j
+		// + 1]);
+		// if (tempLine.isIntersectGraphReturnObstacles(graph) != null) {
+		// check++;
+		// }
+		// }
+		// if (check == listPath.get(i).points.length - 1) {
+		// for (int j = 0; j < listPath.get(i).points.length; j++) {
+		// Point point = new Point(listPath.get(i).points[j].x,
+		// listPath.get(i).points[j].y);
+		// pointsToVisitAfterFixed.add(point);
+		// }
+		// } else System.out.println(i + " nooooooooooooooooooooooooo");
 
-//			Path rightPath = InvalidSolutionOperator(listPath.get(i));
-			for (int j = 1; j < listPath.get(0).points.length-1; j++) {
-				Point point = new Point(listPath.get(0).points[j].x, listPath.get(0).points[j].y);
-				pointsToVisitAfterFixed.add(point);
-			}
-//		}
+		// Path rightPath = InvalidSolutionOperator(listPath.get(i));
+		for (int j = 1; j < listPath.get(0).points.length - 1; j++) {
+			Point point = new Point(listPath.get(0).points[j].x, listPath.get(0).points[j].y);
+			pointsToVisitAfterFixed.add(point);
+		}
+		// }
 	}
 
 	public LinkedList<Path> InvalidSolutionOperator(LinkedList<Path> listPathPopC) {
@@ -137,14 +139,14 @@ public class NSGAII {
 			Path path = listPathPopC.get(i);
 			List<Point> listPoint = new LinkedList<Point>(Arrays.asList(path.points));
 			int count = 1;
-//			System.out.println("SIZE" + listPoint.size());
+			// System.out.println("SIZE" + listPoint.size());
 
 			for (int k = 0; k < path.points.length - 1; k++) {
 				int check = findWayAvoidObs(path.points[k], path.points[k + 1], listPoint, count, k);
 				if (check > 0)
 					count = count + check;
 			}
-//			System.out.println("SIZE" + listPoint.size());
+			// System.out.println("SIZE" + listPoint.size());
 			Path newPath = new Path(listPoint.size());
 			for (int j = 0; j < listPoint.size(); j++) {
 				newPath.points[j] = listPoint.get(j);
@@ -159,7 +161,7 @@ public class NSGAII {
 		int check = 0;
 
 		if (tempLine.isIntersectGraphReturnObstacles(graph) != null) {
-//			System.out.println("--------" + i);
+			// System.out.println("--------" + i);
 			Obstacle intersectObstacle = tempLine.isIntersectGraphReturnObstacles(graph);
 			List<Point> LeftCorner = new LinkedList<Point>();
 			List<Point> RightCorner = new LinkedList<Point>();
@@ -167,37 +169,40 @@ public class NSGAII {
 			for (int j = 0; j < intersectObstacle.points.length; j++) {
 				if (checkOnSameSide(a, b, intersectObstacle.points[j]) == "RIGHT") {
 					Point tempPoint = new Point(intersectObstacle.points[j].x + 1, intersectObstacle.points[j].y + 1);
-//					if (checkOnSameSide(startPoint, endPoint, intersectObstacle.points[j]) == "LEFT") {
-//						tempPoint = new Point(intersectObstacle.points[j].x + 1, intersectObstacle.points[j].y + 1);
-//					} else 
-//					int countUp = 2;
-//					while ((checkObstacleCollision(a, tempPoint) != false)
-//							&& (checkObstacleCollision(tempPoint, b) != false)) {
-//						tempPoint = new Point(intersectObstacle.points[j].x + countUp,
-//								intersectObstacle.points[j].y + countUp);
-//						countUp++;
-//					}
+					// if (checkOnSameSide(startPoint, endPoint, intersectObstacle.points[j]) ==
+					// "LEFT") {
+					// tempPoint = new Point(intersectObstacle.points[j].x + 1,
+					// intersectObstacle.points[j].y + 1);
+					// } else
+					// int countUp = 2;
+					// while ((checkObstacleCollision(a, tempPoint) != false)
+					// && (checkObstacleCollision(tempPoint, b) != false)) {
+					// tempPoint = new Point(intersectObstacle.points[j].x + countUp,
+					// intersectObstacle.points[j].y + countUp);
+					// countUp++;
+					// }
 					RightCorner.add(tempPoint);
-//					System.out.println("RIGHT" + tempPoint.x + "  " + tempPoint.y);
+					// System.out.println("RIGHT" + tempPoint.x + " " + tempPoint.y);
 				} else if (checkOnSameSide(a, b, intersectObstacle.points[j]) == "LEFT") {
 					Point tempPoint = new Point(intersectObstacle.points[j].x - 1, intersectObstacle.points[j].y - 1);
-//					int countUp = 1;
-//					while ((checkObstacleCollision(a, tempPoint) != false)
-//							&& (checkObstacleCollision(tempPoint, b) != false)) {
-//						tempPoint = new Point(intersectObstacle.points[j].x - countUp,
-//								intersectObstacle.points[j].y - countUp);
-//						countUp++;
-//					}
+					// int countUp = 1;
+					// while ((checkObstacleCollision(a, tempPoint) != false)
+					// && (checkObstacleCollision(tempPoint, b) != false)) {
+					// tempPoint = new Point(intersectObstacle.points[j].x - countUp,
+					// intersectObstacle.points[j].y - countUp);
+					// countUp++;
+					// }
 					LeftCorner.add(tempPoint);
-//					System.out.println("LEFT" + tempPoint.x + "  " + tempPoint.y);
+					// System.out.println("LEFT" + tempPoint.x + " " + tempPoint.y);
 				} else {
 					listPoint.add(i + count, intersectObstacle.points[j]);
 					count++;
-//					System.out.println("ZERO");
+					// System.out.println("ZERO");
 				}
 			}
 
-//			System.out.println("LEFTSIDE" + LeftCorner.size() + " RIGHSIZE" + RightCorner.size());
+			// System.out.println("LEFTSIDE" + LeftCorner.size() + " RIGHSIZE" +
+			// RightCorner.size());
 
 			if (LeftCorner.size() < RightCorner.size()) {
 				for (int j = 0; j < LeftCorner.size(); j++) {
@@ -223,23 +228,23 @@ public class NSGAII {
 						intersectPoint = intersectObstacle.points[j];
 					}
 					if (RightCorner.contains(intersectPoint)) {
-//						for (int j1 = 0; j1 < RightCorner.size() - 1; j1++) {
-//							if (RightCorner.get(j1).x < RightCorner.get(j1 + 1).x) {
-//								RightCorner.get(j1).x = RightCorner.get(j1).x - 2;
-//							} else
-//								RightCorner.get(j1 + 1).x = RightCorner.get(j1 + 1).x - 2;
-//						}
+						// for (int j1 = 0; j1 < RightCorner.size() - 1; j1++) {
+						// if (RightCorner.get(j1).x < RightCorner.get(j1 + 1).x) {
+						// RightCorner.get(j1).x = RightCorner.get(j1).x - 2;
+						// } else
+						// RightCorner.get(j1 + 1).x = RightCorner.get(j1 + 1).x - 2;
+						// }
 						for (int j1 = 0; j1 < RightCorner.size(); j1++) {
 							listPoint.add(i + count + j1, RightCorner.get(j1));
 						}
 						check = check + LeftCorner.size();
 					} else {
-//						for (int j1 = 0; j1 < LeftCorner.size() - 1; j1++) {
-//							if (LeftCorner.get(j1).x < LeftCorner.get(j1 + 1).x) {
-//								LeftCorner.get(j1).x = LeftCorner.get(j1).x - 2;
-//							} else
-//								LeftCorner.get(j1 + 1).x = LeftCorner.get(j1 + 1).x - 2;
-//						}
+						// for (int j1 = 0; j1 < LeftCorner.size() - 1; j1++) {
+						// if (LeftCorner.get(j1).x < LeftCorner.get(j1 + 1).x) {
+						// LeftCorner.get(j1).x = LeftCorner.get(j1).x - 2;
+						// } else
+						// LeftCorner.get(j1 + 1).x = LeftCorner.get(j1 + 1).x - 2;
+						// }
 						for (int j1 = 0; j1 < LeftCorner.size(); j1++) {
 							listPoint.add(i + count + j1, LeftCorner.get(j1));
 						}
@@ -271,7 +276,7 @@ public class NSGAII {
 		b1.y -= a1.y;
 		h1.x -= a1.x;
 		h1.y -= a1.y;
-//
+		//
 		// Determining cross Product
 		double cross_product = b1.x * h1.y - b1.y * h1.x;
 
@@ -347,7 +352,7 @@ public class NSGAII {
 					if (checkDomination(listPath.get(i), listPath.get(j)) == true) {
 						listPath.get(i).S.add(listPath.get(j));
 					} else if (checkDomination(listPath.get(j), listPath.get(i)) == true) {
-//						System.out.println("i = " + i + " non - dominate " + " j= " + j);
+						// System.out.println("i = " + i + " non - dominate " + " j= " + j);
 
 						tempN++;
 					}
@@ -364,15 +369,17 @@ public class NSGAII {
 
 		int frontNum = 0;
 
-//		System.out.println("size" + listPath.length);
-//		for (int i = 0; i < listPath.length; i++) {
-//			System.out.println("particle[" + i + "]= " + listPath.get(i).non_dominated + " " + listPath.get(i).pathDistance()
-//					+ " " + listPath.get(i).pathSafety(graph) + "  " + listPath.get(i).pathSmooth());
-//		}
+		// System.out.println("size" + listPath.length);
+		// for (int i = 0; i < listPath.length; i++) {
+		// System.out.println("particle[" + i + "]= " + listPath.get(i).non_dominated +
+		// " " + listPath.get(i).pathDistance()
+		// + " " + listPath.get(i).pathSafety(graph) + " " +
+		// listPath.get(i).pathSmooth());
+		// }
 
 		while (front[frontNum].size() != 0) {
 			LinkedList<Path> Q = new LinkedList<Path>();
-//			System.out.println("aaaa" + frontNum + " : " + Q.size());
+			// System.out.println("aaaa" + frontNum + " : " + Q.size());
 			for (int i = 0; i < front[frontNum].size(); i++) {
 				for (int j = 0; j < front[frontNum].get(i).S.size(); j++) {
 					front[frontNum].get(i).S.get(j).non_dominated--;
@@ -387,27 +394,28 @@ public class NSGAII {
 			}
 		}
 
-//		for (int i = 0; i < front.length; i++) {
-//			if (front[i].size() != 0) {
-//				System.out.println("-------Front " + i + "-------");
-//				for (Path path : front[i]) {
-//					System.out.println("		Path" + "  " + path.pathDistance() + " " + path.pathSafety(graph) + "  "
-//							+ path.pathSmooth());
-//				}
-//			}
-//		}
+		// for (int i = 0; i < front.length; i++) {
+		// if (front[i].size() != 0) {
+		// System.out.println("-------Front " + i + "-------");
+		// for (Path path : front[i]) {
+		// System.out.println(" Path" + " " + path.pathDistance() + " " +
+		// path.pathSafety(graph) + " "
+		// + path.pathSmooth());
+		// }
+		// }
+		// }
 		for (int i = 0; i < front.length; i++) {
 			if (front[i].size() != 0)
 				crowdingDistance(front[i]);
 		}
 
-//		for (int i = 0; i < front.length; i++) {
-//			if (front[i].size() != 0) {
-//				for (int j = 0; j < front[i].size(); j++) {
-//					listPathAfterRanking.add(front[i].get(j));
-//				}
-//			}
-//		}
+		// for (int i = 0; i < front.length; i++) {
+		// if (front[i].size() != 0) {
+		// for (int j = 0; j < front[i].size(); j++) {
+		// listPathAfterRanking.add(front[i].get(j));
+		// }
+		// }
+		// }
 
 		for (int j = 0; j < front[0].size(); j++) {
 			listPathAfterRanking.add(front[0].get(j));
@@ -436,13 +444,15 @@ public class NSGAII {
 
 		front.sort(new CrowdingDistanceComparator());
 
-//		for (int i = 0; i < front.size(); i++) {
-//			System.out.println(
-//					" Sorted Path" + "  " + front.get(i).pathDistance() + " " + front.get(i).pathSafety(graph) + "  "
-//							+ front.get(i).pathSmooth() + " crowding_distance: " + front.get(i).crowding_distance);
-//		}
-//
-//		System.out.println("---------------------");
+		// for (int i = 0; i < front.size(); i++) {
+		// System.out.println(
+		// " Sorted Path" + " " + front.get(i).pathDistance() + " " +
+		// front.get(i).pathSafety(graph) + " "
+		// + front.get(i).pathSmooth() + " crowding_distance: " +
+		// front.get(i).crowding_distance);
+		// }
+		//
+		// System.out.println("---------------------");
 
 	}
 
@@ -598,7 +608,7 @@ public class NSGAII {
 			newListPath.add(listPathPopC.get(i));
 			newListPath.add(listPathPopC.get(i + 1));
 			i = i + 2;
-//			System.out.println("i = " + i);
+			// System.out.println("i = " + i);
 		}
 		return newListPath;
 	}
@@ -609,7 +619,7 @@ public class NSGAII {
 			int j = 0;
 			int index = 0;
 			int listLength = listPathPopC.get(i).points.length;
-//			System.out.println("length listPath" + listLength);
+			// System.out.println("length listPath" + listLength);
 			Point[] tempPoints = new Point[listLength];
 			tempPoints[0] = listPathPopC.get(i).points[0];
 			while (j < (listLength - 3)) {
@@ -644,21 +654,22 @@ public class NSGAII {
 					listPoint.add(tempPoints[k]);
 				}
 			}
-//			System.out.println("length tempoint" + listPoint.size());
+			// System.out.println("length tempoint" + listPoint.size());
 			Path newPath = new Path(listPoint.size());
 			for (int k = 0; k < listPoint.size(); k++) {
 				newPath.points[k] = listPoint.get(k);
 			}
 			newListPath.add(newPath);
-//			System.out.println("length" + newListPath.get(i).points.length);
-//			LinkedList<Path> newListPath2 = new LinkedList<Path>();
-//			newListPath2 = ShortnessOperator(newListPath);
-//			System.out.println(
-//					"check length" + newListPath.get(i).points.length + " ??? " + listPathPopC.get(i).points.length);
-//			set all check point
-			
-//			if (newListPath.get(i).points.length != listPathPopC.get(i).points.length)
-//				newListPath = ShortnessOperator(newListPath);
+			// System.out.println("length" + newListPath.get(i).points.length);
+			// LinkedList<Path> newListPath2 = new LinkedList<Path>();
+			// newListPath2 = ShortnessOperator(newListPath);
+			// System.out.println(
+			// "check length" + newListPath.get(i).points.length + " ??? " +
+			// listPathPopC.get(i).points.length);
+			// set all check point
+
+			// if (newListPath.get(i).points.length != listPathPopC.get(i).points.length)
+			// newListPath = ShortnessOperator(newListPath);
 		}
 
 		return newListPath;
@@ -697,26 +708,26 @@ public class NSGAII {
 		getDistanceX(numY, startPoint, endPoint);
 		initialize();
 
-//		printResult();
-//		List<Path> listPaths = new LinkedList<Path>(Arrays.asList(POP));
-//		listAfterRanking = ranking(POP);
+		// printResult();
+		// List<Path> listPaths = new LinkedList<Path>(Arrays.asList(POP));
+		// listAfterRanking = ranking(POP);
 		POPc = SelectionOperation(POP);
 		NEWPOP = CrossoverOperation(POPc);
-//		printLinkedList(NEWPOP);
+		// printLinkedList(NEWPOP);
 		NEWPOP = InvalidSolutionOperator(NEWPOP);
-//		NEWPOP = ShortnessOperator(NEWPOP);
-//
+		// NEWPOP = ShortnessOperator(NEWPOP);
+		//
 		NEWPOP = ranking(NEWPOP);
-		
+
 		NEWPOP = ShortnessOperator(NEWPOP);
 		NEWPOP = ranking(NEWPOP);
-//		POP = InvalidSolutionOperator(POP);
+		// POP = InvalidSolutionOperator(POP);
 		getListPathResult(NEWPOP);
 
-//		getPath();
+		// getPath();
 		getObjectiveValue(NEWPOP);
 		getPathAfterFixed();
-		
+
 		for (Path path : NEWPOP) {
 			System.out.println("		Path" + "  " + (double) Math.round(path.pathDistance() * 10000) / 10000 + " "
 					+ (double) Math.round(path.pathSafety(graph) * 10000) / 10000 + "  "

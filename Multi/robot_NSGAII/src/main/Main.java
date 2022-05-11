@@ -17,9 +17,9 @@ import util.Point;
 public class Main {
 	public static void main(String[] args) throws IOException {
 		final long startTime = System.currentTimeMillis();
-		String FILE_URL = "nsgaii_test9.txt";
+		String FILE_URL = "nsgaii_test3.txt";
 		File file = new File(FILE_URL);
-		String numberTeString = "9";
+		String numberTeString = "3";
 
 		// Tao moi truong
 		GUIRobotics gui = new GUIRobotics(800, 100, 10);
