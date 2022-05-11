@@ -14,7 +14,7 @@ import util.Point;
 
 public class ES {
     public final int numOfGeneration = 100; // number of generation
-    public final int elite = 25;
+    public final int elite = 30;
     public final int children = 50;
     public Path particles[] = new Path[children];
     public Path gBest, gBestDistance, gBestSmooth, gBestSafety;
@@ -55,7 +55,7 @@ public class ES {
     public double p_sigma[];
     public double p_c[];
     public double eigenvalues[];
-    public final double c_sigma = 3 / children;
+    public final double c_sigma = (double) 3 / (double) children;
 
     public ES(int numR, Point start, Point end, Graph graph) {
         startPoint = start;
@@ -551,9 +551,11 @@ public class ES {
 
             for (int i = 0; i < numR; i++) {
                 p_sigma[i] = (1 - c_sigma) * p_sigma[i]
-                        + Math.sqrt(1 - (1 - c_sigma) * (1 - c_sigma)) * Math.sqrt(elite / 4)
-                                * ((startPopulation[i] - meanClone[i]) / standardDevi);
+                        + Math.sqrt(c_sigma * (2 - c_sigma) * elite)
+                                * invsqrtCWithMean[i] / standardDevi;
             }
+
+            // standardDevi = standardDevi * Math.exp(numR/3 * ());
             // Calculate new standard deviation
             // standardDevi = new double[numR];
             // for (int i = 0; i < elite; i++) {
