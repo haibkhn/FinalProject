@@ -1,2 +1,8 @@
 Multi/MOES/.classpath
 Multi/MOES/.project
+Multi/MOPSO/.classpath
+Multi/MOPSO/.settings/org.eclipse.jdt.core.prefs
+Multi/PSOES/.classpath
+Multi/PSOES/.settings/org.eclipse.jdt.core.prefs
+Multi/robot_NSGAII/bin/algorithm/NSGAII.class
+Multi/robot_NSGAII/bin/main/Main.class

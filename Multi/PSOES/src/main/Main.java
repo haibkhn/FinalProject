@@ -18,19 +18,19 @@ import util.Point;
 public class Main {
 	public static void main(String[] args) throws IOException {
 		long time = System.currentTimeMillis();
-		String FILE_URL = "../psoes_test9.txt";
+		String FILE_URL = "psoes_test9.txt";
 		File file = new File(FILE_URL);
 		String numberTeString = "9";
 		// Tao moi truong
-		GUIRobotics gui = new GUIRobotics(1000, 100, 10);
-		gui.generateEnvironment("obstacle_" + numberTeString + ".txt");
+		GUIRobotics gui = new GUIRobotics(800, 100, 10);
+		gui.generateEnvironment("input/obstacle_" + numberTeString + ".txt");
 
 		// Doc du lieu dau vao
-		Graph graph = new Graph("obstacle_" + numberTeString + ".txt");
-		LinkedList<Point> pointsToVisit = readPointData("input_" + numberTeString + ".txt");
+		Graph graph = new Graph("input/obstacle_" + numberTeString + ".txt");
+		LinkedList<Point> pointsToVisit = readPointData("input/input_" + numberTeString + ".txt");
 
 		ArrayList<Point> result = new ArrayList<Point>();
-		PSO pso = new PSO(15, pointsToVisit.get(0), pointsToVisit.get(1), graph);
+		PSO pso = new PSO(12, pointsToVisit.get(0), pointsToVisit.get(1), graph);
 		try {
 
 			pso.run();
