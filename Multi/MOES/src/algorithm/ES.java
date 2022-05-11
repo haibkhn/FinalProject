@@ -55,7 +55,7 @@ public class ES {
     public double p_sigma[];
     public double p_c[];
     public double eigenvalues[];
-    public final double c_sigma = (double) 3 / (double) children;
+    public final double c_sigma = 3.0 / children;
 
     public ES(int numR, Point start, Point end, Graph graph) {
         startPoint = start;
