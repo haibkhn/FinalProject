@@ -18,9 +18,9 @@ import util.Point;
 public class Main {
 	public static void main(String[] args) throws IOException {
 		long time = System.currentTimeMillis();
-		String FILE_URL = "psoes_test3.txt";
+		String FILE_URL = "psoes_test9.txt";
 		File file = new File(FILE_URL);
-		String numberTeString = "3";
+		String numberTeString = "9";
 		// Tao moi truong
 		GUIRobotics gui = new GUIRobotics(800, 100, 10);
 		gui.generateEnvironment("input/obstacle_" + numberTeString + ".txt");

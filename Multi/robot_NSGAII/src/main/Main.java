@@ -17,9 +17,9 @@ import util.Point;
 public class Main {
 	public static void main(String[] args) throws IOException {
 		final long startTime = System.currentTimeMillis();
-		String FILE_URL = "nsgaii_test3.txt";
+		String FILE_URL = "nsgaii_test9.txt";
 		File file = new File(FILE_URL);
-		String numberTeString = "3";
+		String numberTeString = "9";
 
 		// Tao moi truong
 		GUIRobotics gui = new GUIRobotics(800, 100, 10);
@@ -69,9 +69,11 @@ public class Main {
 			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
 			BufferedWriter bw = new BufferedWriter(fw);
 			for (Path path : nsgaii.NEWPOP) {
-				bw.write("Path :" + "  " + (double) Math.round(path.pathDistance() * 10000) / 10000 + " "
-						+ (double) Math.round(path.pathSafety(graph) * 10000) / 10000 + "  "
-						+ (double) Math.round(path.pathSmooth() * 10000) / 10000 + "\n");
+				if ((double) Math.round(path.pathSmooth() * 10000) / 10000 != 0.0) {
+					bw.write("Path :" + "  " + (double) Math.round(path.pathDistance() * 10000) / 10000 + " "
+							+ (double) Math.round(path.pathSafety(graph) * 10000) / 10000 + "  "
+							+ (double) Math.round(path.pathSmooth() * 10000) / 10000 + "\n");
+				}
 			}
 			bw.write("Total execution time: " + (endTime - startTime) + "\n");
 			bw.write("----------------------\n");

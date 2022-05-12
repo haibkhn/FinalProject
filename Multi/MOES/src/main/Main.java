@@ -11,8 +11,8 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 import algorithm.ES;
-import algorithm.PSO;
-import algorithm.PSOES;
+// import algorithm.PSO;
+// import algorithm.PSOES;
 import gui.GUIRobotics;
 import util.Graph;
 import util.Path;
@@ -21,12 +21,12 @@ import util.Point;
 public class Main {
 	public static void main(String[] args) throws IOException {
 		long time = System.currentTimeMillis();
-		String FILE_URL = "moes_test3.txt";
+		String FILE_URL = "moes_test9.txt";
 		File file = new File(FILE_URL);
-		String numberTeString = "3";
+		String numberTeString = "9";
 		int numR = 8;
 		// Tao moi truong
-		GUIRobotics gui = new GUIRobotics(600, 100, 10);
+		GUIRobotics gui = new GUIRobotics(800, 100, 10);
 		gui.generateEnvironment("input/obstacle_" + numberTeString + ".txt");
 
 		// Doc du lieu dau vao

@@ -63,7 +63,7 @@ public class NSGAII {
 		double distance;
 		double num;
 		distance = Math.hypot(start.x - end.x, start.y - end.y);
-		num = distance / numY;
+		num = distance / (numY + 1);
 		return num;
 	}
 
