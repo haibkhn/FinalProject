@@ -1,0 +1,4 @@
+exp2/map2a/moes_test18.txt	58.34 3485.55
+exp2/map2a/mopso_test18.txt	60.71 1152.15
+exp2/map2a/nsgaii_test18.txt	50.56 70.9
+exp2/map2a/psoes_test18.txt	80.51 1604.6

@@ -9,9 +9,9 @@ import util.Path;
 import util.Point;
 
 public class ES {
-    public final int numOfGeneration = 100; // number of generation
+    public final int numOfGeneration = 50; // number of generation
     public final int elite = 30;
-    public final int children = 60;
+    public final int children = 80;
     public Path particles[] = new Path[children];
     public Path gBest, gBestDistance, gBestSmooth, gBestSafety;
     public double startPopulation[];

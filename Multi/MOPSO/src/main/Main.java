@@ -17,59 +17,68 @@ import util.Point;
 
 public class Main {
 	public static void main(String[] args) throws IOException {
-		long time = System.currentTimeMillis();
-		String FILE_URL = "mopso_test9.txt";
-		File file = new File(FILE_URL);
-		String numberTeString = "9";
-		// Tao moi truong
-		GUIRobotics gui = new GUIRobotics(800, 100, 10);
-		gui.generateEnvironment("input/obstacle_" + numberTeString + ".txt");
+		int count = 0;
+		boolean flag = false;
+		while (count < 20) {
+			long time = System.currentTimeMillis();
+			String FILE_URL = "exp2/mopso_test27.txt";
+			File file = new File(FILE_URL);
+			String numberTeString = "27";
+			// Tao moi truong
+			// GUIRobotics gui = new GUIRobotics(800, 100, 10);
+			// gui.generateEnvironment("input/obstacle_" + numberTeString + ".txt");
 
-		// Doc du lieu dau vao
-		Graph graph = new Graph("input/obstacle_" + numberTeString + ".txt");
-		LinkedList<Point> pointsToVisit = readPointData("input/input_" + numberTeString + ".txt");
+			// Doc du lieu dau vao
+			Graph graph = new Graph("input/obstacle_" + numberTeString + ".txt");
+			LinkedList<Point> pointsToVisit = readPointData("input/input_" + numberTeString + ".txt");
 
-		ArrayList<Point> result = new ArrayList<Point>();
-		PSO pso = new PSO(8, pointsToVisit.get(0), pointsToVisit.get(1), graph);
-		try {
+			ArrayList<Point> result = new ArrayList<Point>();
+			PSO pso = new PSO(10, pointsToVisit.get(0), pointsToVisit.get(1), graph);
+			try {
 
-			pso.run();
-			result.add(pointsToVisit.get(0));
-			for (int j = 0; j < pso.result.size(); j++) {
-				result.add(pso.result.get(j));
-			}
-			result.add(pointsToVisit.get(1));
-
-			gui.canvas.drawLines(result, pointsToVisit);
-		} catch (Exception e) {
-			System.out.println("Something went wrong!");
-			e.printStackTrace();
-		}
-
-		time = System.currentTimeMillis() - time;
-		try {
-			if (!file.exists()) {
-				file.createNewFile();
-			}
-			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
-			BufferedWriter bw = new BufferedWriter(fw);
-			for (Path path : pso.NaParticles) {
-				if (path.points[0] != null) {
-					bw.write("Path :" + "  " + (double) Math.round(path.distance * 10000) / 10000 + " "
-							+ (double) Math.round(path.pathSafety(graph) * 10000) / 10000 + "  "
-							+ (double) Math.round(path.pathSmooth() * 10000) / 10000 + "\n");
+				pso.run();
+				result.add(pointsToVisit.get(0));
+				for (int j = 0; j < pso.result.size(); j++) {
+					result.add(pso.result.get(j));
 				}
+				result.add(pointsToVisit.get(1));
+
+				// gui.canvas.drawLines(result, pointsToVisit);
+			} catch (Exception e) {
+				System.out.println("Something went wrong!");
+				e.printStackTrace();
 			}
-			bw.write("Total execution time: " + (time) + "\n");
-			bw.write("----------------------\n");
-			bw.close();
-		} catch (Exception e) {
-			System.out.println("Something went wrong!");
-			e.printStackTrace();
+
+			time = System.currentTimeMillis() - time;
+			try {
+				if (!file.exists()) {
+					file.createNewFile();
+				}
+				FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
+				BufferedWriter bw = new BufferedWriter(fw);
+				for (Path path : pso.NaParticles) {
+					if (path.points[0] != null) {
+						flag = true;
+
+						bw.write("Path :" + "  " + (double) Math.round(path.distance * 10000) / 10000 + " "
+								+ (double) Math.round(path.pathSafety(graph) * 10000) / 10000 + "  "
+								+ (double) Math.round(path.pathSmooth() * 10000) / 10000 + "\n");
+					}
+				}
+				if (flag == true)
+					count++;
+				flag = false;
+				bw.write("Total execution time: " + (time) + "\n");
+				bw.write("----------------------\n");
+				bw.close();
+			} catch (Exception e) {
+				System.out.println("Something went wrong!");
+				e.printStackTrace();
+			}
+			System.out.println("Time:\t" + time + " ms");
+			System.out.println("result" + result);
+			System.out.println("Done!");
 		}
-		System.out.println("Time:\t" + time + " ms");
-		System.out.println("result" + result);
-		System.out.println("Done!");
 	}
 
 	public static LinkedList<Point> readPointData(String filename) throws FileNotFoundException {

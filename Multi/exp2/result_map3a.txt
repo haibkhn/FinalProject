@@ -1,0 +1,4 @@
+exp2/map3a/moes_test22.txt	36.32 7486.3
+exp2/map3a/mopso_test22.txt	45.18 2332.15
+exp2/map3a/nsgaii_test22.txt	40.26 550.65
+exp2/map3a/psoes_test22.txt	52.15 3264.25

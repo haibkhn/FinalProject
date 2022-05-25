@@ -1,0 +1,4 @@
+exp2/map4a/moes_test26.txt	36.76 5157.85
+exp2/map4a/mopso_test26.txt	43.84 3302.0
+exp2/map4a/nsgaii_test26.txt	22.32 683.3
+exp2/map4a/psoes_test26.txt	48.98 4215.0

@@ -11,8 +11,8 @@ import util.Path;
 import util.Point;
 
 public class PSO {
-	public final int NP = 100; // population size
-	public final int Nmax = 10; // maximum of non-dominated archive size
+	public final int NP = 150; // population size
+	public final int Nmax = 20; // maximum of non-dominated archive size
 	public final int IT = 100;
 	public double V_MAX;
 	public double V_MIN;

@@ -1,0 +1,4 @@
+exp2/map4b/moes_test27.txt	30.49 7595.25
+exp2/map4b/mopso_test27.txt	33.42 3605.3
+exp2/map4b/nsgaii_test27.txt	21.1 537.9
+exp2/map4b/psoes_test27.txt	40.15 4329.75

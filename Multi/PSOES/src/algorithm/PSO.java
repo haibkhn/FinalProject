@@ -11,13 +11,13 @@ import util.Path;
 import util.Point;
 
 public class PSO {
-	public final int NP = 100; // population size
-	public final int Nmax = 10; // maximum of non-dominated archive size
+	public final int NP = 150; // population size
+	public final int Nmax = 20; // maximum of non-dominated archive size
 	public final int IT = 100;
 	public double V_MAX;
 	public double V_MIN;
-	public double maxPointy = 10;
-	public double minPointy = -10;
+	public double maxPointy = 12;
+	public double minPointy = -12;
 	public Graph graph;
 	public Path particles[] = new Path[NP];
 	public int numR; // number of R in map
@@ -38,7 +38,6 @@ public class PSO {
 	public LinkedList<Point> result = new LinkedList<Point>();
 	public double length;
 	public double strategy[][]; // strategy parameters
-	
 
 	public PSO(int numR, Point start, Point end, Graph graph) {
 		startPoint = start;
@@ -46,7 +45,7 @@ public class PSO {
 		this.numR = numR;
 		this.graph = graph;
 		this.AB = Math.hypot(end.x - start.x, end.y - start.y);
-		this.R = AB / (numR+1);
+		this.R = AB / (numR + 1);
 	}
 
 	public void initialize(int numR) {
@@ -518,12 +517,13 @@ public class PSO {
 		for (int i = 0; i < IT; i++) {
 			for (int j = 0; j < NP; j++) {
 				for (int k = 0; k < numR; k++) {
-//					// PSO
-//					r1 = random.nextDouble();
-//					r2 = random.nextDouble();
-//
-//					vValue[j][k] = w * vValue[j][k] + c1 * r1 * (pBest[j].pointy[k] - particles[j].pointy[k])
-//							+ r2 * c2 * (gBest.pointy[k] - particles[j].pointy[k]);
+					// // PSO
+					// r1 = random.nextDouble();
+					// r2 = random.nextDouble();
+					//
+					// vValue[j][k] = w * vValue[j][k] + c1 * r1 * (pBest[j].pointy[k] -
+					// particles[j].pointy[k])
+					// + r2 * c2 * (gBest.pointy[k] - particles[j].pointy[k]);
 
 					// PSO-ES
 					// N(0,1) is a random variable with Gaussian distribution, mean 0 and variance 1
@@ -598,11 +598,11 @@ public class PSO {
 				System.out.print("\nNa #" + j + ": ");
 				System.out.println("---------" + NaParticles[j].points[0]);
 				if (NaParticles[j].points[0] != null) {
-//					for (int k = 0; k < numR; k++) {
-//						System.out.print("(" + df.format(NaParticles[j].points[k].x) + ", "
-//								+ df.format(NaParticles[j].points[k].y) + ")");
-//					}
-					
+					// for (int k = 0; k < numR; k++) {
+					// System.out.print("(" + df.format(NaParticles[j].points[k].x) + ", "
+					// + df.format(NaParticles[j].points[k].y) + ")");
+					// }
+
 					System.out.print(NaParticles[j].distance + " " + NaParticles[j].pathSafety(graph) + " "
 							+ NaParticles[j].pathSmooth());
 				}
