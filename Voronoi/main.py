@@ -1,5 +1,5 @@
 from cmath import inf
-from shapely.geometry import Point, Polygon, MultiPoint
+from shapely.geometry import Point, Polygon, LineString
 from shapely.ops import voronoi_diagram
 from dijkstar import Graph, find_path
 from dijkstar.algorithm import PathInfo
@@ -7,7 +7,7 @@ from scipy.spatial import Voronoi, voronoi_plot_2d
 import matplotlib.pyplot as plt
 import numpy as np
 
-INPUT = 18
+INPUT = 27
 
 
 def inputObs(obstacle_list):
@@ -61,6 +61,26 @@ def getEquidistantPoints(p1, p2):
 
 def is_in_list(list_np_arrays, array_to_check):
     return np.any(np.all(array_to_check == list_np_arrays, axis=1))
+
+
+def getperpen(line):
+    paral1 = line.parallel_offset(10, 'left')
+    paral2 = line.parallel_offset(10, 'right')
+    # print(paral)
+    perpen = LineString([paral1.boundary[1], paral2.boundary[0]])
+    return perpen
+
+
+def getvector(line):
+    return [line.boundary[0].x-line.boundary[1].x, line.boundary[0].y-line.boundary[1].y]
+
+
+def plotline(line):
+    point1 = line.boundary[0]
+    point2 = line.boundary[1]
+    x_values = [point1.x, point2.x]
+    y_values = [point1.y, point2.y]
+    plt.plot(x_values, y_values)
 
 
 if __name__ == "__main__":
@@ -156,7 +176,11 @@ if __name__ == "__main__":
     node_list = find_path(graph, start_graph, end_graph).nodes
     print(node_list)
     print(vor_vertice[node_list[0]])
+    voronoiNodeCoord = []
+
+    # Append real coordianate to voronoiNodeCoord, not index
     for i in node_list:
+        voronoiNodeCoord.append((vor.vertices[i][0], vor.vertices[i][1]))
         plt.plot([vor.vertices[i][0]], [vor.vertices[i][1]],
                  marker='o', markersize=5, color="red")
 
@@ -164,5 +188,31 @@ if __name__ == "__main__":
     for i in range(len(target_list)):
         plt.plot([target_list[i].x, target_list_closest_index[i][0]], [
             target_list[i].y, target_list_closest_index[i][1]], color="red", linewidth=5)
+
+    print(voronoiNodeCoord)
+    # Create a linestring from start to end
+    vorolinestring = LineString(voronoiNodeCoord)
+    start_end = LineString([start, end])
+    plotline(start_end)
+
+    middlepoint = []
+    middlepoint.append(start)
+
+    n = 10  # Number of dimension
+    for i in range(n):
+        x = start[0] + (i+1)/(n+1)*(end[0]-start[0])
+        y = start[1] + (i+1)/(n+1)*(end[1]-start[1])
+        middlepoint.append([x, y])
+    middlepoint.append(end)
+
+    # Find point which cut between voronoi and perpencular line
+    for i in range(n):
+        line = LineString([middlepoint[i], middlepoint[i+1]])
+        perpen = getperpen(line)
+        print(perpen.intersects(vorolinestring))
+        print(perpen.intersection(vorolinestring))
+        # angle(getvector(line), getvector(perpen))
+
+        plotline(perpen)
     plt.axis([0, 10, 0, 10])
     plt.show()
