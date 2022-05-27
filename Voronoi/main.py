@@ -83,6 +83,11 @@ def plotline(line):
     plt.plot(x_values, y_values)
 
 
+def plotpoint(point):
+    plt.plot([point[0]], [point[1]], marker="o", markersize=10,
+             markeredgecolor="red", markerfacecolor="green")
+
+
 if __name__ == "__main__":
     obstacle_list = []  # Read points from input.txt, return list of obs
     inputObs(obstacle_list)
@@ -214,5 +219,9 @@ if __name__ == "__main__":
         # angle(getvector(line), getvector(perpen))
 
         plotline(perpen)
+    plotpoint([2.7059261, 4.0213466])
+    plotpoint([3.1084492, 4.3460963])
+    plotpoint([4.4189145, 3.7629036])
+
     plt.axis([0, 10, 0, 10])
     plt.show()
