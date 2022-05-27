@@ -42,6 +42,7 @@ public class Path {
 				ES.endPoint.y - points[points.length - 1].y);
 	}
 
+	// Convert from new plane to old plane
 	public static Point convertPointToPoint(double pointy, double pointx, Point start, Point end) {
 		double x, y, temp1, temp2, phi;
 		temp1 = end.x - start.x;
@@ -50,6 +51,16 @@ public class Path {
 		x = Math.cos(phi) * pointx - Math.sin(phi) * pointy + start.x;
 		y = Math.sin(phi) * pointx + Math.cos(phi) * pointy + start.y;
 		return new Point(x, y);
+	}
+
+	// Convert from old plane to new plane
+	public static double convertPointToPointToBeginning(double x, double y, double pointx, Point start, Point end) {
+		double pointy, temp1, temp2, phi;
+		temp1 = end.x - start.x;
+		temp2 = end.y - start.y;
+		phi = Math.atan(temp2 / temp1);
+		pointy = (Math.cos(phi) * pointx + start.x - x) / Math.sin(phi);
+		return pointy;
 	}
 
 	public double smooth(Point point1, Point point2, Point point3) {

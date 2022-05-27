@@ -51,7 +51,9 @@ public class ES {
     public void initialize(int numR) {
         standardDevi = new double[numR];
         mean = new double[numR];
-
+        // double tmp = Path.convertPointToPointToBeginning(30.854889, 43.690566, 2 * R,
+        // startPoint, endPoint);
+        // System.out.println(tmp);
         do {
             double pointy[] = new double[numR];
             Point points[] = new Point[numR];
