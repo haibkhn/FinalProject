@@ -51,56 +51,59 @@ public class GUIRobotics {
 		mainFrame.setVisible(true);
 	}
 
-	void generateEnvironment(Graph graph) {
-		canvas = new MyCanvas();
-		controlPanel.add(canvas);
-		Graphics2D g2 = (Graphics2D) canvas.getGraphics();
-		for (Polygons obstacle : graph.obstacles) {
-			Polygon polygon = new Polygon();
-			for (int i = 0; i < obstacle.cornum; i++) {
-				polygon.addPoint((int) (MyCanvas.OX + obstacle.point[i].x * size / range),
-						(int) (MyCanvas.OY - obstacle.point[i].y * size / range));
-			}
-			g2.fill(polygon);
-			for (int i = 0; i < obstacle.cornum - 1; i++) {
-				canvas.drawLine(obstacle.point[i], obstacle.point[i + 1], Color.BLACK);
-			}
-			canvas.drawLine(obstacle.point[0], obstacle.point[obstacle.cornum - 1], Color.BLACK);
-		}
+	// void generateEnvironment(Graph graph) {
+	// canvas = new MyCanvas();
+	// controlPanel.add(canvas);
+	// Graphics2D g2 = (Graphics2D) canvas.getGraphics();
+	// for (Polygons obstacle : graph.obstacles) {
+	// Polygon polygon = new Polygon();
+	// for (int i = 0; i < obstacle.cornum; i++) {
+	// polygon.addPoint((int) (MyCanvas.OX + obstacle.point[i].x * size / range),
+	// (int) (MyCanvas.OY - obstacle.point[i].y * size / range));
+	// }
+	// g2.fill(polygon);
+	// for (int i = 0; i < obstacle.cornum - 1; i++) {
+	// canvas.drawLine(obstacle.point[i], obstacle.point[i + 1], Color.BLACK);
+	// }
+	// canvas.drawLine(obstacle.point[0], obstacle.point[obstacle.cornum - 1],
+	// Color.BLACK);
+	// }
 
-		// draw Oxy
-		// TODO: Make text larger
-		g2.drawLine(MyCanvas.OX, MyCanvas.OY, MyCanvas.OY, MyCanvas.OY);
-		g2.drawLine(MyCanvas.OX, MyCanvas.OY, MyCanvas.OX, MyCanvas.OX);
-		g2.drawString("O", MyCanvas.OX - 10, MyCanvas.OY + 10);
-		g2.drawString("x", MyCanvas.OY, MyCanvas.OY);
-		g2.drawString("y", MyCanvas.OX, MyCanvas.OX);
+	// // draw Oxy
+	// // TODO: Make text larger
+	// g2.drawLine(MyCanvas.OX, MyCanvas.OY, MyCanvas.OY, MyCanvas.OY);
+	// g2.drawLine(MyCanvas.OX, MyCanvas.OY, MyCanvas.OX, MyCanvas.OX);
+	// g2.drawString("O", MyCanvas.OX - 10, MyCanvas.OY + 10);
+	// g2.drawString("x", MyCanvas.OY, MyCanvas.OY);
+	// g2.drawString("y", MyCanvas.OX, MyCanvas.OX);
 
-		// draw gird
-		float[] dash1 = { 2f, 0f, 2f };
-		BasicStroke bs1 = new BasicStroke(1,
-				BasicStroke.CAP_BUTT,
-				BasicStroke.JOIN_ROUND,
-				1.0f,
-				dash1,
-				2f);
-		g2.setStroke(bs1);
-		for (int i = 0; i < numOfRange; i++) {
-			g2.draw(new Line2D.Double(MyCanvas.OX, MyCanvas.OY - size / range * 10 * (i + 1),
-					MyCanvas.OY, MyCanvas.OY - size / range * 10 * (i + 1)));
+	// // draw gird
+	// float[] dash1 = { 2f, 0f, 2f };
+	// BasicStroke bs1 = new BasicStroke(1,
+	// BasicStroke.CAP_BUTT,
+	// BasicStroke.JOIN_ROUND,
+	// 1.0f,
+	// dash1,
+	// 2f);
+	// g2.setStroke(bs1);
+	// for (int i = 0; i < numOfRange; i++) {
+	// g2.draw(new Line2D.Double(MyCanvas.OX, MyCanvas.OY - size / range * 10 * (i +
+	// 1),
+	// MyCanvas.OY, MyCanvas.OY - size / range * 10 * (i + 1)));
 
-			g2.draw(new Line2D.Double(MyCanvas.OX + size / range * 10 * (i + 1), MyCanvas.OY,
-					MyCanvas.OX + size / range * 10 * (i + 1), MyCanvas.OX));
+	// g2.draw(new Line2D.Double(MyCanvas.OX + size / range * 10 * (i + 1),
+	// MyCanvas.OY,
+	// MyCanvas.OX + size / range * 10 * (i + 1), MyCanvas.OX));
 
-			g2.drawString(String.valueOf(range / numOfRange * (i + 1)),
-					(int) (MyCanvas.OX + size / range * 10 * (i + 1) - 10),
-					MyCanvas.OY + 10);
+	// g2.drawString(String.valueOf(range / numOfRange * (i + 1)),
+	// (int) (MyCanvas.OX + size / range * 10 * (i + 1) - 10),
+	// MyCanvas.OY + 10);
 
-			g2.drawString(String.valueOf(range / numOfRange * (i + 1)),
-					MyCanvas.OX,
-					(int) (MyCanvas.OY - size / range * 10 * (i + 1)));
-		}
-	}
+	// g2.drawString(String.valueOf(range / numOfRange * (i + 1)),
+	// MyCanvas.OX,
+	// (int) (MyCanvas.OY - size / range * 10 * (i + 1)));
+	// }
+	// }
 
 	public void generateEnvironment(String obtacles_file, double ratio, boolean draw_borders) {
 		canvas = new MyCanvas();
