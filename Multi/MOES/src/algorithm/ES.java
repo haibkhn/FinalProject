@@ -7,6 +7,8 @@ import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
 import util.Graph;
 import util.Path;
 import util.Point;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 public class ES {
     public final int numOfGeneration = 50; // number of generation
@@ -30,6 +32,7 @@ public class ES {
     public static Point endPoint;
     public int numR; // number of R in map
     Random random = new Random();
+    public String numberTeString;
     public double identityMatrix[][];
     public double[] standardDevi;
     public Path[] paretoFront;
@@ -39,18 +42,46 @@ public class ES {
     public LinkedList<Point> resultSmooth = new LinkedList<Point>();
     public ArrayList<LinkedList<Point>> resultPareto = new ArrayList<LinkedList<Point>>();
 
-    public ES(int numR, Point start, Point end, Graph graph) {
+    public ES(int numR, Point start, Point end, Graph graph, String numberTeString) {
         startPoint = start;
         endPoint = end;
         this.numR = numR;
         this.graph = graph;
         this.AB = Math.hypot(end.x - start.x, end.y - start.y);
         this.R = AB / (numR + 1);
+        this.numberTeString = numberTeString;
     }
 
     public void initialize(int numR) {
         standardDevi = new double[numR];
         mean = new double[numR];
+        try {
+            ProcessBuilder builder = new ProcessBuilder("python", System.getProperty("user.dir") + "\\init_popu.py",
+                    numberTeString, String.valueOf(numR));
+            Process process = builder.start();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            BufferedReader readers = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+            String lines = null;
+            int j = 0;
+            double pointy[] = new double[numR];
+            Point points[] = new Point[numR];
+            while ((lines = reader.readLine()) != null) {
+                pointy[j] = Double.parseDouble(lines);
+                points[j] = Path.convertPointToPoint(pointy[j], (j + 1) * R, startPoint, endPoint);
+                j++;
+                // System.out.println("lines" + lines);
+            }
+            for (int i = 0; i < numR; i++) {
+                standardDevi[i] = random.nextDouble() * (maxVariance - minVariance) + minVariance;
+            }
+            initialCandidate = new Path(numR, R, pointy, points);
+            // System.out.println(pathCollision(initialCandidate));
+            while ((lines = readers.readLine()) != null) {
+                System.out.println("Error lines" + lines);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         // double tmp = Path.convertPointToPointToBeginning(16.635425876805183,
         // 58.090775125257885, R,
         // startPoint, endPoint);
@@ -58,18 +89,21 @@ public class ES {
         // Point pointstest = Path.convertPointToPoint(1.1224148098978217, R,
         // startPoint, endPoint);
         // System.out.println(pointstest.x + " " + pointstest.y);
-        do {
-            double pointy[] = new double[numR];
-            Point points[] = new Point[numR];
-            for (int j = 0; j < numR; j++) {
-                standardDevi[j] = random.nextDouble() * (maxVariance - minVariance) + minVariance;
-                do {
-                    pointy[j] = random.nextDouble() * (maxPointy - minPointy) + minPointy;
-                    points[j] = Path.convertPointToPoint(pointy[j], (j + 1) * R, startPoint, endPoint);
-                } while (!points[j].inCoordinate());
-            }
-            initialCandidate = new Path(numR, R, pointy, points);
-        } while (pathCollision(initialCandidate) == true);
+
+        // do {
+        // double pointy[] = new double[numR];
+        // Point points[] = new Point[numR];
+        // for (int j = 0; j < numR; j++) {
+        // standardDevi[j] = random.nextDouble() * (maxVariance - minVariance) +
+        // minVariance;
+        // do {
+        // pointy[j] = random.nextDouble() * (maxPointy - minPointy) + minPointy;
+        // points[j] = Path.convertPointToPoint(pointy[j], (j + 1) * R, startPoint,
+        // endPoint);
+        // } while (!points[j].inCoordinate());
+        // }
+        // initialCandidate = new Path(numR, R, pointy, points);
+        // } while (pathCollision(initialCandidate) == true);
 
         identityMatrix = new double[numR][numR];
         for (int i = 0; i < numR; i++) {

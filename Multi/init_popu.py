@@ -7,6 +7,8 @@ from scipy.spatial import Voronoi, voronoi_plot_2d
 import matplotlib.pyplot as plt
 import numpy as np
 import argparse
+import warnings
+warnings.filterwarnings("ignore")
 
 parser = argparse.ArgumentParser(
     description='Input test number and number of dimension')
@@ -237,23 +239,29 @@ if __name__ == "__main__":
     for i in range(numR):
         line = LineString([middlepoint[i], middlepoint[i+1]])
         perpen = getperpen(line)
-        print(perpen.intersects(vorolinestring))
-        print(perpen.intersection(vorolinestring))
+        # print(perpen.intersects(vorolinestring))
+        # print(perpen.intersection(vorolinestring))
         iniPopulationCoord.append(perpen.intersection(vorolinestring))
         # angle(getvector(line), getvector(perpen))
 
         plotline(perpen)
+
     # plotpoint([2.7059261, 4.0213466])
     # plotpoint([3.1084492, 4.3460963])
     # plotpoint([4.4189145, 3.7629036])
     # plotpoint([30.854889, 43.690566])
     # plotpoint([29.799640, 37.473088])
+
+    # To convert from pointy to Coord
     R = start_end.length / (numR + 1)
-    print(R)
+    # print(R)
     for i in range(numR):
         pointy = convertP2P(iniPopulationCoord[i].x, (i+1)*R, start, end)
         iniPointy.append(pointy)
-    print(iniPopulationCoord[0].x, iniPopulationCoord[0].y)
-    print(iniPointy)
-    plt.axis([0, 100, 0, 100])
-    plt.show()
+    # print(iniPopulationCoord[0].x, iniPopulationCoord[0].y)
+    # print(iniPointy)
+
+    for pointy in iniPointy:
+        print(pointy)
+    # plt.axis([0, 100, 0, 100])
+    # plt.show()
