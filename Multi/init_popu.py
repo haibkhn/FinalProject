@@ -1,4 +1,5 @@
 from cmath import inf
+from turtle import color
 from shapely.geometry import Point, Polygon, LineString
 from shapely.ops import voronoi_diagram
 from dijkstar import Graph, find_path
@@ -35,11 +36,10 @@ def inputObs(obstacle_list):
             obstacle = []
         else:
             point = line.split()
-            # obstacle.append(Point(float(point[0])/10, float(point[1])/10))
             obstacle.append(Point(float(point[0]), float(point[1])))
 
+    # Because 1st element in txt file is -1 -> we pop
     obstacle_list.pop(0)
-    # print(obstacle_list)
     sur = [Point(0, 0), Point(0, 100), Point(100, 100), Point(100, 0)]
     obstacle_list.append(sur)
     return obstacle_list
@@ -52,7 +52,6 @@ def inputTarget(target_list):
             return target_list
         else:
             point = line.split()
-            # target_list.append(Point(float(point[0])/10, float(point[1])/10))
             target_list.append(Point(float(point[0]), float(point[1])))
 
     return target_list
@@ -80,8 +79,8 @@ def is_in_list(list_np_arrays, array_to_check):
 
 
 def getperpen(line):
-    paral1 = line.parallel_offset(20, 'left')
-    paral2 = line.parallel_offset(20, 'right')
+    paral1 = line.parallel_offset(50, 'left')
+    paral2 = line.parallel_offset(50, 'right')
     # print(paral)
     perpen = LineString([paral1.boundary[1], paral2.boundary[0]])
     return perpen
@@ -203,8 +202,6 @@ if __name__ == "__main__":
 
     # liệt kê các đỉnh đi qua từ start_graph đến end_graph
     node_list = find_path(graph, start_graph, end_graph).nodes
-    # print(node_list)
-    # print(vor_vertice[node_list[0]])
     voronoiNodeCoord = []
 
     # Append real coordianate to voronoiNodeCoord, not index
@@ -218,7 +215,6 @@ if __name__ == "__main__":
         plt.plot([target_list[i].x, target_list_closest_index[i][0]], [
             target_list[i].y, target_list_closest_index[i][1]], color="red", linewidth=5)
 
-    # print(voronoiNodeCoord)
     # Create a linestring from start to end
     vorolinestring = LineString(voronoiNodeCoord)
     start_end = LineString([start, end])
@@ -239,29 +235,29 @@ if __name__ == "__main__":
     for i in range(numR):
         line = LineString([middlepoint[i], middlepoint[i+1]])
         perpen = getperpen(line)
-        # print(perpen.intersects(vorolinestring))
-        # print(perpen.intersection(vorolinestring))
         iniPopulationCoord.append(perpen.intersection(vorolinestring))
         # angle(getvector(line), getvector(perpen))
 
         plotline(perpen)
 
-    # plotpoint([2.7059261, 4.0213466])
-    # plotpoint([3.1084492, 4.3460963])
-    # plotpoint([4.4189145, 3.7629036])
-    # plotpoint([30.854889, 43.690566])
-    # plotpoint([29.799640, 37.473088])
-
     # To convert from pointy to Coord
     R = start_end.length / (numR + 1)
-    # print(R)
     for i in range(numR):
         pointy = convertP2P(iniPopulationCoord[i].x, (i+1)*R, start, end)
         iniPointy.append(pointy)
-    # print(iniPopulationCoord[0].x, iniPopulationCoord[0].y)
-    # print(iniPointy)
 
     for pointy in iniPointy:
-        print(pointy)
-    # plt.axis([0, 100, 0, 100])
-    # plt.show()
+        print(pointy)  # This line we have to print to get output to java
+
+    # Just to plot
+    iniPopulationCoordButPoint = []  # Convert to point to draw
+    iniPopulationCoordButPoint.append((start[0], start[1]))
+    for coord in iniPopulationCoord:
+        iniPopulationCoordButPoint.append((coord.x, coord.y))
+    iniPopulationCoordButPoint.append((end[0], end[1]))
+
+    AB = LineString(iniPopulationCoordButPoint)
+    plt.plot(*AB.xy, markersize=5, color="blue", linewidth=3)
+
+    plt.axis([0, 100, 0, 100])
+    plt.show()
