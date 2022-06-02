@@ -23,10 +23,10 @@ public class ES {
     public Path initialCandidate;
     public Graph graph;
     public double R; // radius
-    public double maxPointy = 10;
-    public double minPointy = -10;
-    public double maxVariance = 5;
-    public double minVariance = -5;
+    // public double maxPointy = 10;
+    // public double minPointy = -10;
+    public double maxVariance = 10;
+    public double minVariance = -10;
     public double mean[];
     public static Point startPoint;
     public static Point endPoint;
