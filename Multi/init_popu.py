@@ -9,7 +9,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import argparse
 import warnings
+import time
 warnings.filterwarnings("ignore")
+start_time = time.time()
 
 parser = argparse.ArgumentParser(
     description='Input test number and number of dimension')
@@ -237,7 +239,6 @@ if __name__ == "__main__":
         perpen = getperpen(line)
         iniPopulationCoord.append(perpen.intersection(vorolinestring))
         # angle(getvector(line), getvector(perpen))
-
         plotline(perpen)
 
     # To convert from pointy to Coord
@@ -258,6 +259,9 @@ if __name__ == "__main__":
 
     AB = LineString(iniPopulationCoordButPoint)
     plt.plot(*AB.xy, markersize=5, color="blue", linewidth=3)
-
+    plt.axis('square')
     plt.axis([0, 100, 0, 100])
-    plt.show()
+    # print("--- %s seconds ---" % (time.time() - start_time))
+
+    # plt.savefig("myImagePDF.pdf", format="pdf", bbox_inches="tight")
+    # plt.show()
