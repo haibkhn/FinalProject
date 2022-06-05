@@ -1,0 +1,8 @@
+exp2/map2a_voronoi/moes_test18.txt	49.89 1999.6
+exp2/map2a_voronoi/mopso_test18.txt	60.71 1152.15
+exp2/map2a_voronoi/nsgaii_test18.txt	50.56 70.9
+exp2/map2a_voronoi/psoes_test18.txt	80.51 1604.6
+exp2/map2a_voronoi/moes_test18.txt	47.61 3916.7
+exp2/map2a_voronoi/mopso_test18.txt	60.71 1152.15
+exp2/map2a_voronoi/nsgaii_test18.txt	50.56 70.9
+exp2/map2a_voronoi/psoes_test18.txt	80.51 1604.6

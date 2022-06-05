@@ -1,0 +1,4 @@
+exp2/map4a_voronoi/moes_test26.txt	40.38 7680.5
+exp2/map4a_voronoi/mopso_test26.txt	43.84 3302.0
+exp2/map4a_voronoi/nsgaii_test26.txt	22.32 683.3
+exp2/map4a_voronoi/psoes_test26.txt	48.98 4215.0
