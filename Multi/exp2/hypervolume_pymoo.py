@@ -7,7 +7,7 @@ import pandas as pd
 import seaborn as sns
 
 # os.chdir("exp1")
-map = "map4b_voronoi"
+map = "map2a"
 'hypervolume' in dir()
 allfile = os.listdir("exp2/"+map)
 # allfile.sort()
@@ -37,7 +37,7 @@ for file in allfile:
         if hypervolumeArray != []:
             # print(hypervolumeArray)
             metric = get_performance_indicator(
-                "hv", ref_point=np.array([120, 1.5, 2.2]))
+                "hv", ref_point=np.array([180, 1.5, 2.2]))
             hypervolumeNumpyArray = np.array(hypervolumeArray)
             # print(hypervolumeNumpyArray)
 
@@ -79,7 +79,7 @@ df = pd.DataFrame()
 df["MOES"] = box[0]
 df["MOPSO"] = box[1]
 df["NSGA-II"] = box[2]
-df["HMOPSO-ES"] = box[3]
+# df["HMOPSO-ES"] = box[3]
 
 df.boxplot()
 for i, d in enumerate(df):
@@ -87,6 +87,7 @@ for i, d in enumerate(df):
     x = np.random.normal(i + 1, 0.04, len(y))
     plt.scatter(x, y)
 plt.title(map)
+plt.savefig("exp2/"+map+".pdf", format="pdf", bbox_inches="tight")
 
 plt.show()
 # print(df)

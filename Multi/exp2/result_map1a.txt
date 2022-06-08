@@ -2,3 +2,11 @@ exp2/map1a/moes_test16.txt	18.4 1544.1
 exp2/map1a/mopso_test16.txt	20.32 607.15
 exp2/map1a/nsgaii_test16.txt	15.2 37.2
 exp2/map1a/psoes_test16.txt	23.57 860.95
+exp2/map1a/moes_test16.txt	11.69 1760.9
+exp2/map1a/mopso_test16.txt	20.32 607.15
+exp2/map1a/nsgaii_test16.txt	15.2 37.2
+exp2/map1a/psoes_test16.txt	23.57 860.95
+exp2/map1a/moes_test16.txt	22.42 1928.75
+exp2/map1a/mopso_test16.txt	20.32 607.15
+exp2/map1a/nsgaii_test16.txt	15.2 37.2
+exp2/map1a/psoes_test16.txt	23.57 860.95
