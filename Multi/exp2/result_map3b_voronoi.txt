@@ -1,0 +1,8 @@
+exp2/map3b_voronoi/moes_test24.txt	17.65 19920.85
+exp2/map3b_voronoi/mopso_test24.txt	16.64 4497.65
+exp2/map3b_voronoi/nsgaii_test24.txt	14.73 1212.3
+exp2/map3b_voronoi/psoes_test24.txt	18.36 5148.65
+exp2/map3b_voronoi/moes_test24.txt	17.65 19920.85
+exp2/map3b_voronoi/mopso_test24.txt	16.64 4497.65
+exp2/map3b_voronoi/nsgaii_test24.txt	14.73 1212.3
+exp2/map3b_voronoi/psoes_test24.txt	18.36 5148.65

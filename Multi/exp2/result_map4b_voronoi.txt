@@ -1,0 +1,16 @@
+exp2/map4b_voronoi/moes_test27.txt	32.8 8513.35
+exp2/map4b_voronoi/mopso_test27.txt	33.42 3605.3
+exp2/map4b_voronoi/nsgaii_test27.txt	21.1 537.9
+exp2/map4b_voronoi/psoes_test27.txt	40.15 4329.75
+exp2/map4b_voronoi/moes_test27.txt	32.8 8513.35
+exp2/map4b_voronoi/mopso_test27.txt	33.42 3605.3
+exp2/map4b_voronoi/nsgaii_test27.txt	21.1 537.9
+exp2/map4b_voronoi/psoes_test27.txt	40.15 4329.75
+exp2/map4b_voronoi/moes_test27.txt	32.8 8513.35
+exp2/map4b_voronoi/mopso_test27.txt	33.42 3605.3
+exp2/map4b_voronoi/nsgaii_test27.txt	21.1 537.9
+exp2/map4b_voronoi/psoes_test27.txt	40.15 4329.75
+exp2/map4b_voronoi/moes_test27.txt	38.97 8652.35
+exp2/map4b_voronoi/mopso_test27.txt	33.42 3605.3
+exp2/map4b_voronoi/nsgaii_test27.txt	21.1 537.9
+exp2/map4b_voronoi/psoes_test27.txt	40.15 4329.75

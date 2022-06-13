@@ -4,7 +4,7 @@ import numpy as np
 import os
 
 # os.chdir("exp1")
-map = "map4b"
+map = "map2a"
 
 'hypervolume' in dir()
 allfile = os.listdir("exp2/"+map)

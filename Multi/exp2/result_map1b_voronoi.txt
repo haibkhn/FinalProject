@@ -1,0 +1,4 @@
+exp2/map1b_voronoi/moes_test21.txt	19.26 1399.75
+exp2/map1b_voronoi/mopso_test21.txt	21.63 573.4
+exp2/map1b_voronoi/nsgaii_test21.txt	11.33 33.0
+exp2/map1b_voronoi/psoes_test21.txt	24.08 893.65

@@ -75,6 +75,7 @@ public class ObstaclesGraph {
 		double ratio = 0.9;
 
 		ArrayList<ObstaclesGraph> obstacles = ObstaclesGraph.getObstacles("obstacles.txt", ratio);
+
 		for (ObstaclesGraph obstacle : obstacles) {
 			for (Point point : obstacle.points) {
 				System.out.print("(" + point.x + ", " + point.y + ")\t");
