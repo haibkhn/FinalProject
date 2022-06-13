@@ -102,6 +102,7 @@ def plotpoint(point):
              markeredgecolor="red", markerfacecolor="green")
 
 
+
 def convertP2P(x, pointx, start, end):
     temp1 = end[0] - start[0]
     temp2 = end[1] - start[1]
@@ -243,6 +244,7 @@ if __name__ == "__main__":
         # angle(getvector(line), getvector(perpen))
 
         plotline(perpen)
+
     # plotpoint([2.7059261, 4.0213466])
     # plotpoint([3.1084492, 4.3460963])
     # plotpoint([4.4189145, 3.7629036])
