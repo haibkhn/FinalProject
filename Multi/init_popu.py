@@ -81,8 +81,8 @@ def is_in_list(list_np_arrays, array_to_check):
 
 
 def getperpen(line):
-    paral1 = line.parallel_offset(50, 'left')
-    paral2 = line.parallel_offset(50, 'right')
+    paral1 = line.parallel_offset(500, 'left')
+    paral2 = line.parallel_offset(500, 'right')
     # print(paral)
     perpen = LineString([paral1.boundary[1], paral2.boundary[0]])
     return perpen
