@@ -32,7 +32,7 @@ public class Main {
 		int numR = 9;
 		// Tao moi truong
 		GUIRobotics gui = new GUIRobotics(600, 100, 10);
-		gui.generateEnvironment("input/obstacle_" + numberTeString + ".txt");
+		gui.generateEnvironment("input/obstacle_" + numberTeString + ".txt", 0.8, true);
 
 		// Doc du lieu dau vao
 		Graph graph = new Graph("input/obstacle_" + numberTeString + ".txt");

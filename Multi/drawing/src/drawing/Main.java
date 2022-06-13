@@ -24,7 +24,7 @@ public class Main {
         String numberTeString = "16";
         // Tao moi truong
         GUIRobotics gui = new GUIRobotics(600, 100, 10);
-        gui.generateEnvironment("input/obstacle_" + numberTeString + ".txt");
+        gui.generateEnvironment("input/obstacle_" + numberTeString + ".txt", 0.8, false);
 
         // Doc du lieu dau vao
         LinkedList<Point> pointsToVisit = readPointData("input/input_" + numberTeString + ".txt");
