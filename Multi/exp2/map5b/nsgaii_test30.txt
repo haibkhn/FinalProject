@@ -1,0 +1,133 @@
+Total execution time: 927
+----------------------
+Path :  126.306 1.0  1.668
+Total execution time: 701
+----------------------
+Path :  164.358 1.0  1.6696
+Total execution time: 735
+----------------------
+Total execution time: 677
+----------------------
+Total execution time: 665
+----------------------
+Total execution time: 645
+----------------------
+Total execution time: 663
+----------------------
+Path :  119.6007 0.9182  1.6464
+Total execution time: 612
+----------------------
+Total execution time: 659
+----------------------
+Path :  129.1675 1.0  1.7025
+Path :  124.7761 0.8951  1.8694
+Total execution time: 685
+----------------------
+Total execution time: 629
+----------------------
+Path :  132.7384 1.0  1.6309
+Total execution time: 649
+----------------------
+Path :  123.1807 0.8673  1.7303
+Total execution time: 640
+----------------------
+Path :  149.8887 1.0  1.6048
+Total execution time: 685
+----------------------
+Path :  171.1843 1.0  1.7271
+Total execution time: 669
+----------------------
+Total execution time: 687
+----------------------
+Total execution time: 636
+----------------------
+Path :  117.2923 1.0  1.7277
+Total execution time: 660
+----------------------
+Total execution time: 625
+----------------------
+Total execution time: 662
+----------------------
+Total execution time: 660
+----------------------
+Total execution time: 640
+----------------------
+Total execution time: 637
+----------------------
+Total execution time: 644
+----------------------
+Total execution time: 657
+----------------------
+Total execution time: 624
+----------------------
+Total execution time: 605
+----------------------
+Total execution time: 654
+----------------------
+Path :  128.6196 0.9159  1.8674
+Total execution time: 703
+----------------------
+Total execution time: 620
+----------------------
+Total execution time: 598
+----------------------
+Path :  134.8532 1.0  1.7406
+Total execution time: 648
+----------------------
+Total execution time: 634
+----------------------
+Total execution time: 669
+----------------------
+Path :  156.4647 1.0  1.6914
+Path :  120.1837 1.0  1.7305
+Total execution time: 627
+----------------------
+Total execution time: 630
+----------------------
+Total execution time: 637
+----------------------
+Path :  116.0574 1.0  1.6115
+Total execution time: 649
+----------------------
+Path :  165.0233 1.0  1.6006
+Path :  124.4927 1.0  1.756
+Total execution time: 638
+----------------------
+Total execution time: 599
+----------------------
+Total execution time: 625
+----------------------
+Total execution time: 637
+----------------------
+Total execution time: 638
+----------------------
+Total execution time: 665
+----------------------
+Path :  159.8998 1.0  1.7208
+Path :  123.7173 1.0  1.8514
+Total execution time: 624
+----------------------
+Total execution time: 678
+----------------------
+Path :  138.9135 1.0  1.6914
+Total execution time: 639
+----------------------
+Total execution time: 627
+----------------------
+Path :  128.2386 1.0  1.6734
+Total execution time: 623
+----------------------
+Path :  113.7726 1.0  1.6304
+Total execution time: 642
+----------------------
+Total execution time: 657
+----------------------
+Total execution time: 647
+----------------------
+Path :  118.6276 1.0  1.6728
+Path :  131.142 0.973  1.7688
+Total execution time: 657
+----------------------
+Path :  121.5575 1.0  1.5679
+Total execution time: 641
+----------------------

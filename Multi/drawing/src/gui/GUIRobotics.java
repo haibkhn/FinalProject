@@ -445,10 +445,11 @@ public class GUIRobotics {
 			g2.draw(new Line2D.Double(OX + p1.x * alpha, OY - p1.y * alpha, OX + p2.x * alpha, OY - p2.y * alpha));
 		}
 
-		public void drawLines(ArrayList<Point> points, LinkedList<Point> pointsToVisit, Color color) {
+		public void drawLines(ArrayList<Point> points, LinkedList<Point> pointsToVisit, Color lineColor,
+				Color dotColor) {
 			Graphics2D g2 = (Graphics2D) getGraphics();
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			g2.setColor(color);
+			g2.setColor(lineColor);
 			g2.setStroke(new BasicStroke(2.0f));
 			for (int i = 0; i < points.size() - 1; i++) {
 				g2.draw(new Line2D.Double(OX + points.get(i).x * alpha, OY - points.get(i).y * alpha,
@@ -459,10 +460,10 @@ public class GUIRobotics {
 			for (int i = 0; i < points.size(); i++) {
 				Point pt = new Point(points.get(i).x, points.get(i).y);
 				if (pt.indexInSet(pointsToVisit) == -1) {
-					g2.setColor(Color.black);
+					g2.setColor(dotColor);
 					g2.fill(new Rectangle2D.Double(OX + points.get(i).x * alpha - 3, OY - points.get(i).y * alpha - 3,
-							6,
-							6));
+							5,
+							5));
 					g2.setColor(Color.RED);
 				} else
 					g2.fill(new Ellipse2D.Double(OX + points.get(i).x * alpha - 4, OY - points.get(i).y * alpha - 4, 8,

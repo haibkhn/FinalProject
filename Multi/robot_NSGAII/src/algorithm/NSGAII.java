@@ -32,7 +32,7 @@ public class NSGAII {
 	public double distanceX;
 	final int NP = 150; // population size
 	final int crossoverPoint = 3; // crossoverPoint
-	int numY = 12;
+	int numY = 16;
 	public LinkedList<Path> POP = new LinkedList<Path>();
 	public LinkedList<Path> NDPOP = new LinkedList<Path>();
 	static final double maxPointy = 10;

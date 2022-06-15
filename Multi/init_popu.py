@@ -97,12 +97,12 @@ def plotline(line):
     point2 = line.boundary[1]
     x_values = [point1.x, point2.x]
     y_values = [point1.y, point2.y]
-    plt.plot(x_values, y_values)
+    plt.plot(x_values, y_values, "crimson", linewidth=2)
 
 
-def plotpoint(point):
-    plt.plot([point[0]], [point[1]], marker="o", markersize=10,
-             markeredgecolor="red", markerfacecolor="green")
+# def plotpoint(point):
+#     plt.plot([point[0]], [point[1]], marker="o", markersize=10,
+#              markeredgecolor="red", markerfacecolor="green")
 
 
 def convertP2P(x, pointx, start, end):
@@ -149,7 +149,8 @@ if __name__ == "__main__":
         for p in vor_check:
             if shapelyPoint([p[0], p[1]]).within(polygon):
                 p[2] = 1
-    fig = voronoi_plot_2d(vor)
+    fig = voronoi_plot_2d(vor, show_vertices=False,
+                          point_size=2, line_width=1.5, line_alpha=0.6, show_points=False)
 
     # Find closest points to all target
     target_list_closest_index = [0] * len(target_list)
@@ -261,7 +262,11 @@ if __name__ == "__main__":
     plt.plot(*AB.xy, markersize=5, color="blue", linewidth=3)
     plt.axis('square')
     plt.axis([0, 100, 0, 100])
-    # print("--- %s seconds ---" % (time.time() - start_time))
 
-    # plt.savefig("myImagePDF.pdf", format="pdf", bbox_inches="tight")
+    for poly in poly_list:
+        x, y = poly.exterior.coords.xy
+        plt.fill(x, y, "black", edgecolor='black', linewidth=3)
+    plt.savefig("image/voronoi/map5b.png", format="png", bbox_inches="tight")
+
+    # plt.savefig("image/voronoi/map5b.pdf", format="pdf", bbox_inches="tight")
     # plt.show()

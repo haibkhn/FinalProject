@@ -28,11 +28,11 @@ public class Main {
 		String FILE_URL = "exp2/moes_test26.txt";
 		File file = new File(FILE_URL);
 
-		String numberTeString = "16";
-		int numR = 9;
+		String numberTeString = "27";
+		int numR = 10;
 		// Tao moi truong
-		GUIRobotics gui = new GUIRobotics(600, 100, 10);
-		gui.generateEnvironment("input/obstacle_" + numberTeString + ".txt", 0.8, true);
+		GUIRobotics gui = new GUIRobotics(800, 100, 10);
+		gui.generateEnvironment("input/obstacle_" + numberTeString + ".txt", 1, false);
 
 		// Doc du lieu dau vao
 		Graph graph = new Graph("input/obstacle_" + numberTeString + ".txt");
@@ -53,21 +53,21 @@ public class Main {
 				resultDistance.add(es.resultDistance.get(j));
 			}
 			resultDistance.add(pointsToVisit.get(1));
-			gui.canvas.drawLines(resultDistance, pointsToVisit, Color.GREEN);
+			gui.canvas.drawLines(resultDistance, pointsToVisit, Color.GREEN, Color.black);
 
 			resultSafety.add(pointsToVisit.get(0));
 			for (int j = 0; j < es.resultSafety.size(); j++) {
 				resultSafety.add(es.resultSafety.get(j));
 			}
 			resultSafety.add(pointsToVisit.get(1));
-			gui.canvas.drawLines(resultSafety, pointsToVisit, Color.RED);
+			gui.canvas.drawLines(resultSafety, pointsToVisit, Color.RED, Color.black);
 
 			resultSmooth.add(pointsToVisit.get(0));
 			for (int j = 0; j < es.resultSmooth.size(); j++) {
 				resultSmooth.add(es.resultSmooth.get(j));
 			}
 			resultSmooth.add(pointsToVisit.get(1));
-			gui.canvas.drawLines(resultSmooth, pointsToVisit, Color.BLACK);
+			gui.canvas.drawLines(resultSmooth, pointsToVisit, Color.BLACK, Color.black);
 
 			for (int i = 0; i < es.resultPareto.size(); i++) {
 				ArrayList<Point> resultPareto = new ArrayList<Point>();
@@ -77,11 +77,9 @@ public class Main {
 					resultPareto.add(es.resultPareto.get(i).get(j));
 				}
 				resultPareto.add(pointsToVisit.get(1));
-				gui.canvas.drawLines(resultPareto, pointsToVisit, Color.ORANGE);
+				gui.canvas.drawLines(resultPareto, pointsToVisit, Color.ORANGE, Color.black);
 			}
-			/*
-			 * ---------------------------------------------------------
-			 */
+
 			// To write all point into a file
 			try {
 				String FILE_URL_TESTING = "testing/moes_test_point_" + numberTeString + ".txt";
@@ -95,7 +93,7 @@ public class Main {
 				for (Point point : resultSmooth) {
 					bw.write(point.x + " " + point.y + "\n");
 				}
-				bw.write("----------------------\n");
+				bw.write("-1\n");
 				bw.close();
 			} catch (Exception e) {
 				System.out.println("Something went wrong!");

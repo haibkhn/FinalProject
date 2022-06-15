@@ -16,8 +16,8 @@ public class PSO {
 	public final int IT = 100;
 	public double V_MAX;
 	public double V_MIN;
-	public double maxPointy = 10;
-	public double minPointy = -10;
+	public double maxPointy = 15;
+	public double minPointy = -15;
 	public Graph graph;
 	public Path particles[] = new Path[NP];
 	public int numR; // number of R in map

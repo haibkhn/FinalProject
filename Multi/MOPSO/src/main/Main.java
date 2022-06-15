@@ -21,9 +21,9 @@ public class Main {
 		boolean flag = false;
 		while (count < 20) {
 			long time = System.currentTimeMillis();
-			String FILE_URL = "exp2/mopso_test27.txt";
+			String FILE_URL = "exp2/mopso_test30.txt";
 			File file = new File(FILE_URL);
-			String numberTeString = "27";
+			String numberTeString = "30";
 			// Tao moi truong
 			// GUIRobotics gui = new GUIRobotics(800, 100, 10);
 			// gui.generateEnvironment("input/obstacle_" + numberTeString + ".txt");
@@ -44,6 +44,26 @@ public class Main {
 				result.add(pointsToVisit.get(1));
 
 				// gui.canvas.drawLines(result, pointsToVisit);
+				// To write all point into a file
+				try {
+					String FILE_URL_TESTING = "testing/mopso_test_point_" + numberTeString + ".txt";
+					File file_test = new File(FILE_URL_TESTING);
+					if (!file_test.exists()) {
+						file_test.createNewFile();
+					}
+					FileWriter fw = new FileWriter(file_test.getAbsoluteFile(), true);
+					BufferedWriter bw = new BufferedWriter(fw);
+
+					for (Point point : result) {
+						bw.write(point.x + " " + point.y + "\n");
+					}
+					bw.write("-1\n");
+					bw.close();
+				} catch (Exception e) {
+					System.out.println("Something went wrong!");
+					e.printStackTrace();
+				}
+				// --------------------------------------------------------
 			} catch (Exception e) {
 				System.out.println("Something went wrong!");
 				e.printStackTrace();

@@ -7,7 +7,7 @@ import pandas as pd
 import seaborn as sns
 
 # os.chdir("exp1")
-map = "map2a"
+map = "map5b"
 'hypervolume' in dir()
 allfile = os.listdir("exp2/"+map)
 # allfile.sort()
@@ -37,7 +37,7 @@ for file in allfile:
         if hypervolumeArray != []:
             # print(hypervolumeArray)
             metric = get_performance_indicator(
-                "hv", ref_point=np.array([180, 1.5, 2.2]))
+                "hv", ref_point=np.array([180, 1.5, 2]))
             hypervolumeNumpyArray = np.array(hypervolumeArray)
             # print(hypervolumeNumpyArray)
 

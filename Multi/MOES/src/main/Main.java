@@ -25,10 +25,10 @@ public class Main {
 		while (count < 20) {
 
 			long time = System.currentTimeMillis();
-			String FILE_URL = "exp2/moes_test18.txt";
+			String FILE_URL = "exp2/moes_test30.txt";
 			File file = new File(FILE_URL);
-			String numberTeString = "18";
-			int numR = 12;
+			String numberTeString = "30";
+			int numR = 10;
 			// Tao moi truong
 			// GUIRobotics gui = new GUIRobotics(600, 100, 10);
 			// gui.generateEnvironment("input/obstacle_" + numberTeString + ".txt");
