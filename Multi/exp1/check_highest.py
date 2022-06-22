@@ -6,13 +6,13 @@ import os
 # os.chdir("exp1")
 
 'hypervolume' in dir()
-allfile = os.listdir("exp1/map2")
+allfile = os.listdir("exp1/map2_moes")
 # allfile.sort()
 # print(allfile)
 hypervolumeArray = []
 
 for file in allfile:
-    f = open("exp1/map2/" + file, "r")
+    f = open("exp1/map2_moes/" + file, "r")
 
     while True:
         line = f.readline()

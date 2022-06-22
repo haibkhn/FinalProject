@@ -266,7 +266,7 @@ if __name__ == "__main__":
     for poly in poly_list:
         x, y = poly.exterior.coords.xy
         plt.fill(x, y, "black", edgecolor='black', linewidth=3)
-    plt.savefig("image/voronoi/map5b.png", format="png", bbox_inches="tight")
+    # plt.savefig("image/voronoi/map5b.png", format="png", bbox_inches="tight")
 
     # plt.savefig("image/voronoi/map5b.pdf", format="pdf", bbox_inches="tight")
     # plt.show()

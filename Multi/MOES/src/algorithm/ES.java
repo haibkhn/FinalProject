@@ -12,8 +12,8 @@ import java.io.InputStreamReader;
 
 public class ES {
     public final int numOfGeneration = 50; // number of generation
-    public final int elite = 30;
-    public final int children = 80;
+    public final int elite = 80;
+    public final int children = 200;
     public Path particles[] = new Path[children];
     public Path gBest, gBestDistance, gBestSmooth, gBestSafety;
     public double startPopulation[];

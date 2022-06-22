@@ -6,12 +6,12 @@ import os
 # os.chdir("exp1")
 
 'hypervolume' in dir()
-allfile = os.listdir("exp1/map2")
+allfile = os.listdir("exp1/map2_moes")
 # allfile.sort()
 # print(allfile)
 
 for file in allfile:
-    f = open("exp1/map2/" + file, "r")
+    f = open("exp1/map2_moes/" + file, "r")
 
     hypervolumeArray = []
     hypervolumeList = []
@@ -33,7 +33,7 @@ for file in allfile:
         if hypervolumeArray != []:
             # print(hypervolumeArray)
             metric = get_performance_indicator(
-                "hv", ref_point=np.array([120, 1, 1.5]))
+                "hv", ref_point=np.array([120, 1.5, 2]))
             hypervolumeNumpyArray = np.array(hypervolumeArray)
             # print(hypervolumeNumpyArray)
 
@@ -64,7 +64,7 @@ for file in allfile:
     avgTime = (sum(timeList)/len(timeList))
 
     # print(f.name)
-    file = open("exp1/result_map_2.txt", 'a+')
+    file = open("exp1/result_map_2_moes.txt", 'a+')
     file.write(f.name+"\t"+str(round(avgHypervolume, 2)) +
                " " + str(round(avgTime, 2)) + "\n")
     file.close()
