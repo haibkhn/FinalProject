@@ -11,7 +11,7 @@ map = "map5b"
 'hypervolume' in dir()
 allfile = os.listdir("exp2/"+map)
 # allfile.sort()
-# print(allfile)
+print(allfile)
 box = []
 
 for file in allfile:
@@ -37,7 +37,7 @@ for file in allfile:
         if hypervolumeArray != []:
             # print(hypervolumeArray)
             metric = get_performance_indicator(
-                "hv", ref_point=np.array([180, 1.5, 2]))
+                "hv", ref_point=np.array([250, 1.5, 2]))
             hypervolumeNumpyArray = np.array(hypervolumeArray)
             # print(hypervolumeNumpyArray)
 
@@ -76,9 +76,10 @@ for file in allfile:
 
 # print(box)
 df = pd.DataFrame()
-df["MOES"] = box[0]
-df["MOPSO"] = box[1]
-df["NSGA-II"] = box[2]
+df["V-MOES"] = box[0]
+df["MOES"] = box[1]
+df["MOPSO"] = box[2]
+df["NSGA-II"] = box[3]
 # df["HMOPSO-ES"] = box[3]
 
 df.boxplot()

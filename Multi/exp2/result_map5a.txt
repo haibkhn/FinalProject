@@ -7,3 +7,7 @@ exp2/map5a/nsgaii_test29.txt	25.04 477.8
 exp2/map5a/moes_test29.txt	111.42 3784.95
 exp2/map5a/mopso_test29.txt	89.5 1425.9
 exp2/map5a/nsgaii_test29.txt	40.19 477.8
+exp2/map5a/moes_test29.txt	111.42 3784.95
+exp2/map5a/moes_test_old_29.txt	101.31 2846.75
+exp2/map5a/mopso_test29.txt	89.5 1425.9
+exp2/map5a/nsgaii_test29.txt	40.19 477.8

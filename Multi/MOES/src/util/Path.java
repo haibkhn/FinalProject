@@ -170,7 +170,7 @@ public class Path {
 			}
 		}
 
-		return Math.exp(-safety * 2);
+		return Math.exp(-safety * 1.5);
 	}
 
 	public boolean collision(Graph g, Point endPoint) {

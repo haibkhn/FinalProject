@@ -1,3 +1,7 @@
 exp2/map5b/moes_test30.txt	49.85 6173.2
 exp2/map5b/mopso_test30.txt	33.17 2192.75
 exp2/map5b/nsgaii_test30.txt	8.04 656.35
+exp2/map5b/moes_test30.txt	98.21 6173.2
+exp2/map5b/moes_test_old_30.txt	79.26 5147.55
+exp2/map5b/mopso_test30.txt	68.02 2192.75
+exp2/map5b/nsgaii_test30.txt	19.62 656.35

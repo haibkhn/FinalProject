@@ -12,8 +12,8 @@ import java.io.InputStreamReader;
 
 public class ES {
     public final int numOfGeneration = 50; // number of generation
-    public final int elite = 80;
-    public final int children = 200;
+    public final int elite = 30;
+    public final int children = 80;
     public Path particles[] = new Path[children];
     public Path gBest, gBestDistance, gBestSmooth, gBestSafety;
     public double startPopulation[];
@@ -23,10 +23,10 @@ public class ES {
     public Path initialCandidate;
     public Graph graph;
     public double R; // radius
-    // public double maxPointy = 10;
-    // public double minPointy = -10;
-    public double maxVariance = 10;
-    public double minVariance = -10;
+    public double maxPointy = 15;
+    public double minPointy = -15;
+    public double maxVariance = 15;
+    public double minVariance = -15;
     public double mean[];
     public static Point startPoint;
     public static Point endPoint;
@@ -55,55 +55,19 @@ public class ES {
     public void initialize(int numR) {
         standardDevi = new double[numR];
         mean = new double[numR];
-        try {
-            ProcessBuilder builder = new ProcessBuilder("python", System.getProperty("user.dir") + "\\init_popu.py",
-                    numberTeString, String.valueOf(numR));
-            Process process = builder.start();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            BufferedReader readers = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-            String lines = null;
-            int j = 0;
+
+        do {
             double pointy[] = new double[numR];
             Point points[] = new Point[numR];
-            while ((lines = reader.readLine()) != null) {
-                pointy[j] = Double.parseDouble(lines);
-                points[j] = Path.convertPointToPoint(pointy[j], (j + 1) * R, startPoint, endPoint);
-                j++;
-                // System.out.println("lines" + lines);
-            }
-            for (int i = 0; i < numR; i++) {
-                standardDevi[i] = random.nextDouble() * (maxVariance - minVariance) + minVariance;
+            for (int j = 0; j < numR; j++) {
+                standardDevi[j] = random.nextDouble() * (maxVariance - minVariance) + minVariance;
+                do {
+                    pointy[j] = random.nextDouble() * (maxPointy - minPointy) + minPointy;
+                    points[j] = Path.convertPointToPoint(pointy[j], (j + 1) * R, startPoint, endPoint);
+                } while (!points[j].inCoordinate());
             }
             initialCandidate = new Path(numR, R, pointy, points);
-            // System.out.println(pathCollision(initialCandidate));
-            while ((lines = readers.readLine()) != null) {
-                System.out.println("Error lines" + lines);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        // double tmp = Path.convertPointToPointToBeginning(16.635425876805183,
-        // 58.090775125257885, R,
-        // startPoint, endPoint);
-        // System.out.println(tmp);
-        // Point pointstest = Path.convertPointToPoint(1.1224148098978217, R,
-        // startPoint, endPoint);
-        // System.out.println(pointstest.x + " " + pointstest.y);
-
-        // do {
-        // double pointy[] = new double[numR];
-        // Point points[] = new Point[numR];
-        // for (int j = 0; j < numR; j++) {
-        // standardDevi[j] = random.nextDouble() * (maxVariance - minVariance) +
-        // minVariance;
-        // do {
-        // pointy[j] = random.nextDouble() * (maxPointy - minPointy) + minPointy;
-        // points[j] = Path.convertPointToPoint(pointy[j], (j + 1) * R, startPoint,
-        // endPoint);
-        // } while (!points[j].inCoordinate());
-        // }
-        // initialCandidate = new Path(numR, R, pointy, points);
-        // } while (pathCollision(initialCandidate) == true);
+        } while (pathCollision(initialCandidate) == true);
 
         identityMatrix = new double[numR][numR];
         for (int i = 0; i < numR; i++) {
@@ -114,6 +78,74 @@ public class ES {
         gBestSafety = initialCandidate;
         gBestSmooth = initialCandidate;
     }
+
+    // public void initialize(int numR) {
+    // standardDevi = new double[numR];
+    // mean = new double[numR];
+    // try {
+    // ProcessBuilder builder = new ProcessBuilder("python",
+    // System.getProperty("user.dir") + "\\init_popu.py",
+    // numberTeString, String.valueOf(numR));
+    // Process process = builder.start();
+    // BufferedReader reader = new BufferedReader(new
+    // InputStreamReader(process.getInputStream()));
+    // BufferedReader readers = new BufferedReader(new
+    // InputStreamReader(process.getErrorStream()));
+    // String lines = null;
+    // int j = 0;
+    // double pointy[] = new double[numR];
+    // Point points[] = new Point[numR];
+    // while ((lines = reader.readLine()) != null) {
+    // pointy[j] = Double.parseDouble(lines);
+    // points[j] = Path.convertPointToPoint(pointy[j], (j + 1) * R, startPoint,
+    // endPoint);
+    // j++;
+    // // System.out.println("lines" + lines);
+    // }
+    // for (int i = 0; i < numR; i++) {
+    // standardDevi[i] = random.nextDouble() * (maxVariance - minVariance) +
+    // minVariance;
+    // }
+    // initialCandidate = new Path(numR, R, pointy, points);
+    // // System.out.println(pathCollision(initialCandidate));
+    // while ((lines = readers.readLine()) != null) {
+    // System.out.println("Error lines" + lines);
+    // }
+    // } catch (Exception e) {
+    // e.printStackTrace();
+    // }
+    // // double tmp = Path.convertPointToPointToBeginning(16.635425876805183,
+    // // 58.090775125257885, R,
+    // // startPoint, endPoint);
+    // // System.out.println(tmp);
+    // // Point pointstest = Path.convertPointToPoint(1.1224148098978217, R,
+    // // startPoint, endPoint);
+    // // System.out.println(pointstest.x + " " + pointstest.y);
+
+    // // do {
+    // // double pointy[] = new double[numR];
+    // // Point points[] = new Point[numR];
+    // // for (int j = 0; j < numR; j++) {
+    // // standardDevi[j] = random.nextDouble() * (maxVariance - minVariance) +
+    // // minVariance;
+    // // do {
+    // // pointy[j] = random.nextDouble() * (maxPointy - minPointy) + minPointy;
+    // // points[j] = Path.convertPointToPoint(pointy[j], (j + 1) * R, startPoint,
+    // // endPoint);
+    // // } while (!points[j].inCoordinate());
+    // // }
+    // // initialCandidate = new Path(numR, R, pointy, points);
+    // // } while (pathCollision(initialCandidate) == true);
+
+    // identityMatrix = new double[numR][numR];
+    // for (int i = 0; i < numR; i++) {
+    // identityMatrix[i][i] = 1;
+    // }
+    // gBest = initialCandidate;
+    // gBestDistance = initialCandidate;
+    // gBestSafety = initialCandidate;
+    // gBestSmooth = initialCandidate;
+    // }
 
     public boolean pathCollision(Path path) {
         for (int i = 0; i < numR; i++) {

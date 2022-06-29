@@ -10,3 +10,7 @@ exp2/map2b/moes_test28.txt	14.89 6225.6
 exp2/map2b/mopso_test28.txt	13.42 2790.2
 exp2/map2b/nsgaii_test28.txt	12.9 176.8
 exp2/map2b/psoes_test28.txt	15.62 4760.8
+exp2/map2b/moes_test28.txt	14.89 6225.6
+exp2/map2b/moes_test_old_28.txt	14.62 5568.35
+exp2/map2b/mopso_test28.txt	13.42 2790.2
+exp2/map2b/nsgaii_test28.txt	12.9 176.8
