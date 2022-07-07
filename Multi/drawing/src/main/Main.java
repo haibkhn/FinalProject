@@ -28,8 +28,8 @@ public class Main {
 		String FILE_URL = "exp2/moes_test26.txt";
 		File file = new File(FILE_URL);
 
-		String numberTeString = "15";
-		int numR = 12;
+		String numberTeString = "30";
+		int numR = 10;
 		// Tao moi truong
 		GUIRobotics gui = new GUIRobotics(800, 100, 10);
 		gui.generateEnvironment("input/obstacle_" + numberTeString + ".txt", 1, false);
@@ -82,7 +82,7 @@ public class Main {
 
 			// To write all point into a file
 			try {
-				String FILE_URL_TESTING = "testing/moes_test_point_" + numberTeString + ".txt";
+				String FILE_URL_TESTING = "testing/moes_test_point_old" + numberTeString + ".txt";
 				File file_test = new File(FILE_URL_TESTING);
 				if (!file_test.exists()) {
 					file_test.createNewFile();

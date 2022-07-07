@@ -5,14 +5,15 @@ import os
 
 # os.chdir("exp1")
 
+folder = "map2_moes/gene"
 'hypervolume' in dir()
-allfile = os.listdir("exp1/map2_moes")
+allfile = os.listdir("exp1/" + folder)
 # allfile.sort()
 # print(allfile)
 hypervolumeArray = []
 
 for file in allfile:
-    f = open("exp1/map2_moes/" + file, "r")
+    f = open("exp1/" + folder + "/" + file, "r")
 
     while True:
         line = f.readline()

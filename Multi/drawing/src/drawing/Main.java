@@ -20,8 +20,8 @@ import util.Point;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        String mapNumber = "map4a";
-        String numberTeString = "26";
+        String mapNumber = "map5b";
+        String numberTeString = "30";
         // Tao moi truong
         GUIRobotics gui = new GUIRobotics(800, 100, 10);
         gui.generateEnvironment("input_drawing/obstacle_" + numberTeString + ".txt", 1, false);
@@ -29,27 +29,30 @@ public class Main {
         // Doc du lieu dau vao
         LinkedList<Point> pointsToVisit = readPointData("input/input_" + numberTeString + ".txt");
 
-        ArrayList<Point> pointsToDrawMOES = readPointDataDrawing(
+        ArrayList<Point> pointsToDrawVMOES = readPointDataDrawing(
                 "testing/" + mapNumber + "/moes_test_point_" + numberTeString + ".txt");
         ArrayList<Point> pointsToDrawMOPSO = readPointDataDrawing(
                 "testing/" + mapNumber + "/mopso_test_point_" + numberTeString + ".txt");
         ArrayList<Point> pointsToDrawNSGAII = readPointDataDrawing(
                 "testing/" + mapNumber + "/nsgaii_test_point_" + numberTeString + ".txt");
+        ArrayList<Point> pointsToDrawMOES = readPointDataDrawing(
+                "testing/" + mapNumber + "/moes_test_point_old" + numberTeString + ".txt");
 
-        ArrayList<Point> resultMOES = new ArrayList<Point>();
+        ArrayList<Point> resultVMOES = new ArrayList<Point>();
         ArrayList<Point> resultMOPSO = new ArrayList<Point>();
         ArrayList<Point> resultNSGAII = new ArrayList<Point>();
+        ArrayList<Point> resultMOES = new ArrayList<Point>();
 
         // ArrayList<Point> resultPareto = new ArrayList<Point>();
 
         try {
             // es.run();
-            resultMOES.add(pointsToVisit.get(0));
-            for (int j = 0; j < pointsToDrawMOES.size(); j++) {
-                resultMOES.add(pointsToDrawMOES.get(j));
+            resultVMOES.add(pointsToVisit.get(0));
+            for (int j = 0; j < pointsToDrawVMOES.size(); j++) {
+                resultVMOES.add(pointsToDrawVMOES.get(j));
             }
-            resultMOES.add(pointsToVisit.get(1));
-            gui.canvas.drawLines(resultMOES, pointsToVisit, Color.GREEN, Color.black);
+            resultVMOES.add(pointsToVisit.get(1));
+            gui.canvas.drawLines(resultVMOES, pointsToVisit, Color.GREEN, Color.black);
 
             resultMOPSO.add(pointsToVisit.get(0));
             for (int j = 0; j < pointsToDrawMOPSO.size(); j++) {
@@ -65,6 +68,12 @@ public class Main {
             resultNSGAII.add(pointsToVisit.get(1));
             gui.canvas.drawLines(resultNSGAII, pointsToVisit, Color.MAGENTA, Color.gray);
 
+            resultMOES.add(pointsToVisit.get(0));
+            for (int j = 0; j < pointsToDrawMOES.size(); j++) {
+                resultMOES.add(pointsToDrawMOES.get(j));
+            }
+            resultMOES.add(pointsToVisit.get(1));
+            gui.canvas.drawLines(resultMOES, pointsToVisit, Color.RED, Color.black);
             // resultSafety.add(pointsToVisit.get(0));
             // for (int j = 0; j < es.resultSafety.size(); j++) {
             // resultSafety.add(es.resultSafety.get(j));
