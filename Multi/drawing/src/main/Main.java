@@ -28,11 +28,11 @@ public class Main {
 		String FILE_URL = "exp2/moes_test26.txt";
 		File file = new File(FILE_URL);
 
-		String numberTeString = "30";
+		String numberTeString = "24";
 		int numR = 10;
 		// Tao moi truong
-		GUIRobotics gui = new GUIRobotics(800, 100, 10);
-		gui.generateEnvironment("input/obstacle_" + numberTeString + ".txt", 1, false);
+		GUIRobotics gui = new GUIRobotics(600, 100, 10);
+		gui.generateEnvironment("input/obstacle_" + numberTeString + ".txt", 0.8, false);
 
 		// Doc du lieu dau vao
 		Graph graph = new Graph("input/obstacle_" + numberTeString + ".txt");

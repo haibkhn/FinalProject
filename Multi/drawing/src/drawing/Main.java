@@ -20,11 +20,11 @@ import util.Point;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        String mapNumber = "map5b";
-        String numberTeString = "30";
+        String mapNumber = "map1a";
+        String numberTeString = "16";
         // Tao moi truong
-        GUIRobotics gui = new GUIRobotics(800, 100, 10);
-        gui.generateEnvironment("input_drawing/obstacle_" + numberTeString + ".txt", 1, false);
+        GUIRobotics gui = new GUIRobotics(600, 100, 10);
+        gui.generateEnvironment("input_drawing/obstacle_" + numberTeString + ".txt", 0.8, false);
 
         // Doc du lieu dau vao
         LinkedList<Point> pointsToVisit = readPointData("input/input_" + numberTeString + ".txt");
