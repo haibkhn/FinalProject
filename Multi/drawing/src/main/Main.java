@@ -28,11 +28,11 @@ public class Main {
 		String FILE_URL = "exp2/moes_test26.txt";
 		File file = new File(FILE_URL);
 
-		String numberTeString = "24";
+		String numberTeString = "22";
 		int numR = 10;
 		// Tao moi truong
 		GUIRobotics gui = new GUIRobotics(600, 100, 10);
-		gui.generateEnvironment("input/obstacle_" + numberTeString + ".txt", 0.8, false);
+		gui.generateEnvironment("input/obstacle_" + numberTeString + ".txt", 0.8, true);
 
 		// Doc du lieu dau vao
 		Graph graph = new Graph("input/obstacle_" + numberTeString + ".txt");
@@ -55,30 +55,30 @@ public class Main {
 			resultDistance.add(pointsToVisit.get(1));
 			gui.canvas.drawLines(resultDistance, pointsToVisit, Color.GREEN, Color.black);
 
-			resultSafety.add(pointsToVisit.get(0));
-			for (int j = 0; j < es.resultSafety.size(); j++) {
-				resultSafety.add(es.resultSafety.get(j));
-			}
-			resultSafety.add(pointsToVisit.get(1));
-			gui.canvas.drawLines(resultSafety, pointsToVisit, Color.RED, Color.black);
+			// resultSafety.add(pointsToVisit.get(0));
+			// for (int j = 0; j < es.resultSafety.size(); j++) {
+			// resultSafety.add(es.resultSafety.get(j));
+			// }
+			// resultSafety.add(pointsToVisit.get(1));
+			// gui.canvas.drawLines(resultSafety, pointsToVisit, Color.RED, Color.black);
 
-			resultSmooth.add(pointsToVisit.get(0));
-			for (int j = 0; j < es.resultSmooth.size(); j++) {
-				resultSmooth.add(es.resultSmooth.get(j));
-			}
-			resultSmooth.add(pointsToVisit.get(1));
-			gui.canvas.drawLines(resultSmooth, pointsToVisit, Color.BLACK, Color.black);
+			// resultSmooth.add(pointsToVisit.get(0));
+			// for (int j = 0; j < es.resultSmooth.size(); j++) {
+			// resultSmooth.add(es.resultSmooth.get(j));
+			// }
+			// resultSmooth.add(pointsToVisit.get(1));
+			// gui.canvas.drawLines(resultSmooth, pointsToVisit, Color.BLACK, Color.black);
 
-			for (int i = 0; i < es.resultPareto.size(); i++) {
-				ArrayList<Point> resultPareto = new ArrayList<Point>();
+			// for (int i = 0; i < es.resultPareto.size(); i++) {
+			// ArrayList<Point> resultPareto = new ArrayList<Point>();
 
-				resultPareto.add(pointsToVisit.get(0));
-				for (int j = 0; j < es.resultPareto.get(i).size(); j++) {
-					resultPareto.add(es.resultPareto.get(i).get(j));
-				}
-				resultPareto.add(pointsToVisit.get(1));
-				gui.canvas.drawLines(resultPareto, pointsToVisit, Color.ORANGE, Color.black);
-			}
+			// resultPareto.add(pointsToVisit.get(0));
+			// for (int j = 0; j < es.resultPareto.get(i).size(); j++) {
+			// resultPareto.add(es.resultPareto.get(i).get(j));
+			// }
+			// resultPareto.add(pointsToVisit.get(1));
+			// gui.canvas.drawLines(resultPareto, pointsToVisit, Color.ORANGE, Color.black);
+			// }
 
 			// To write all point into a file
 			try {
